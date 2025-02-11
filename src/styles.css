@@ -1,3 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+.app-container {
+    background-image: url('assets/background/noisy_background.png');
+    background-size: cover;         
+    background-position: center;    
+    background-attachment: fixed;   
+    margin: 0;                      
+    height: 100vh; 
+    background-repeat: repeat;                 
+  }
