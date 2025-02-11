@@ -10,3 +10,14 @@
     height: 100vh; 
     background-repeat: repeat;                 
   }
+  .abril-fatface-regular {
+    font-family: "Abril Fatface", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .inter-custom {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;  /* Cambia el peso a lo que desees, por ejemplo 400 para normal */
+    font-style: normal;
+  }
