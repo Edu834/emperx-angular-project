@@ -1,4 +1,4 @@
-<header class="w-full border-b border-gray-300">
+<header class="w-full border-b border-gray-300 relative">
     <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500" >
         <p class="transition-opacity duration-500" [class.opacity-0]="fade" [class.opacity-100]="!fade">{{ text }}</p>
     </div>
@@ -7,11 +7,154 @@
             <button class="text-2xl xl:hidden">&#9776;</button>
             <nav class="hidden xl:flex gap-6 text-md cursor-pointer">
                 <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline ">Home</a>
-                <a href="#" class="hover:underline">Women</a>
-                <a href="#" class="hover:underline">Men</a>
-                <a href="#" class="hover:underline">Events</a>
+               
+                
+                
+                <div class="group">
+                    <a href="#" class=" hover:underline">Women</a>
+                    <!-- Menú desplegable -->
+                     <div class="absolute w-full left-0 ">
+                        <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
+                        
+                            <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Suits</a></li>
+                                        <li><a class="hover:underline" href="#">Coats & Jackets</a></li>
+                                        <li><a class="hover:underline" href="#">Dresses</a></li>
+                                        <li><a class="hover:underline" href="#">Skirts</a></li>
+                                        <li><a class="hover:underline" href="#">T-Shirts</a></li>
+                                        <li><a class="hover:underline" href="#">Tops & Bodysuits</a></li>
+                                        <li><a class="hover:underline" href="#">Jeans & Trousers</a></li>
+                                        <li><a class="hover:underline" href="#">Knitwear</a></li>
+                                        <li><a class="hover:underline" href="#">Sweatshirts</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Shoulder Bags</a></li>
+                                        <li><a class="hover:underline" href="#">Totes & Backpacks</a></li>
+                                        <li><a class="hover:underline" href="#">Clutches</a></li>
+                                        <li><a class="hover:underline" href="#">Top Handle</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Sneakers</a></li>
+                                        <li><a class="hover:underline" href="#">Boots</a></li>
+                                        <li><a class="hover:underline" href="#">Flats</a></li>
+                                        <li><a class="hover:underline" href="#">Heels</a></li>
+                                        <li><a class="hover:underline" href="#">Tabis</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
+                                    <ul class="text-md inter-custom">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Eyewear</a></li>
+                                        <li><a class="hover:underline" href="#">Small leather goods</a></li>
+                                        <li><a class="hover:underline" href="#">Jewlery</a></li>
+                                        <li><a class="hover:underline" href="#">Other accesories</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
+                                    <ul class="text-md inter-custom">
+                                        <li><a class="hover:underline" href="#">Wedding</a></li>
+                                        <li><a class="hover:underline" href="#">Gala</a></li>
+                                        <li><a class="hover:underline" href="#">Baptism</a></li>
+                                        <li><a class="hover:underline" href="#">Parties</a></li>
+                                        <li><a class="hover:underline" href="#">Cultural</a></li>
+                                        <li><a class="hover:underline" href="#">Beach</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                           
+                            
+                        </div>
+                     </div>
+                    
+                </div>
+
+                <div class="group ">
+                    <a href="#" class="hover:underline">Men</a>
+                    <!-- Menú desplegable -->
+                    <div class="absolute w-full left-0 ">
+                        <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
+                        
+                            <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Suits</a></li>
+                                        <li><a class="hover:underline" href="#">Coats & Jackets</a></li>
+                                        <li><a class="hover:underline" href="#">Dresses</a></li>
+                                        <li><a class="hover:underline" href="#">Skirts</a></li>
+                                        <li><a class="hover:underline" href="#">T-Shirts</a></li>
+                                        <li><a class="hover:underline" href="#">Tops & Bodysuits</a></li>
+                                        <li><a class="hover:underline" href="#">Jeans & Trousers</a></li>
+                                        <li><a class="hover:underline" href="#">Knitwear</a></li>
+                                        <li><a class="hover:underline" href="#">Sweatshirts</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Shoulder Bags</a></li>
+                                        <li><a class="hover:underline" href="#">Totes & Backpacks</a></li>
+                                        <li><a class="hover:underline" href="#">Clutches</a></li>
+                                        <li><a class="hover:underline" href="#">Top Handle</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
+                                    <ul class="text-md inter-custom ">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Sneakers</a></li>
+                                        <li><a class="hover:underline" href="#">Boots</a></li>
+                                        <li><a class="hover:underline" href="#">Flats</a></li>
+                                        <li><a class="hover:underline" href="#">Heels</a></li>
+                                        <li><a class="hover:underline" href="#">Tabis</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
+                                    <ul class="text-md inter-custom">
+                                        <li><a class="hover:underline" href="#">View all</a></li>
+                                        <li><a class="hover:underline" href="#">Eyewear</a></li>
+                                        <li><a class="hover:underline" href="#">Small leather goods</a></li>
+                                        <li><a class="hover:underline" href="#">Jewlery</a></li>
+                                        <li><a class="hover:underline" href="#">Other accesories</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
+                                    <ul class="text-md inter-custom">
+                                        <li><a class="hover:underline" href="#">Wedding</a></li>
+                                        <li><a class="hover:underline" href="#">Gala</a></li>
+                                        <li><a class="hover:underline" href="#">Baptism</a></li>
+                                        <li><a class="hover:underline" href="#">Parties</a></li>
+                                        <li><a class="hover:underline" href="#">Cultural</a></li>
+                                        <li><a class="hover:underline" href="#">Beach</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                           
+                            
+                        </div>
+                     </div>
+                </div>
+                <!-- <a href="#" class="hover:underline">Events</a> -->
                 <a [routerLink]="['/about-us']" routerLinkActive="active"  class="hover:underline">About us</a>
-                <a [routerLink]="['/how-works']" class="hover:underline">How works</a>
+                <a [routerLink]="['/how-works']" routerLinkActive="active"  class="hover:underline">How works</a>
             </nav>
         </div>
         <!-- Título y elementos de la derecha -->

@@ -22,3 +22,8 @@
     font-weight: 400;  /* Cambia el peso a lo que desees, por ejemplo 400 para normal */
     font-style: normal;
   }
+  .active {
+    font-weight: bold;
+    text-decoration: underline;
+   
+  }
