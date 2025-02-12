@@ -5,18 +5,18 @@
     <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
         <div class="flex items-center gap-4">
             <button class="text-2xl xl:hidden">&#9776;</button>
-            <nav class="hidden xl:flex gap-6 text-md">
-                <a href="#" class="hover:underline">Home</a>
+            <nav class="hidden xl:flex gap-6 text-md cursor-pointer">
+                <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline ">Home</a>
                 <a href="#" class="hover:underline">Women</a>
                 <a href="#" class="hover:underline">Men</a>
                 <a href="#" class="hover:underline">Events</a>
-                <a href="#" class="hover:underline">About us</a>
-                <a href="#" class="hover:underline">How works</a>
+                <a [routerLink]="['/about-us']" routerLinkActive="active"  class="hover:underline">About us</a>
+                <a [routerLink]="['/how-works']" class="hover:underline">How works</a>
             </nav>
         </div>
         <!-- Título y elementos de la derecha -->
         <div class="text-[#2C2C2C] flex items-center gap-4 abril-fatface-regular">
-            <h1 class="text-6xl font-bold mx-5 text-[#2C2C2C]">EMPERX</h1>
+            <a [routerLink]="['/home']" class="text-6xl font-bold mx-5 text-[#2C2C2C] cursor-pointer">EMPERX</a>
             <a class="group relative transition duration-300 cursor-pointer">
                 <!-- Icono sin relleno (por defecto) -->
                 <i class="fa-regular fa-bookmark text-[#2C2C2C] text-2xl transition duration-300 hover:text-[#2C2C2C]"></i>
