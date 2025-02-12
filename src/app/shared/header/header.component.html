@@ -1,6 +1,6 @@
 <header class="w-full border-b border-gray-300">
-    <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom">
-        RETURNS AND EXCHANGES FREE OF SHIPPING CHARGES
+    <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500" >
+        <p class="transition-opacity duration-500" [class.opacity-0]="fade" [class.opacity-100]="!fade">{{ text }}</p>
     </div>
     <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
         <div class="flex items-center gap-4">
