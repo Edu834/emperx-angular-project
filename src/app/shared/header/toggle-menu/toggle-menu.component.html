@@ -7,12 +7,12 @@
         <hr class="my-4">
         <div class="flex flex-col text-xl my-12 space-y-12">
             <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline" href="">Home</a>
-            <div (click)="toggleCategory()" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
+            <div (click)="toggleGender('women')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
                 <a >Women</a>
                 <i class="fa-solid fa-chevron-right text-white"></i>
             </div>
-            <div class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
-                <a href="">Men</a>
+            <div (click)="toggleGender('men')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                <a  >Men</a>
                 <i class="fa-solid fa-chevron-right text-white"></i>
                 
             </div>
@@ -29,46 +29,159 @@
         </div>
         
     </div>
+    
 </div>
-    <div [style.width]="width" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg 
-    transition-all duration-500 ease-in-out">
-@if(showComponent){
-    <div class="flex  w-[70%] mx-auto h-full  max-w-6xl  px-4 sm:px-6 lg:px-8 inter-custom  text-white">
+<div [style.width]="menuWidth" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg transition-all duration-500 ease-in-out">
+    @if (activeGender) {
+      <div class="flex w-[70%] mx-auto h-full max-w-6xl px-4 sm:px-6 lg:px-8 inter-custom text-white">
         <div class="w-full p-5">
-            <div class="flex justify-between items-center ">
-                <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
-                <button (click)="close()" class=" text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+          <div class="flex justify-between items-center">
+            <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
+            <button (click)="close()" class="text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+          </div>
+          <hr class="my-4">
+  
+          <div (click)="goBack()" class="flex justify-between items-center cursor-pointer hover:bg-[#4c4c4c] hover:underline">
+            <div class="text-xl">{{ activeGender === 'women' ? 'Women' : 'Men' }}</div>
+            <button><i class="fa-solid fa-chevron-left text-white"></i></button>
+          </div>
+  
+          <hr class="my-4">
+  
+          <div class="flex flex-col text-xl my-12 space-y-12">
+            <div (click)="toggleCategory('Ready-to-wear')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+              <span>Ready-to-wear</span>
+              <i class="fa-solid fa-chevron-right text-white"></i>
             </div>
-            <hr class="my-4">
-            <div (click)="toggleCategory()" class="flex justify-between items-center cursor-pointer hover:bg-[#4c4c4c] hover:underline">
-                <div class="text-xl ">Women</div>
-                <button ><i class="fa-solid fa-chevron-left text-white"></i></button>
+            <div (click)="toggleCategory('Bags')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+              <span>Bags</span>
+              <i class="fa-solid fa-chevron-right text-white"></i>
             </div>
-            <!-- <div class="flex flex-col text-xl my-12 space-y-12">
-                <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline" href="">Home</a>
-                <div (click)="toggleCategory()" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
-                    <a >Women</a>
-                    <i class="fa-solid fa-chevron-right text-white"></i>
-                </div>
-                <div class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
-                    <a href="">Men</a>
-                    <i class="fa-solid fa-chevron-right text-white"></i>
-                    
-                </div>
-                
-                <a [routerLink]="['/about-us']" routerLinkActive="active" class="hover:underline" href="">About us</a>
-                <a [routerLink]="['/how-works']" routerLinkActive="active" class="hover:underline" href="">How works</a>
-            </div> -->
-            
-            <hr class="my-4">
-            <div class="flex flex-col abril-fatface-regular">
-                <a class="hover:underline" href="">Favorites</a>
-                <a class="hover:underline" href="">Bag</a>
-                <a class="hover:underline" href="">Sign in</a>
+            <div (click)="toggleCategory('Shoes')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+              <span>Shoes</span>
+              <i class="fa-solid fa-chevron-right text-white"></i>
             </div>
-            
+            <div (click)="toggleCategory('Accessories')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+              <span>Accessories</span>
+              <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+          </div>
+  
+          <hr class="my-4">
+  
+          
         </div>
+      </div>
+    }
+    <div [style.width]="categoryWidth" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg transition-all duration-500 ease-in-out">
+    @if (activeCategory) {
+        <div class="flex w-[70%] mx-auto h-full max-w-6xl px-4 sm:px-6 lg:px-8 inter-custom text-white">
+            <div class="w-full p-5">
+              <div class="flex justify-between items-center">
+                <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
+                <button (click)="close()" class="text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+              </div>
+              <hr class="my-4">
+      
+              <div (click)="goBack()" class="flex justify-between items-center cursor-pointer hover:bg-[#4c4c4c] hover:underline">
+                <div class="text-xl">{{activeCategory}}</div>
+                <button  ><i class="fa-solid fa-chevron-left text-white"></i></button>
+              </div>
+      
+              <hr class="my-4">
+      
+              <div class="flex flex-col text-xl my-12 space-y-6">
+                @if (activeCategory === 'Ready-to-wear') {
+                    <a class="hover:underline" href="">View all</a>
+                    <a class="hover:underline" href="">Suits</a>
+                    <a class="hover:underline" href="">Coats & Jackets</a>
+                    <a class="hover:underline" href="">Dresses</a>
+                    <a class="hover:underline" href="">Skirts</a>
+                    <a class="hover:underline" href="">T-Shirts</a>
+                    <a class="hover:underline" href="">Tops & Bodysuits</a>
+                    <a class="hover:underline" href="">Jeans & Trousers</a>
+                    <a class="hover:underline" href="">Knitwear</a>
+                    <a class="hover:underline" href="">Sweatshirts</a>
+                  }
+                  @if (activeCategory === 'Bags') {
+                    <a class="hover:underline" href="">Totes</a>
+                    <a class="hover:underline" href="">Shoulder Bags</a>
+                    <a class="hover:underline" href="">Crossbody Bags</a>
+                    <a class="hover:underline" href="">Clutches</a>
+                  }
+                  @if (activeCategory === 'Shoes') {
+                    <a class="hover:underline" href="">Sneakers</a>
+                    <a class="hover:underline" href="">Boots</a>
+                    <a class="hover:underline" href="">Sandals</a>
+                    <a class="hover:underline" href="">Heels</a>
+                  }
+                  @if (activeCategory === 'Accessories') {
+                    <a class="hover:underline" href="">Belts</a>
+                    <a class="hover:underline" href="">Hats</a>
+                    <a class="hover:underline" href="">Scarves</a>
+                    <a class="hover:underline" href="">Jewelry</a>
+                  }
+              </div>
+      
+              <hr class="my-4">
+      
+              
+            </div>
+          </div>
+
+
+     
+    }
     </div>
+</div> 
+  
+<!-- <div [style.width]="width" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg 
+transition-all duration-500 ease-in-out">
+@if(showComponent){
+<div class="flex  w-[70%] mx-auto h-full  max-w-6xl  px-4 sm:px-6 lg:px-8 inter-custom  text-white">
+    <div class="w-full p-5">
+        <div class="flex justify-between items-center ">
+            <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
+            <button (click)="close()" class=" text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+        </div>
+        <hr class="my-4">
+        <div (click)="toggleGender(null!)" class="flex justify-between items-center cursor-pointer hover:bg-[#4c4c4c] hover:underline">
+            <div class="text-xl ">{{ showComponent === 'women' ? 'Women' : 'Men' }}</div>
+            <button ><i class="fa-solid fa-chevron-left text-white"></i></button>
+        </div>
+        
+        
+        <hr class="my-4">
+        <div class="flex flex-col text-xl my-12 space-y-12">
+            <div (click)="toggleCategory('ready-to-wear')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
+                <a >Ready-to-wear</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+            <div (click)="toggleCategory('bags')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                <a  >Bags</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+            <div (click)="toggleCategory('shoes')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                <a  >Shoes</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+            <div (click)="toggleCategory('accessories')" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                <a  >Accessories</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+        </div>
+        
+        <hr class="my-4">
+
+        <div class="flex flex-col abril-fatface-regular">
+            <a class="hover:underline" href="">Favorites</a>
+            <a class="hover:underline" href="">Bag</a>
+            <a class="hover:underline" href="">Sign in</a>
+        </div>
+        
+    </div>
+</div>
 
 }
-    </div>
+
+</div> -->
