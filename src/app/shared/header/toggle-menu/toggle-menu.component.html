@@ -1,0 +1,74 @@
+<div class="flex  w-[70%] mx-auto h-full  max-w-6xl  px-4 sm:px-6 lg:px-8 inter-custom  text-white">
+    <div class="w-full p-5">
+        <div class="flex justify-between items-center">
+            <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
+            <button (click)="close()" class=" text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+        </div>
+        <hr class="my-4">
+        <div class="flex flex-col text-xl my-12 space-y-12">
+            <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline" href="">Home</a>
+            <div (click)="toggleCategory()" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
+                <a >Women</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+            </div>
+            <div class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                <a href="">Men</a>
+                <i class="fa-solid fa-chevron-right text-white"></i>
+                
+            </div>
+            
+            <a [routerLink]="['/about-us']" routerLinkActive="active" class="hover:underline" href="">About us</a>
+            <a [routerLink]="['/how-works']" routerLinkActive="active" class="hover:underline" href="">How works</a>
+        </div>
+        
+        <hr class="my-4">
+        <div class="flex flex-col abril-fatface-regular">
+            <a class="hover:underline" href="">Favorites</a>
+            <a class="hover:underline" href="">Bag</a>
+            <a class="hover:underline" href="">Sign in</a>
+        </div>
+        
+    </div>
+</div>
+    <div [style.width]="width" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg 
+    transition-all duration-500 ease-in-out">
+@if(showComponent){
+    <div class="flex  w-[70%] mx-auto h-full  max-w-6xl  px-4 sm:px-6 lg:px-8 inter-custom  text-white">
+        <div class="w-full p-5">
+            <div class="flex justify-between items-center ">
+                <div class="abril-fatface-regular text-4xl sm:text-5xl">EMPERX</div>
+                <button (click)="close()" class=" text-white"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+            </div>
+            <hr class="my-4">
+            <div (click)="toggleCategory()" class="flex justify-between items-center cursor-pointer hover:bg-[#4c4c4c] hover:underline">
+                <div class="text-xl ">Women</div>
+                <button ><i class="fa-solid fa-chevron-left text-white"></i></button>
+            </div>
+            <!-- <div class="flex flex-col text-xl my-12 space-y-12">
+                <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline" href="">Home</a>
+                <div (click)="toggleCategory()" class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline ">
+                    <a >Women</a>
+                    <i class="fa-solid fa-chevron-right text-white"></i>
+                </div>
+                <div class="flex justify-between items-center hover:bg-[#4c4c4c] hover:underline">
+                    <a href="">Men</a>
+                    <i class="fa-solid fa-chevron-right text-white"></i>
+                    
+                </div>
+                
+                <a [routerLink]="['/about-us']" routerLinkActive="active" class="hover:underline" href="">About us</a>
+                <a [routerLink]="['/how-works']" routerLinkActive="active" class="hover:underline" href="">How works</a>
+            </div> -->
+            
+            <hr class="my-4">
+            <div class="flex flex-col abril-fatface-regular">
+                <a class="hover:underline" href="">Favorites</a>
+                <a class="hover:underline" href="">Bag</a>
+                <a class="hover:underline" href="">Sign in</a>
+            </div>
+            
+        </div>
+    </div>
+
+}
+    </div>

@@ -6,7 +6,8 @@ import { HeaderComponent } from "../../shared/header/header.component";
   selector: 'app-homepage',
   imports: [FooterComponent, HeaderComponent],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css'
+  styleUrl: './homepage.component.css',
+
 })
 export class HomepageComponent {
 

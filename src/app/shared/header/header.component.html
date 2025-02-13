@@ -1,10 +1,10 @@
-<header class="w-full border-b border-gray-300 relative">
+<header class="w-full border-b border-gray-300 relative z-0">
     <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500" >
         <p class="transition-opacity duration-500" [class.opacity-0]="fade" [class.opacity-100]="!fade">{{ text }}</p>
     </div>
     <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
         <div class="flex items-center gap-4">
-            <button class="text-2xl xl:hidden">&#9776;</button>
+            <button (click)="toggleComponent()" class="text-2xl xl:hidden">&#9776;</button>
             <nav class="hidden xl:flex gap-6 text-md cursor-pointer">
                 <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline ">Home</a>
                
@@ -174,3 +174,8 @@
         </div>
     </div>
 </header>
+<div [style.width]="width" class="xl:hidden absolute h-full left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg 
+ transition-all duration-500 ease-in-out">
+ @if(showComponent){<app-toggle-menu (closeMenu)="handleCloseMenu()"></app-toggle-menu>}
+</div>
+

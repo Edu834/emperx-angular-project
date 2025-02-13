@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ToggleMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -22,5 +23,20 @@ export class HeaderComponent implements OnInit {
         this.fade = false;
       }, 500); // Duración de la transición
     }, 30000);
+  }
+
+  
+
+  showComponent: boolean = false;  // Controla la visibilidad del div
+  width: string = '0%';  // Inicializa el ancho del div
+
+  toggleComponent() {
+    this.showComponent = !this.showComponent;
+    this.width = this.showComponent ? '100%' : '0%';  // Ajusta el ancho basado en la visibilidad
+  }
+
+  handleCloseMenu() {
+    this.showComponent = false;  // Oculta el menú cuando se hace clic en el botón "X"
+    this.width = '0%';  // Ajusta el ancho a 0% cuando se cierra
   }
 }
