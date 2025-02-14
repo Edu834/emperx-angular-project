@@ -1,0 +1,56 @@
+<body class="h-screen w-screen flex items-start justify-center bg-gray-100 inter-custom">
+    
+    <div class="w-full h-screen flex flex-col sm:flex-col h-1/2 md:flex-row xl:flex-row shadow-lg">
+        
+        <!-- Login Form Section -->
+        <div class="xl:w-1/3 md:w-1/2 sm:w-full bg-white p-8 flex flex-col  h-full text-[#2c2c2c] ">
+            <button (click)="goBack()" class="absolute text-[#2C2C2C]"><i class="fa-solid fa-xmark fa-2xl"></i></button>
+            <div class="my-30 mx-auto">
+                <div class=" border-dashed border-b-2 border-gray-200 mb-6">
+                    <h2 class="text-6xl font-bold mb-4  abril-fatface-regular ">Log in</h2>
+                    <p class="text-sm text-gray-600 mb-6">Please input your information to enter your Journey platform.</p>
+                </div>
+            <div class=" border-dashed border-b-2 border-gray-200 mb-8">
+                <label class="text-gray-500 text-sm ">Account</label>
+                <div class="mb-4 relative">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="text" placeholder="Enter your email" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class=" relative">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" placeholder="Enter your password" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            
+                <div class="mb-8">
+                    <a href="#" class="text-blue-500 text-sm ">Forgot your password?</a>
+                </div>
+                
+            </div >
+            <div class="flex justify-between items-center">
+                <div class="flex items-center ">
+                    <input id="remember" type="checkbox" value="" class=" mr-3 w-6 h-6 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required /><p class="text-sm text-[#2C2C2C]">Remember me </p>
+                </div>
+                <button class="w-[40%] bg-[#B30101] text-white  py-2 hover:bg-red-600 ">Log in</button>
+            </div>
+            
+            </div>
+            <div class="w-full text-[#2C2C2C] text-sm flex flex-col justify-center text-center">
+                Don't have an account yet? <a href="#" class="text-blue-500 text-sm hover:underline">Register here</a>
+            </div>
+        </div>
+        
+        <!-- Image Section -->
+        <div class="xl:w-2/3 md:w-1/2 sm:w-full h-1/2 w-full relative h-full flex items-start">
+            <img src="/poster3.png" alt="Stylized Dior Cactus Jack" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-blue-900 mix-blend-multiply opacity-30"></div>
+        </div>
+    </div>
+</body>
