@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
+import { AuthService } from '../../core/service/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,6 +10,16 @@ import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  isAuthenticated: boolean = false;
+
+  constructor(private authService: AuthService) {
+    this.isAuthenticated = this.authService.isAuthenticated();
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
   text: string = 'WELCOME TO EMPERX!';
   texts: string[] = ['RETURNS AND EXCHANGES FREE OF SHIPPING CHARGES', 'FREE STANDARD SHIPPING WITH SUBSCRIPTION'];
   currentIndex: number = 0;
