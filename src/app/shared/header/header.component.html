@@ -180,11 +180,11 @@
                     <!-- Menú desplegable con animación desde arriba -->
                     <div class="absolute right-0 mt-2 w-48 bg-[#2c2c2c] border border-gray-200 shadow-lg  opacity-0 transform -translate-y-4 transition-all duration-300 invisible group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
                         <ul class="py-2 text-sm text-white inter-custom">
-                            <li><a [routerLink]="['/profile']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Profile</a></li>
-                            <li><a [routerLink]="['/orders']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Orders</a></li>
-                            <li><a [routerLink]="['/favorites']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Favorites</a></li>
-                            <li><a [routerLink]="['/reviews']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Reviews</a></li>
-                            <li><a [routerLink]="['/settings']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Settings</a></li>
+                            <li><a [routerLink]="['/user/profile']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Profile</a></li>
+                            <li><a [routerLink]="['/user/orders']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Orders</a></li>
+                            <li><a [routerLink]="['/user/favorites']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Favorites</a></li>
+                            <li><a [routerLink]="['/user/reviews']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Reviews</a></li>
+                            <li><a [routerLink]="['/user/settings']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Settings</a></li>
                             <li>
                                 <button (click)="logout()" class="w-full text-left block px-4 py-2 text-red-600 hover:bg-[#3C3C3C]">
                                     Log out

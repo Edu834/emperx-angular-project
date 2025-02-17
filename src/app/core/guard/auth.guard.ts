@@ -8,10 +8,10 @@ export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
 
   console.log('authGuard - Estado de autenticación:', authService.isAuthenticated());
 
-  if (authService.isAuthenticated()) {
-    console.warn('authGuard - Usuario ya autenticado, redirigiendo...');
-    return router.createUrlTree(['/home']); // Redirige al dashboard o página principal
+  if (!authService.isAuthenticated()) {
+    console.warn('authGuard - Usuario no autenticado, redirigiendo a login...');
+    return router.createUrlTree(['/login']); // Redirige si NO está autenticado
   }
 
-  return true; // Permite acceder a la página de login si NO está autenticado
+  return true; // Permite el acceso si está autenticado
 };
