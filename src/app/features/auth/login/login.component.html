@@ -17,7 +17,7 @@
                         <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
                             <i class="fas fa-envelope"></i>
                         </span>
-                        <input type="text" placeholder="Enter your email" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input [(ngModel)]="loginObj.username" name="username" type="text" placeholder="Enter your email" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
                 <div class=" relative">
@@ -25,7 +25,7 @@
                         <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
                             <i class="fas fa-lock"></i>
                         </span>
-                        <input type="password" placeholder="Enter your password" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input [(ngModel)]="loginObj.password" name="password" type="password" placeholder="Enter your password" class="w-full pl-10 px-4 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
             
@@ -38,7 +38,7 @@
                 <div class="flex items-center ">
                     <input id="remember" type="checkbox" value="" class=" mr-3 w-6 h-6 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required /><p class="text-sm text-[#2C2C2C]">Remember me </p>
                 </div>
-                <button class="w-[40%] bg-[#B30101] text-white  py-2 hover:bg-red-600 ">Log in</button>
+                <button (click)="onLogin()" class="w-[40%] bg-[#B30101] text-white  py-2 hover:bg-red-600 ">Log in</button>
             </div>
             
             </div>

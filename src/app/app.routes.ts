@@ -5,12 +5,13 @@ import { NgModule } from '@angular/core';
 import { HowWorksComponent } from './features/how-works/how-works.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
+import { authGuard } from './core/guard/auth.guard';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
     {path: 'about-us', component: AboutUsComponent},
     {path: 'how-works', component: HowWorksComponent},
-    {path: 'login', component: LoginComponent},
+    {path: 'login', component: LoginComponent, canActivate: [authGuard]},
     {path: 'forgot-password', component: ForgotPasswordComponent},
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
     
