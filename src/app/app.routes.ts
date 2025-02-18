@@ -19,6 +19,7 @@ export const routes: Routes = [
     {path: 'how-works', component: HowWorksComponent},
     {path: 'login', component: LoginComponent, canActivate: [noAuthGuard]},
     {path: 'forgot-password', component: ForgotPasswordComponent},
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
 
     { 
   path: 'user', 
