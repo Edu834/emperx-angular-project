@@ -10,5 +10,8 @@ import { SearchComponent } from "../../shared/search/search.component";
   styleUrl: './about-us.component.css'
 })
 export class AboutUsComponent {
+  
 
+  newArrivalsHeader: boolean = false;
+  
 }
