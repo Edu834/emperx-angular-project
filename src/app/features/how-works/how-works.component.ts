@@ -11,5 +11,5 @@ import { SearchComponent } from "../../shared/search/search.component";
 })
 export class HowWorksComponent {
 
-  newArrivalsHeader = false;
+  
 }

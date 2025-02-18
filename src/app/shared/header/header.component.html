@@ -1,4 +1,8 @@
-<header class="w-full border-b border-gray-300 relative z-0">
+<header class="w-full border-b border-gray-300 fixed top-0 left-0 transition-all ease-in-out z-20 bg-white bg-opacity-50"
+        [class]="{
+            'translate-y-[-100%]': !isHeaderVisible,
+            'translate-y-0': isHeaderVisible
+          }">
     <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500" >
         <p class="transition-opacity duration-500" [class.opacity-0]="fade" [class.opacity-100]="!fade">{{ text }}</p>
     </div>
@@ -10,7 +14,7 @@
                
                 
                 
-                <div class="group">
+                <div class="group ">
                     <a href="#" class=" hover:underline">Women</a>
                     <!-- Menú desplegable -->
                      <div class="absolute w-full left-0 ">
@@ -174,7 +178,7 @@
                 <a [routerLink]="['/login']" class="text-md hover:underline">Sign in</a>
             } @else {
                 <!-- Ícono de usuario con menú desplegable -->
-                <div class="relative group">
+                <div class="relative group ">
                     <i class="fa-regular fa-user text-[#2C2C2C] text-2xl cursor-pointer"></i>
         
                     <!-- Menú desplegable con animación desde arriba -->
@@ -197,8 +201,10 @@
         </div>
     </div>
 </header>
-<div [style.width]="width" class="xl:hidden absolute h-[100%] left-0 top-0 z-10 bg-[#2C2C2C] shadow-lg 
- transition-all duration-500 ease-in-out">
+
+
+<div [style.width]="width" class="xl:hidden fixed h-[100%] left-0 top-0  bg-[#2C2C2C] shadow-lg 
+ transition-all duration-500 ease-in-out z-50">
  @if(showComponent){<app-toggle-menu (closeMenu)="handleCloseMenu()"></app-toggle-menu>}
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
 import { AuthService } from '../../core/service/auth/auth.service';
@@ -50,4 +50,26 @@ export class HeaderComponent implements OnInit {
     this.showComponent = false;  // Oculta el menú cuando se hace clic en el botón "X"
     this.width = '0%';  // Ajusta el ancho a 0% cuando se cierra
   }
+
+  lastScrollTop = 0;
+  isHeaderVisible = true;
+
+ 
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(): void {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (currentScroll > this.lastScrollTop && currentScroll > 50) {
+      // Scrolling down
+      this.isHeaderVisible = false;
+    } else {
+      // Scrolling up
+      this.isHeaderVisible = true;
+    }
+
+    this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  }
+
+  
 }

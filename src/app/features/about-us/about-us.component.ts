@@ -11,7 +11,4 @@ import { SearchComponent } from "../../shared/search/search.component";
 })
 export class AboutUsComponent {
   
-
-  newArrivalsHeader: boolean = false;
-  
 }

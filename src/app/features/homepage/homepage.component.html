@@ -1,12 +1,15 @@
 
 
 <div class="w-full min-h-screen flex flex-col ">
-    
-    <app-header></app-header>
-    <app-search class="h-[450px]"></app-search>
+    <div class="w-full h-31">
+      
+      <app-header ></app-header>
+
+    </div>
+    <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
     
     <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
-      Bienvenido a la HomePage
+      Home Page
     </h1>
   
    
