@@ -28,4 +28,8 @@ export class SearchComponent implements OnInit {
 
     });
   }
+
+  hideFilterPanel() {
+    this.mostrarFiltros = false;
+  }
 }
