@@ -1,5 +1,9 @@
-<div class="w-full h-full bg-linear-to-t to-[#BE0000] from-[#9C0000] pb-12">
-    <div class="max-w-6xl mx-auto px-4 md:px-8 inter-custom relative z-10">
+<div class="flex flex-row ">
+    @if (newArrivalsHeader==false) {
+        <app-filter-panel class=" h-full  w-[30%] "></app-filter-panel>
+    }   
+<div class="w-full h-full bg-linear-to-t to-[#BE0000] from-[#9C0000] pb-6">
+    <div class="max-w-6xl md:px-8 xl:mx-auto inter-custom relative z-10">
         <div class="flex justify-between items-center px-4 bg-[#D9D9D9] h-[50px] sm:w-[70%] w-[60%] xl:w-[35%] abril-fatface-regular shadow-md">
             <i class="fa-solid fa-magnifying-glass pr-4"></i>
             
@@ -31,15 +35,13 @@
         </div>
        } @if (newArrivalsHeader==false) {
         <app-routes class="text-white"></app-routes>
+        
     } @else {
         <div></div>
-    }
-            
-       
-        
-        
-        
-        
+    }   
     </div>
     
+</div>
+
+
 </div>
