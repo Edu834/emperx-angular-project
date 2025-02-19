@@ -6,15 +6,14 @@
     </div>
     
     <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
-    
-    @if(gender=="men"){
-      <app-men-products></app-men-products>
-    }
-    @if (gender=="women") {
-      <app-women-products ></app-women-products>
-    }
-    
-    
+    @if (!mostrarCategoria) {
+      @if(gender=="men"){
+        <app-men-products></app-men-products>
+      }
+      @if (gender=="women") {
+        <app-women-products ></app-women-products>
+      }
+  }
 
     
     <!-- <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">

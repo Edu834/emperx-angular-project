@@ -25,6 +25,7 @@ export const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full' },
     {path: 'products', component: ProductsComponent}, 
     {path: 'products/:gender', component: ProductsComponent},
+    {path: 'products/:gender/:category', component: ProductsComponent},
     {path: 'user', 
       canActivate: [authGuard],
       children: [

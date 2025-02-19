@@ -11,6 +11,7 @@ export class FilterPanelComponent {
 
   products: any[] = [];
   gender: string = ''; 
+  mostrarFiltros: boolean = false;
   
 
   constructor(
@@ -22,7 +23,8 @@ export class FilterPanelComponent {
     
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
-      // this.loadProducts(); 
+      this.mostrarFiltros = !!params.get('category');
+
     });
   }
 

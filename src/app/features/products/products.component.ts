@@ -17,7 +17,7 @@ export class ProductsComponent  {
 
   
   gender: string = ''; 
-  
+  mostrarCategoria: boolean = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -28,7 +28,7 @@ export class ProductsComponent  {
     
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
-       
+      this.mostrarCategoria = !!params.get('category');
       
     });
   }
