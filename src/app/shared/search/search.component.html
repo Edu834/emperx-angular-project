@@ -5,6 +5,8 @@
             
             <input class="w-full h-full text-end focus:outline-none " type="text" placeholder="Search">
         </div>
+        
+        
        @if (newArrivalsHeader==true) {
         <div class="text-6xl/10 md:text-7xl/12 xl:text-8xl/16 text-white w-[100px] abril-fatface-regular mt-15 ">
             NEW ARRIVALS
@@ -27,7 +29,11 @@
         <div class="absolute top-0 right-0 hidden md:block">    
             <img  src="/new-arrivals.png" alt="">
         </div>
-       }
+       } @if (newArrivalsHeader==false) {
+        <app-routes class="text-white"></app-routes>
+    } @else {
+        <div></div>
+    }
             
        
         

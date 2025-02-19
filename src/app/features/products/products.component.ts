@@ -11,5 +11,5 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './products.component.css'
 })
 export class ProductsComponent  {
-  
+  showChild =  false;
 }

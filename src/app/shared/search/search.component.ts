@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RoutesComponent } from "./routes/routes.component";
 
 @Component({
   selector: 'app-search',
-  imports: [],
+  imports: [RoutesComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
