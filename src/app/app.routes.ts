@@ -13,28 +13,29 @@ import { UserReviewsComponent } from './features/user-reviews/user-reviews.compo
 import { UserSettingsComponent } from './features/user-settings/user-settings.component';
 import { noAuthGuard } from './core/guard/no-auth.guard';
 import { RegisterComponent } from './features/auth/register/register.component';
+import { ProductsComponent } from './features/products/products.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
     {path: 'about-us', component: AboutUsComponent},
     {path: 'how-works', component: HowWorksComponent},
     {path: 'login', component: LoginComponent, canActivate: [noAuthGuard]},
-    {path: 'register', component: RegisterComponent},
+    {path: 'register', component: RegisterComponent, },
     {path: 'forgot-password', component: ForgotPasswordComponent},
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-
-    { 
-  path: 'user', 
-  canActivate: [authGuard],
-  children: [
-    { path: 'profile', component: ProfileComponent},
-    { path: 'orders', component: OrdersComponent },
-    { path: 'favorites', component: FavoritesComponent },
-    { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
-    { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente
-    { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }
-  ] 
-},
+    {path: '', redirectTo: '/home', pathMatch: 'full' },
+    {path: 'products', component: ProductsComponent}, 
+    {path: 'products/:gender', component: ProductsComponent},
+    {path: 'user', 
+      canActivate: [authGuard],
+      children: [
+        { path: 'profile', component: ProfileComponent},
+        { path: 'orders', component: OrdersComponent },
+        { path: 'favorites', component: FavoritesComponent },
+        { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
+        { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente
+        { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }
+      ] 
+    },
     { path: '**', redirectTo: '/home', pathMatch: 'full' }
     
 ];
