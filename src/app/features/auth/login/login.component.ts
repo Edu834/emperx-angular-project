@@ -24,9 +24,6 @@ export class LoginComponent {
   };
 
 
-
-  
-
   constructor(private authService: AuthService, private router: Router, private location: Location) {}
   goBack(): void {
     this.location.back();

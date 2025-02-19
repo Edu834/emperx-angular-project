@@ -11,17 +11,26 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  register(registerObj: {username:"", address:"", email:"", phone:"", password:"", confirmPassword:""}) {
+    return this.http.post('http://localhost:8087/api/usuarios/registro', registerObj).pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);  
+      })
+    );
+  }
+
   // Método para autenticar al usuario
   login(loginObj: { username: string, password: string }) {
     return this.http.post('http://localhost:8087/api/usuarios/login', loginObj).pipe(
       catchError(error => {
         console.error('There was an error!', error);
-        return of(null);  // Devolver un valor vacío en caso de error
+        return of(null);  
       })
     );
   }
 
-  // Método para guardar el estado de autenticación y redirigir
+  
   saveUser(data: any) {
     if (data && data.username) {
       // Almacenar los datos del usuario en el localStorage

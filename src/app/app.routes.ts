@@ -33,6 +33,7 @@ export const routes: Routes = [
     { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }
   ] 
 },
+    { path: '**', redirectTo: '/home', pathMatch: 'full' }
     
 ];
 @NgModule({
