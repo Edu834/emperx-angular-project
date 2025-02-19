@@ -12,12 +12,14 @@ import { FavoritesComponent } from './features/favorites/favorites.component';
 import { UserReviewsComponent } from './features/user-reviews/user-reviews.component';
 import { UserSettingsComponent } from './features/user-settings/user-settings.component';
 import { noAuthGuard } from './core/guard/no-auth.guard';
+import { RegisterComponent } from './features/auth/register/register.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
     {path: 'about-us', component: AboutUsComponent},
     {path: 'how-works', component: HowWorksComponent},
     {path: 'login', component: LoginComponent, canActivate: [noAuthGuard]},
+    {path: 'register', component: RegisterComponent},
     {path: 'forgot-password', component: ForgotPasswordComponent},
     { path: '', redirectTo: '/home', pathMatch: 'full' },
 
