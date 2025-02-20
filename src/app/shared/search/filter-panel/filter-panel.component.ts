@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filter-panel',
-  standalone: true, // Si es un componente standalone
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './filter-panel.component.html',
   styleUrls: ['./filter-panel.component.css']
 })
 export class FilterPanelComponent {
-  
+
   subcategories: { [key: string]: string[] } = {
     men: [
       'View all',
@@ -42,10 +42,12 @@ export class FilterPanelComponent {
     ]
   };
 
+  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL']; // Opciones de tallas
+  selectedSizes: string[] = []; // Guardará las tallas seleccionadas
+
   products: any[] = [];
   genderRoute: string = ''; 
   mostrarFiltros: boolean = false;
-  isChecked = false;
   category: string = 'view-all';
   subcategory: string = 'view-all';
   isCheckedMen: boolean = false;
@@ -59,35 +61,45 @@ export class FilterPanelComponent {
       this.genderRoute = params.get('gender') || 'men';
       this.category = params.get('category') || 'view-all';
       this.subcategory = params.get('subcategory') || 'view-all';
-      console.log(this.subcategory);
-      // this.activeSubcategory = params.get('subcategory') || 'view-all';
+
       this.activeSubcategory = this.subcategories[this.genderRoute]?.find(
         sub => sub.toLowerCase().replace(/ /g, '-') === this.subcategory
-      ) || 'View all'; // Si no encuentra coincidencia, selecciona "View all"
-      
+      ) || 'View all';
+
       this.isCheckedMen = this.genderRoute === 'men';
       this.isCheckedWomen = this.genderRoute === 'women';
 
-      this.mostrarFiltros = !!this.category; // Muestra los filtros si hay categoría
+      this.mostrarFiltros = !!this.category;
     });
   }
   
-  // Cambiar género y actualizar la ruta
   onGenderChange(gender: string) {
     this.isCheckedMen = gender === 'men';
     this.isCheckedWomen = gender === 'women';
     this.router.navigate(['/products', gender, this.category, this.subcategory]);
   }
 
-  // Cambiar subcategoría y actualizar la ruta
   onSubcategoryChange(subcategory: string) {
-    this.activeSubcategory = subcategory
-    console.log(this.activeSubcategory);
-    this.subcategory = subcategory.toLowerCase().replace(/ /g, '-'); // Normaliza la subcategoría en la URL
+    this.activeSubcategory = subcategory;
+    this.subcategory = subcategory.toLowerCase().replace(/ /g, '-');
     this.router.navigate(['/products', this.genderRoute, this.category, this.subcategory]);
   }
 
-  // Manejo de visibilidad de filtros
+
+  onSizeChange(size: string) {
+    if (this.selectedSizes.includes(size)) {
+      this.selectedSizes = this.selectedSizes.filter(s => s !== size);
+    } else {
+      this.selectedSizes.push(size);
+    }
+    console.log("Tallas seleccionadas:", this.selectedSizes);
+  }
+
+ 
+  getSelectedSizes(): string {
+    return this.selectedSizes.length ? this.selectedSizes.join(', ') : 'None';
+  }
+
   filterVisibility: { [key: string]: boolean } = {
     gender: false,
     subcategory: false,

@@ -4,7 +4,7 @@
   <!-- Filtros Generales -->
   @for (filter of ['gender', 'subcategory', 'size', 'priceRange', 'brand', 'color']; track $index) {
     <div class="flex justify-between items-center ">
-      <div (click)="toggleDropdown(filter)" class="w-full cursos-pointer border-dashed border-b-2 border-gray-200 mb-6 pb-6"> 
+      <div (click)="toggleDropdown(filter)" class="w-full cursos-pointer border-dashed border-b-2 border-gray-200py-3mb-6 pb-6 cursor-pointer"> 
         <div class="w-full flex justify-between items-center ">
           <p class=" capitalize text-xl">{{filter}}
             @if(filter=="subcategory"){
@@ -44,12 +44,16 @@
                   </div> -->
                 }
                 @case ('size') {
-                  <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> S</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> M</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> L</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> XL</label>
-                  </div>
+                  <div class="flex flex-wrap justify-start gap-2 w-full">
+                    @for (size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']; track $index) {
+                        <button 
+                         (click)="onSizeChange(size)" [class.activeSize]="selectedSizes.includes(size)" class="bg-[#D9D9D9] min-w-[40px] min-h-[40px] text-center text-[#2c2c2c] hover:underline">
+                            {{size}}
+                        </button>
+                    }
+                    <p>Selected Sizes: {{ getSelectedSizes() }}</p>
+                </div>
+                
                 }
                 @case ('priceRange') {
                   <div>
