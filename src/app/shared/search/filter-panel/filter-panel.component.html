@@ -2,14 +2,17 @@
 <div class="w-full bg-[#2c2c2c] text-white h-full py-11 px-4 inter-custom space-y-8">
     <h3 class="text-4xl font-bold mb-4 abril-fatface-regular">Filters</h3>
 
-      <div (click)="toggleDropdown('gender')" class="flex justify-between w-full text-xl border-dashed border-b-2 pb-6 border-gray-200 ">
-        Gender
-        <i class="fa-solid" [class]="{'fa-chevron-down': showGender, 'fa-chevron-right': !showGender}"></i>
+      <div  class=" w-full text-xl border-dashed border-b-2 pb-6 border-gray-200 ">
+        <div (click)="toggleDropdown('gender')" class="flex justify-between items-center"> 
+          Gender
+          <i class="fa-solid" [class]="{'fa-chevron-down': showGender, 'fa-chevron-right': !showGender}"></i>
+        </div>
+        
         @if (showGender) {
-          <div>
+          <div class="w-full mt-2">
             <label class="block"><input type="checkbox" class="mr-2"> Male</label>
-          <label class="block"><input type="checkbox" class="mr-2"> Female</label>
-          <label class="block"><input type="checkbox" class="mr-2"> Unisex</label>
+            <label class="block"><input type="checkbox" class="mr-2"> Female</label>
+            <!-- <label class="block"><input type="checkbox" class="mr-2"> Unisex</label> -->
           </div>
           
         }

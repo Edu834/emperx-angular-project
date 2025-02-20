@@ -6,14 +6,14 @@ import { HowWorksComponent } from './features/how-works/how-works.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
 import { authGuard } from './core/guard/auth.guard';
-import { ProfileComponent } from './features/profile/profile.component';
-import { OrdersComponent } from './features/orders/orders.component';
-import { FavoritesComponent } from './features/favorites/favorites.component';
-import { UserReviewsComponent } from './features/user-reviews/user-reviews.component';
-import { UserSettingsComponent } from './features/user-settings/user-settings.component';
 import { noAuthGuard } from './core/guard/no-auth.guard';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { ProductsComponent } from './features/products/products.component';
+import { ProfileComponent } from './features/user/profile/profile.component';
+import { OrdersComponent } from './features/user/orders/orders.component';
+import { FavoritesComponent } from './features/user/favorites/favorites.component';
+import { UserReviewsComponent } from './features/user/user-reviews/user-reviews.component';
+import { UserSettingsComponent } from './features/user/user-settings/user-settings.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -25,6 +25,7 @@ export const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full' },
     {path: 'products', component: ProductsComponent}, 
     {path: 'products/:gender', component: ProductsComponent},
+    {path: 'products/:gender/:category', component: ProductsComponent},
     {path: 'user', 
       canActivate: [authGuard],
       children: [

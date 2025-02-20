@@ -8,40 +8,43 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   styleUrl: './routes.component.css'
 })
 export class RoutesComponent implements OnInit{
-  
   products: any[] = [];
   gender: string = ''; 
   genderName: string = ''; 
+  category: string = ''; 
+  categoryName: string = ''; 
 
-  constructor(
-    private route: ActivatedRoute, 
-    // private productsService: ProductsService 
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
-      this.setCategoryName(); 
+      this.category = params.get('category') || ''; 
+      this.setNames(); 
       // this.loadProducts(); 
+      console.log(this.category);
     });
   }
 
-  // loadProducts() {
-  //   // Carga los productos según la categoría seleccionada
-  //   this.productsService.getProductsByCategory(this.category).subscribe((data) => {
-  //     this.products = data;
-  //   });
-  // }
-
-  setCategoryName() {
-    // Asigna nombres legibles según la categoría
+  setNames() {
+    // Asigna nombres legibles según el género
     if (this.gender === 'men') {
       this.genderName = 'Men';
     } else if (this.gender === 'women') {
       this.genderName = 'Women';
     } else {
-      this.genderName = 'Todos los productos'; // Si no hay categoría, muestra todos los productos
+      this.genderName = 'All Products'; // Si no hay género, muestra todos los productos
     }
+
+    // Asigna nombres legibles según la categoría
+    if (this.category) {
+      this.categoryName = this.capitalize(this.category);
+    } else {
+      this.categoryName = ''; // Si no hay categoría, dejar vacío
+    }
+  }
+  
+  capitalize(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 }

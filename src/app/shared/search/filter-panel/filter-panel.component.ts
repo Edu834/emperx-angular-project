@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-filter-panel',
@@ -7,6 +8,26 @@ import { Component } from '@angular/core';
   styleUrl: './filter-panel.component.css'
 })
 export class FilterPanelComponent {
+
+  products: any[] = [];
+  gender: string = ''; 
+  mostrarFiltros: boolean = false;
+  
+
+  constructor(
+    private route: ActivatedRoute, 
+    // private productsService: ProductsService 
+  ) {}
+
+  ngOnInit(): void {
+    
+    this.route.paramMap.subscribe((params) => {
+      this.gender = params.get('gender') || '';
+      this.mostrarFiltros = !!params.get('category');
+
+    });
+  }
+
   showGender = false;
   showSubcategory = false;
   showSize = false;
