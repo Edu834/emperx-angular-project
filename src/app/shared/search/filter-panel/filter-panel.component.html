@@ -33,15 +33,6 @@
                       <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
                     }
                   </div>
-                  
-                  <!-- <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2">
-                    <button  [class.activeSubcategory] class="text-start text-2xl hover:underline">View all</button>
-                    <button class="text-start text-2xl hover:underline">Suits</button>
-                    <button class="text-start text-2xl hover:underline">Coats & Jackets</button>
-                    <button class="text-start text-2xl hover:underline">Dresses</button>
-                    <button class="text-start text-2xl hover:underline">T-Shirts</button>
-                    <button class="text-start text-2xl hover:underline">Tops & Bodysuits</button>
-                  </div> -->
                 }
                 @case ('size') {
                   <div class="flex flex-wrap justify-start gap-2 w-full">
@@ -65,26 +56,23 @@
                         </div>
                     }
                   </div>
-                  
-                  <!-- <div>
-                    <input type="checkbox" class="mr-2"><label class="block"> $0 - $50</label>
-                    <input type="checkbox" class="mr-2"><label class="block"> $50 - $100</label>
-                    <input type="checkbox" class="mr-2"><label class="block"> $100 - $200</label>
-                  </div> -->
                 }
                 @case ('brand') {
-                  <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> Nike</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Adidas</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Puma</label>
+                  <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
+                    @for (brand of brands; track $index) {
+                      <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="selectedBrand === brand" (click)="onBrandChange(brand)"> {{brand}}</button>
+                    }
                   </div>
                 }
                 @case ('color') {
-                  <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> Red</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Blue</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Black</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> White</label>
+                  <div class="flex flex-wrap justify-items-start gap-2 w-full">
+                    @for (color of colors; track $index) {
+                      <div (click)="onColorChange(color.name)" class=" cursor-pointer p-2 rounded-lg transition duration-200"> 
+                        <div class="w-5 h-5 " [style]="{'background': color.code,'border': selectedColor === color.name ? '2px solid blue' : (color.border ? color.border : '1px solid #000')}"></div>
+                        <span class="text-sm mt-1">{{color.name}}</span>
+                      </div>
+                      
+                    }
                   </div>
                 }
               }

@@ -50,6 +50,41 @@ export class FilterPanelComponent {
     { label: '50€ - 100€', value: '50-100' },
     { label: '100€ - 200€', value: '100-200' }
   ];
+  colors = [
+    { name: 'Negro', code: '#000000' },
+    { name: 'Azul', code: '#007bff' },
+    { name: 'Marrón', code: '#8B4513' },
+    { name: 'Verde', code: '#4CAF50' },
+    { name: 'Gris', code: '#808080' },
+    { name: 'Multicolor', code: 'linear-gradient(45deg, red, blue, yellow, green)' },
+    { name: 'Naranja', code: '#FF5722' },
+    { name: 'Rosa', code: '#E91E63' },
+    { name: 'Morado', code: '#9C27B0' },
+    { name: 'Rojo', code: '#F44336' },
+    { name: 'Blanco', code: '#FFFFFF', border: '1px solid #ccc' },
+    { name: 'Amarillo', code: '#FFEB3B' },
+  ];
+
+  selectedColor: string | null = null;
+  onColorChange(color: string) {
+    this.selectedColor = this.selectedColor === color ? null : color;
+    console.log('Color seleccionado:', this.selectedColor ?? 'Ninguno');
+  }
+
+  getSelectedColor(): string {
+    return this.selectedColor ? this.selectedColor : 'Sin color seleccionado';
+  }
+  brands: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Under Armour'];
+  selectedBrand: string | null = null;
+
+  onBrandChange(brand: string) {
+    this.selectedBrand = this.selectedBrand === brand ? null : brand;
+    console.log('Marca seleccionada:', this.selectedBrand ?? 'Ninguna');
+  }
+
+  getSelectedBrand(): string {
+    return this.selectedBrand ? this.selectedBrand : 'Sin marca seleccionada';
+  }
 
   onPriceRangeChange(price: string) {
     this.selectedPriceRange = this.selectedPriceRange === price ? null : price;
