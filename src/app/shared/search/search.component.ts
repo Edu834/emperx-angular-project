@@ -14,6 +14,7 @@ export class SearchComponent implements OnInit {
 
   gender: string = ''; 
   mostrarFiltros: boolean | undefined ;
+  toggleFiltros: boolean | undefined ;
   textHideFilter: string = "Hide filters";
 
   @Input() newArrivalsHeader: boolean | undefined;
@@ -27,6 +28,7 @@ export class SearchComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.mostrarFiltros = !!params.get('category');
+      this.toggleFiltros = !!params.get('category');
 
     });
   }

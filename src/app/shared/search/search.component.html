@@ -36,7 +36,7 @@
        } @if (newArrivalsHeader==false) {
         <div class="flex w-full justify-between mx-auto text-white">
             <app-routes></app-routes>
-            @if (mostrarFiltros) {
+            @if (toggleFiltros) {
                 <div class="content-end cursor-pointer space-x-1" (click)="hideFilterPanel()">
                     <span class="hover:underline">{{textHideFilter}}</span> 
                     <button ><i class="fa-solid fa-sliders "></i></button>
