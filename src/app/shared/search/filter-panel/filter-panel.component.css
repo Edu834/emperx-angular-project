@@ -1,3 +1,26 @@
 div {
     transition: opacity 0.2s ease-in-out;
   }
+  /* Personalizar la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 4px; /* Ancho de la barra de desplazamiento */
+  height: 2px; /* Alto de la barra de desplazamiento horizontal */
+  margin: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #D9D9D9; /* Color de la parte que se desplaza */
+  border-radius: 4px; /* Bordes redondeados */
+  
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2c2c2c; /* Color de fondo de la pista (track) */
+  border-radius: 4px; /* Bordes redondeados en la pista */
+  padding: 2px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #f1f1f1; /* Esquina donde se encuentran las barras */
+  margin: 1px;
+}

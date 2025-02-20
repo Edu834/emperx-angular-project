@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+'@angular/core';
 import { RoutesComponent } from "./routes/routes.component";
 import { FilterPanelComponent } from "./filter-panel/filter-panel.component";
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
   selector: 'app-search',
@@ -12,8 +13,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SearchComponent implements OnInit {
 
   gender: string = ''; 
-  mostrarFiltros: boolean = false;
-  
+  mostrarFiltros: boolean | undefined ;
+  toggleFiltros: boolean | undefined ;
+  textHideFilter: string = "Hide filters";
+
   @Input() newArrivalsHeader: boolean | undefined;
 
   constructor(
@@ -25,11 +28,17 @@ export class SearchComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.mostrarFiltros = !!params.get('category');
+      this.toggleFiltros = !!params.get('category');
 
     });
   }
 
   hideFilterPanel() {
-    this.mostrarFiltros = false;
+    this.mostrarFiltros = !this.mostrarFiltros; 
+    if (this.mostrarFiltros) {
+        this.textHideFilter = "Hide filters"; 
+    } else {
+        this.textHideFilter = "Show filters"; 
+    }
   }
 }

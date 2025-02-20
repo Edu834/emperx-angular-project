@@ -21,6 +21,7 @@ export class FilterPanelComponent {
 
   ngOnInit(): void {
     
+
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.mostrarFiltros = !!params.get('category');
@@ -28,35 +29,46 @@ export class FilterPanelComponent {
     });
   }
 
-  showGender = false;
-  showSubcategory = false;
-  showSize = false;
-  showPriceRange = false;
-  showBrand = false;
-  showColor = false;
-  priceValue = 100; // Valor inicial del rango de precio
-
+  filterVisibility: { [key: string]: boolean } = {
+    gender: false,
+    subcategory: false,
+    size: false,
+    priceRange: false,
+    brand: false,
+    color: false
+  };
   toggleDropdown(filter: string) {
-    switch (filter) {
-      case 'gender':
-        this.showGender = !this.showGender;
-        break;
-      case 'subcategory':
-        this.showSubcategory = !this.showSubcategory;
-        break;
-      case 'size':
-        this.showSize = !this.showSize;
-        break;
-      case 'priceRange':
-        this.showPriceRange = !this.showPriceRange;
-        break;
-      case 'brand':
-        this.showBrand = !this.showBrand;
-        break;
-      case 'color':
-        this.showColor = !this.showColor;
-        break;
-    }
+    this.filterVisibility[filter] = !this.filterVisibility[filter];
   }
+  // showGender = false;
+  // showSubcategory = false;
+  // showSize = false;
+  // showPriceRange = false;
+  // showBrand = false;
+  // showColor = false;
+  // priceValue = 100; // Valor inicial del rango de precio
+
+  // toggleDropdown(filter: string) {
+  //   switch (filter) {
+  //     case 'gender':
+  //       this.showGender = !this.showGender;
+  //       break;
+  //     case 'subcategory':
+  //       this.showSubcategory = !this.showSubcategory;
+  //       break;
+  //     case 'size':
+  //       this.showSize = !this.showSize;
+  //       break;
+  //     case 'priceRange':
+  //       this.showPriceRange = !this.showPriceRange;
+  //       break;
+  //     case 'brand':
+  //       this.showBrand = !this.showBrand;
+  //       break;
+  //     case 'color':
+  //       this.showColor = !this.showColor;
+  //       break;
+  //   }
+  // }
   
 }
