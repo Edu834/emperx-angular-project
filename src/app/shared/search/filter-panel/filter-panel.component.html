@@ -6,7 +6,12 @@
     <div class="flex justify-between items-center ">
       <div (click)="toggleDropdown(filter)" class="w-full cursos-pointer border-dashed border-b-2 border-gray-200 mb-6 pb-6"> 
         <div class="w-full flex justify-between items-center ">
-          <p class=" capitalize text-xl">{{filter}}</p> 
+          <p class=" capitalize text-xl">{{filter}}
+            @if(filter=="subcategory"){
+             : {{category}}
+            }
+          </p> 
+          
           <i class="fa-solid" [class]="{'fa-chevron-down': filterVisibility[filter], 'fa-chevron-right': !filterVisibility[filter]}"></i>
         </div>
         
@@ -15,19 +20,28 @@
             <div>
               @switch (filter) {
                 @case ('gender') {
-                  <div class="flex flex-col ">
-                    <button class=" mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedMen" (click)="onCheckboxChange( 'men')" >Men</button>
-                    <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedWomen"  (click)="onCheckboxChange('women')">Women</button>
+                  <div class="flex flex-col text-2xl">
+                    <button class=" mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedMen" (click)="onGenderChange('men')" >Men</button>
+                    <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedWomen"  (click)="onGenderChange('women')">Women</button>
                     <!-- <label class="block"><input  > Male</label>
                     <label class="block"><input  > Female</label> -->
                   </div>
                 }
-                @case ('subcategory') {
-                  <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> Shirts</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Pants</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Jackets</label>
+                @case ('subcategory' ) {
+                  <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
+                    @for (subcategory of subcategories[genderRoute]; track $index) {
+                      <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
+                    }
                   </div>
+                  
+                  <!-- <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2">
+                    <button  [class.activeSubcategory] class="text-start text-2xl hover:underline">View all</button>
+                    <button class="text-start text-2xl hover:underline">Suits</button>
+                    <button class="text-start text-2xl hover:underline">Coats & Jackets</button>
+                    <button class="text-start text-2xl hover:underline">Dresses</button>
+                    <button class="text-start text-2xl hover:underline">T-Shirts</button>
+                    <button class="text-start text-2xl hover:underline">Tops & Bodysuits</button>
+                  </div> -->
                 }
                 @case ('size') {
                   <div>

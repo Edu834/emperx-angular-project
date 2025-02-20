@@ -4,52 +4,90 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filter-panel',
+  standalone: true, // Si es un componente standalone
   imports: [FormsModule],
   templateUrl: './filter-panel.component.html',
-  styleUrl: './filter-panel.component.css'
+  styleUrls: ['./filter-panel.component.css']
 })
 export class FilterPanelComponent {
+  
+  subcategories: { [key: string]: string[] } = {
+    men: [
+      'View all',
+      'Dresses',
+      'Coats & Jackets',
+      'Tops & Bodysuits',
+      'T-Shirts',
+      'Pants',
+      'Jeans',
+      'Skirts',
+      'Shorts',
+      'Sweaters',
+      'Shoes',
+      'Bags & Accessories'
+    ],
+    women: [
+      'View all',
+      'Dresses',
+      'Coats & Jackets',
+      'Tops & Bodysuits',
+      'T-Shirts',
+      'Pants',
+      'Jeans',
+      'Skirts',
+      'Shorts',
+      'Sweaters',
+      'Shoes',
+      'Bags & Accessories'
+    ]
+  };
 
   products: any[] = [];
   genderRoute: string = ''; 
   mostrarFiltros: boolean = false;
   isChecked = false;
-  category: string | undefined;
-  isCheckedMen: boolean | undefined;
-  isCheckedWomen: boolean | undefined;
+  category: string = 'view-all';
+  subcategory: string = 'view-all';
+  isCheckedMen: boolean = false;
+  isCheckedWomen: boolean = false;
+  activeSubcategory: any;
 
-  constructor(
-    private route: ActivatedRoute, 
-    private router: Router 
-    
-  ) {}
-  
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
   ngOnInit(): void {
-    
-
     this.route.paramMap.subscribe((params) => {
-      this.genderRoute = params.get('gender') || '';
-      this.mostrarFiltros = !!params.get('category');
-      this.category = params.get('category') || '';
+      this.genderRoute = params.get('gender') || 'men';
+      this.category = params.get('category') || 'view-all';
+      this.subcategory = params.get('subcategory') || 'view-all';
+      console.log(this.subcategory);
+      // this.activeSubcategory = params.get('subcategory') || 'view-all';
+      this.activeSubcategory = this.subcategories[this.genderRoute]?.find(
+        sub => sub.toLowerCase().replace(/ /g, '-') === this.subcategory
+      ) || 'View all'; // Si no encuentra coincidencia, selecciona "View all"
+      
       this.isCheckedMen = this.genderRoute === 'men';
       this.isCheckedWomen = this.genderRoute === 'women';
+
+      this.mostrarFiltros = !!this.category; // Muestra los filtros si hay categoría
     });
   }
   
-  // Método que cambia el estado de los botones
-  onCheckboxChange(gender: string) {
-    console.log(gender);
-    if (gender === 'men') {
-      this.isCheckedMen = true; // Activa el botón "Men"
-      this.isCheckedWomen = false; // Desactiva el botón "Women"
-      this.router.navigate(['/products/' + gender +'/'+ this.category]); // Cambia a la ruta para "Men"
-    } else if (gender === 'women') {
-      this.isCheckedWomen = true; // Activa el botón "Women"
-      this.isCheckedMen = false; // Desactiva el botón "Men"
-      this.router.navigate(['/products/' + gender +'/'+ this.category]); // Cambia a la ruta para "Women"
-    }
+  // Cambiar género y actualizar la ruta
+  onGenderChange(gender: string) {
+    this.isCheckedMen = gender === 'men';
+    this.isCheckedWomen = gender === 'women';
+    this.router.navigate(['/products', gender, this.category, this.subcategory]);
   }
 
+  // Cambiar subcategoría y actualizar la ruta
+  onSubcategoryChange(subcategory: string) {
+    this.activeSubcategory = subcategory
+    console.log(this.activeSubcategory);
+    this.subcategory = subcategory.toLowerCase().replace(/ /g, '-'); // Normaliza la subcategoría en la URL
+    this.router.navigate(['/products', this.genderRoute, this.category, this.subcategory]);
+  }
+
+  // Manejo de visibilidad de filtros
   filterVisibility: { [key: string]: boolean } = {
     gender: false,
     subcategory: false,
@@ -58,9 +96,8 @@ export class FilterPanelComponent {
     brand: false,
     color: false
   };
+
   toggleDropdown(filter: string) {
     this.filterVisibility[filter] = !this.filterVisibility[filter];
   }
-
-  
 }
