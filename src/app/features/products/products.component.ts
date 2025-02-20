@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../shared/header/header.component";
 import { SearchComponent } from "../../shared/search/search.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WomenProductsComponent } from "./women-products/women-products.component";
 import { MenProductsComponent } from "./men-products/men-products.component";
 import { ProductsService } from '../../core/service/products/products.service';
@@ -64,7 +64,8 @@ export class ProductsComponent implements OnInit{
 
   constructor(
     private route: ActivatedRoute, 
-    private service: ProductsService
+    private service: ProductsService,
+    private router: Router
   ) {}
   
   idSubcategoria: number = 1;
@@ -106,8 +107,15 @@ export class ProductsComponent implements OnInit{
       this.listaArticulos = data;
       console.log('LISTAAA DE ARTICULOSSS VARIABLEEE', this.listaArticulos);
     });
-    this.service.listArticulosPorSexoAndCategoria(this.sexo, this.idCategoria).subscribe((data: any) => {
-      console.log('Articulos por sexo y categoria:', data);
-    });
+    if (this.nombreCategoria !== '') {
+      this.service.listArticulosPorSexoAndCategoria(this.sexo, this.idCategoria).subscribe((data: any) => {
+        if (data && data.length > 0) {
+          this.listaArticulos = data;
+        } else {
+          console.error('No se encontraron artículos para el sexo:', this.sexo , this.idCategoria);
+        }
+      });
+    }
   }
 }
+

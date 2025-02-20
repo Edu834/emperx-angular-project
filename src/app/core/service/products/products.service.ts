@@ -36,7 +36,7 @@ export class ProductsService {
       })
     );
   }
-  listArticulosPorSexoAndCategoria(sexo: string, idCategoria: number) {
+  listArticulosPorSexoAndCategoria(sexo: string, idCategoria: any) {
     return this.http.get('http://localhost:8087/api/articulos/buscarPorSexoYCategoria/'+ sexo + '/' + idCategoria).pipe(
       catchError(error => {
         console.error('There was an error!', error);
