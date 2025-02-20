@@ -21,6 +21,7 @@ export class FilterPanelComponent {
 
   ngOnInit(): void {
     
+
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.mostrarFiltros = !!params.get('category');
