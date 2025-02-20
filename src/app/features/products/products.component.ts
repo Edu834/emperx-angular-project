@@ -14,15 +14,25 @@ import { ProductsService } from '../../core/service/products/products.service';
 })
 export class ProductsComponent implements OnInit{
   showChild =  false;
+  idSubcategoria: number = 1;
+  sexo: string = "H";
+  idCategoria: number = 1;
 
   constructor(private service: ProductsService) {}
 
   ngOnInit(): void {
-    this.service.listProductosPorSubCategoria(1).subscribe((data: any) => {
-      console.log('Data recibida:', data);
+    this.service.listArticulosPorSubCategoria(this.idSubcategoria).subscribe((data: any) => {
+      console.log('Articulos por subcategoria:', data);
     });
     this.service.listArticulos().subscribe((data: any) => {
-      console.log('Data recibida:', data);
+      console.log('Todos los articulos:', data);
     });
+    this.service.listArticulosPorSexo(this.sexo).subscribe((data: any) => {
+      console.log('Articulos por sexo:', data);
+    });
+    this.service.listArticulosPorSexoAndCategoria(this.sexo, this.idCategoria).subscribe((data: any) => {
+      console.log('Articulos por sexo y categoria:', data);
+    });
+    
   }
 }
