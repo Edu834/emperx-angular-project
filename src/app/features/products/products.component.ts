@@ -15,7 +15,7 @@ interface Galeria{
   
 }
 interface Categoria{
-  idcategoria: number;
+  idCategoria: number;
   nombre: string;
   descripcion: string;
 }
@@ -58,7 +58,7 @@ export class ProductsComponent implements OnInit{
   showChild =  false;
   
   listaArticulos: Articulo[] = [];
-  
+  categorias: Categoria[]=[];
   gender: string = ''; 
   mostrarCategoria: boolean = false;
 
@@ -70,7 +70,7 @@ export class ProductsComponent implements OnInit{
   idSubcategoria: number = 1;
   sexo: string = "H";
   nombreCategoria: string = '';
-  idCategoria: number = 1;
+  idCategoria: any = '';
 
 
   ngOnInit(): void {
@@ -84,6 +84,17 @@ export class ProductsComponent implements OnInit{
     }else{
       this.sexo = "H";
     }
+
+    this.service.listCategorias().subscribe((data: any) => {
+      console.log('Categorias', data);
+      this.categorias = data;
+      console.log('LISTAAA DE CATEGORIAAAAS VARIABLEEE', this.categorias);
+      this.idCategoria = this.categorias.find(categoria => categoria.nombre.toLowerCase().trim() === this.nombreCategoria.toLowerCase().trim())?.idCategoria;
+      this.inicio();
+    });
+   
+  }
+  inicio(): void{
     this.service.listArticulosPorSubCategoria(this.idSubcategoria).subscribe((data: any) => {
       console.log('Articulos por subcategoria:', data);
     });
@@ -95,10 +106,8 @@ export class ProductsComponent implements OnInit{
       this.listaArticulos = data;
       console.log('LISTAAA DE ARTICULOSSS VARIABLEEE', this.listaArticulos);
     });
-
     this.service.listArticulosPorSexoAndCategoria(this.sexo, this.idCategoria).subscribe((data: any) => {
       console.log('Articulos por sexo y categoria:', data);
     });
-    
   }
 }

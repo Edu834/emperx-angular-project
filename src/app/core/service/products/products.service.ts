@@ -44,4 +44,20 @@ export class ProductsService {
       })
     );
   }
+  listCategorias() {
+    return this.http.get('http://localhost:8087/api/articulos/categorias').pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);
+      })
+    );
+  }
+  listSubcategorias() {
+    return this.http.get('http://localhost:8087/api/articulos/subcategorias').pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);
+      })
+    );
+  }
 }
