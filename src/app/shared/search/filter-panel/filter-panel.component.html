@@ -6,7 +6,7 @@
     <div class="flex justify-between items-center ">
       <div (click)="toggleDropdown(filter)" class="w-full cursos-pointer border-dashed border-b-2 border-gray-200 mb-6 pb-6"> 
         <div class="w-full flex justify-between items-center ">
-          <p class="hover:underline  capitalize text-xl">{{filter}}</p> 
+          <p class=" capitalize text-xl">{{filter}}</p> 
           <i class="fa-solid" [class]="{'fa-chevron-down': filterVisibility[filter], 'fa-chevron-right': !filterVisibility[filter]}"></i>
         </div>
         
@@ -15,10 +15,11 @@
             <div>
               @switch (filter) {
                 @case ('gender') {
-                  <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> Male</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Female</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> Unisex</label>
+                  <div class="flex flex-col ">
+                    <button class=" mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedMen" (click)="onCheckboxChange( 'men')" >Men</button>
+                    <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedWomen"  (click)="onCheckboxChange('women')">Women</button>
+                    <!-- <label class="block"><input  > Male</label>
+                    <label class="block"><input  > Female</label> -->
                   </div>
                 }
                 @case ('subcategory') {
