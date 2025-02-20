@@ -43,7 +43,25 @@ export class FilterPanelComponent {
   };
 
   sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL']; // Opciones de tallas
-  selectedSizes: string[] = []; // Guardará las tallas seleccionadas
+
+  readonly priceRanges = [
+    { label: '0€ - 25€', value: '0-25' },
+    { label: '25€ - 50€', value: '25-50' },
+    { label: '50€ - 100€', value: '50-100' },
+    { label: '100€ - 200€', value: '100-200' }
+  ];
+
+  onPriceRangeChange(price: string) {
+    this.selectedPriceRange = this.selectedPriceRange === price ? null : price;
+    console.log('Precio seleccionado:', this.selectedPriceRange ?? 'Ninguno');
+  }
+
+  getFilteredPriceRange(): string {
+    return this.selectedPriceRange ? this.selectedPriceRange : 'Sin filtro de precio';
+  }
+
+  selectedPriceRange: string | null = null;
+  selectedSizes: string[] = []; 
 
   products: any[] = [];
   genderRoute: string = ''; 
@@ -101,7 +119,7 @@ export class FilterPanelComponent {
   }
 
   filterVisibility: { [key: string]: boolean } = {
-    gender: false,
+    gender: true,
     subcategory: false,
     size: false,
     priceRange: false,

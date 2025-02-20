@@ -4,8 +4,8 @@
   <!-- Filtros Generales -->
   @for (filter of ['gender', 'subcategory', 'size', 'priceRange', 'brand', 'color']; track $index) {
     <div class="flex justify-between items-center ">
-      <div (click)="toggleDropdown(filter)" class="w-full cursos-pointer border-dashed border-b-2 border-gray-200py-3mb-6 pb-6 cursor-pointer"> 
-        <div class="w-full flex justify-between items-center ">
+      <div  class="w-full cursos-pointer border-dashed border-b-2 border-gray-200py-3mb-6 pb-6 cursor-pointer"> 
+        <div (click)="toggleDropdown(filter)" class="w-full flex justify-between items-center ">
           <p class=" capitalize text-xl">{{filter}}
             @if(filter=="subcategory"){
              : {{category}}
@@ -57,10 +57,20 @@
                 }
                 @case ('priceRange') {
                   <div>
-                    <label class="block"><input type="checkbox" class="mr-2"> $0 - $50</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> $50 - $100</label>
-                    <label class="block"><input type="checkbox" class="mr-2"> $100 - $200</label>
+                    @for (range of priceRanges; track $index) {
+                       
+                        <div>
+                          <input type="checkbox" name="priceRange" (change)="onPriceRangeChange(range.value)"
+                          [checked]="selectedPriceRange === range.value" [value]="range.value" class="mr-2 h-5 w-5"><label for="">{{range.label}}</label>
+                        </div>
+                    }
                   </div>
+                  
+                  <!-- <div>
+                    <input type="checkbox" class="mr-2"><label class="block"> $0 - $50</label>
+                    <input type="checkbox" class="mr-2"><label class="block"> $50 - $100</label>
+                    <input type="checkbox" class="mr-2"><label class="block"> $100 - $200</label>
+                  </div> -->
                 }
                 @case ('brand') {
                   <div>
