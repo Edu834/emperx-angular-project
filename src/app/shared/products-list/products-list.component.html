@@ -1,3 +1,8 @@
-<div class="bg-amber-800 w-full h-full">
-    <app-product-card></app-product-card>
+<div class="flex flex-wrap justify-start gap-20 w-full p-10">
+    @for (product of products; track $index) {
+        <div class="flex-shrink-0 w-1/4 p-4">
+            <app-product-card [product]="product"></app-product-card>
+        </div>
+    }
 </div>
+    
