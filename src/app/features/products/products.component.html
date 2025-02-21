@@ -4,8 +4,23 @@
       <app-header></app-header>
       
     </div>
-    
-    <app-search [newArrivalsHeader]="showChild" class="w-full sticky top-0"></app-search>
+    <div class="flex w-full  h-full">
+      @if (mostrarFiltros && mostrarCategoria) {
+        
+        
+          <app-filter-panel [mostrarFiltros]="mostrarFiltros" class=""></app-filter-panel>
+      
+        
+      
+        
+    } 
+      
+      <div class="w-full ">
+      <app-search (toggleFiltrosEvent)="onToggleFiltros($event)" [newArrivalsHeader]="showChild" class="w-full"></app-search>
+      <app-products-list class=""></app-products-list>
+      </div>
+    </div>
+      
     @if (!mostrarCategoria) {
       @if(gender=="men"){
         <app-men-products></app-men-products>
@@ -14,6 +29,13 @@
         <app-women-products ></app-women-products>
       }
   }
+  <!-- <div class="bg-amber-500 w-[75%] h-full absolute top-40 right-0 z-0">
+    a
+    <app-products-list class="absolute bottom-0"></app-products-list>
+  </div> -->
+  
+    
+    
 
     
     <!-- <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">

@@ -8,5 +8,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './men-products.component.css'
 })
 export class MenProductsComponent {
-
+  mostrarFiltros: boolean = false;
 }

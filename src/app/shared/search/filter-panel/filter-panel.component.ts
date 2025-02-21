@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./filter-panel.component.css']
 })
 export class FilterPanelComponent {
+  @Input() mostrarFiltros: boolean | undefined;
 
   subcategories: { [key: string]: string[] } = {
     men: [
@@ -100,7 +101,7 @@ export class FilterPanelComponent {
 
   products: any[] = [];
   genderRoute: string = ''; 
-  mostrarFiltros: boolean = false;
+  // mostrarFiltros: boolean = false;
   category: string = 'view-all';
   subcategory: string = 'view-all';
   isCheckedMen: boolean = false;
