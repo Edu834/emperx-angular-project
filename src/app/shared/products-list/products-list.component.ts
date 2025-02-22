@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProductCardComponent } from "../product-card/product-card.component";
 import { Articulo, Categoria, ProductView } from '../../Interfaces/interfaces-globales';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,26 @@ import { ProductsService } from '../../core/service/products/products.service';
 export class ProductsListComponent {
   showChild =  false;
     
+  filtros: any = {};
+
+  @Input() filters: any = {};
+
+  // Aquí puedes manejar la lógica para mostrar productos según los filtros
+  ngOnChanges() {
+    console.log('Filtros recibidos:', this.filters);
+    // Aquí puedes actualizar la lista de productos en función de los filtros
+  }
+
+  onFiltrosAplicados(filtros: any) {
+    this.filtros = filtros;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
+    // Aquí implementas la lógica para aplicar los filtros a los productos
+    console.log('Filtros aplicados:', this.filtros);
+  }
+
     listaArticulos: Articulo[] = [];
     categorias: Categoria[]=[];
     products: ProductView[] = [];

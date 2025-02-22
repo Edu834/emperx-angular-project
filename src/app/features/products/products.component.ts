@@ -57,7 +57,17 @@ import { FilterPanelComponent } from "../../shared/search/filter-panel/filter-pa
   styleUrl: './products.component.css'
 })
 export class ProductsComponent implements OnInit{
+  selectedFilters: any = {
+    brand: null,
+    color: null,
+    priceRange: null,
+    sizes: []
+  };
 
+  onFiltersChanged(queryParams: any) {
+    this.selectedFilters = queryParams;
+    console.log('Filtros seleccionados:', this.selectedFilters);
+  }
   mostrarFiltros: boolean = true; // Estado compartido para filtros
 
   // Método que recibe el cambio de SearchComponent

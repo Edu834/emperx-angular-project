@@ -10,7 +10,7 @@
       @if (mostrarFiltros && mostrarCategoria) {
         
         
-          <app-filter-panel [mostrarFiltros]="mostrarFiltros" class=""></app-filter-panel>
+          <app-filter-panel (filtrosAplicados)="onFiltersChanged($event)" [mostrarFiltros]="mostrarFiltros" class=""></app-filter-panel>
       
         
       
@@ -29,7 +29,7 @@
           }
       }
       </div>
-      <app-products-list></app-products-list>
+      <app-products-list [filters]="selectedFilters"></app-products-list>
       </div>
     </div>
       
