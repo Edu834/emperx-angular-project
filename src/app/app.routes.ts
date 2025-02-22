@@ -26,6 +26,7 @@ export const routes: Routes = [
     {path: 'products', component: ProductsComponent}, 
     {path: 'products/:gender', component: ProductsComponent},
     {path: 'products/:gender/:category', component: ProductsComponent},
+    {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
     {path: 'user', 
       canActivate: [authGuard],
       children: [

@@ -12,7 +12,9 @@ export class RoutesComponent implements OnInit{
   gender: string = ''; 
   genderName: string = ''; 
   category: string = ''; 
-  categoryName: string = ''; 
+  categoryName: string = '';
+  subcategory: string = ''; 
+  subcategoryName: string = '';  
 
   constructor(private route: ActivatedRoute) {}
 
@@ -20,9 +22,10 @@ export class RoutesComponent implements OnInit{
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.category = params.get('category') || ''; 
+      this.subcategory = params.get('subcategory') || ''; 
       this.setNames(); 
       // this.loadProducts(); 
-      console.log(this.category);
+      // console.log(this.category);
     });
   }
 
@@ -41,6 +44,12 @@ export class RoutesComponent implements OnInit{
       this.categoryName = this.capitalize(this.category);
     } else {
       this.categoryName = ''; // Si no hay categoría, dejar vacío
+    }
+
+    if (this.subcategory) {
+      this.subcategoryName = this.capitalize(this.subcategory);
+    } else {
+      this.subcategoryName = ''; // Si no hay categoría, dejar vacío
     }
   }
   
