@@ -1,85 +1,80 @@
-<div class="w-[full] bg-[#2c2c2c] text-white py-11  inter-custom space-y-8 h-[100vh] overflow-auto px-15">
-  <h3 class="text-4xl font-bold mb-4 abril-fatface-regular">Filters</h3>
+<div class="w-full bg-[#2c2c2c] text-white py-11 sticky top-0 overflow-auto inter-custom space-y-8 px-15 h-auto max-h-screen">
+    <h3 class="text-4xl font-bold mb-4 abril-fatface-regular sticky top-0 bg-[#2c2c2c] z-10">Filters</h3>
 
-  <!-- Filtros Generales -->
-  @for (filter of ['gender', 'subcategory', 'size', 'priceRange', 'brand', 'color']; track $index) {
-    <div class="flex justify-between items-center ">
-      <div  class="w-full cursos-pointer border-dashed border-b-2 border-gray-200py-3mb-6 pb-6 cursor-pointer"> 
-        <div (click)="toggleDropdown(filter)" class="w-full flex justify-between items-center ">
-          <p class=" capitalize text-xl">{{filter}}
-            @if(filter=="subcategory"){
-             : {{category}}
-            }
-          </p> 
-          
-          <i class="fa-solid" [class]="{'fa-chevron-down': filterVisibility[filter], 'fa-chevron-right': !filterVisibility[filter]}"></i>
-        </div>
-        
-        @if (filterVisibility[filter]) {
-          <div class="w-full mt-2">
-            <div>
-              @switch (filter) {
-                @case ('gender') {
-                  <div class="flex flex-col text-2xl">
-                    <button class=" mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedMen" (click)="onGenderChange('men')" >Men</button>
-                    <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedWomen"  (click)="onGenderChange('women')">Women</button>
-                    <!-- <label class="block"><input  > Male</label>
-                    <label class="block"><input  > Female</label> -->
-                  </div>
-                }
-                @case ('subcategory' ) {
-                  <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
-                    @for (subcategory of subcategories[genderRoute]; track $index) {
-                      <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
-                    }
-                  </div>
-                }
-                @case ('size') {
-                  <div class="flex flex-wrap justify-start gap-2 w-full">
-                    @for (size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']; track $index) {
-                        <button 
-                         (click)="onSizeChange(size)" [class.activeSize]="selectedSizes.includes(size)" class="bg-[#D9D9D9] min-w-[40px] min-h-[40px] text-center text-[#2c2c2c] hover:underline">
-                            {{size}}
-                        </button>
-                    }
-                    <p>Selected Sizes: {{ getSelectedSizes() }}</p>
+    <!-- Filtros Generales -->
+    @for (filter of ['gender', 'subcategory', 'size', 'priceRange', 'brand', 'color']; track $index) {
+        <div class="flex justify-between items-center">
+            <div class="w-full border-dashed border-b-2 border-gray-200 py-3 mb-6 cursor-pointer"> 
+                <div (click)="toggleDropdown(filter)" class="w-full flex justify-between items-center">
+                    <p class="capitalize text-xl">{{filter}}
+                        @if(filter=="subcategory") {
+                            : {{category}}
+                        }
+                    </p> 
+                    <i class="fa-solid" [class]="{'fa-chevron-down': filterVisibility[filter], 'fa-chevron-right': !filterVisibility[filter]}"></i>
                 </div>
                 
-                }
-                @case ('priceRange') {
-                  <div>
-                    @for (range of priceRanges; track $index) {
-                       
+                @if (filterVisibility[filter]) {
+                    <div class="w-full mt-2">
                         <div>
-                          <input type="checkbox" name="priceRange" (change)="onPriceRangeChange(range.value)"
-                          [checked]="selectedPriceRange === range.value" [value]="range.value" class="mr-2 h-5 w-5"><label for="">{{range.label}}</label>
+                            @switch (filter) {
+                                @case ('gender') {
+                                    <div class="flex flex-col text-2xl">
+                                        <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedMen" (click)="onGenderChange('men')">Men</button>
+                                        <button class="mr-2 text-start hover:bg-[#ffffff1c]" [class.activeGender]="isCheckedWomen" (click)="onGenderChange('women')">Women</button>
+                                    </div>
+                                }
+                                @case ('subcategory') {
+                                    <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
+                                        @for (subcategory of subcategories[genderRoute]; track $index) {
+                                            <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
+                                        }
+                                    </div>
+                                }
+                                @case ('size') {
+                                    <div class="flex flex-wrap justify-start gap-2 w-full">
+                                        @for (size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']; track $index) {
+                                            <button 
+                                                (click)="onSizeChange(size)" [class.activeSize]="selectedSizes.includes(size)" class="bg-[#D9D9D9] min-w-[40px] min-h-[40px] text-center text-[#2c2c2c] hover:underline">
+                                                {{size}}
+                                            </button>
+                                        }
+                                        <p>Selected Sizes: {{ getSelectedSizes() }}</p>
+                                    </div>
+                                }
+                                @case ('priceRange') {
+                                    <div>
+                                        @for (range of priceRanges; track $index) {
+                                            <div>
+                                                <input type="checkbox" name="priceRange" (change)="onPriceRangeChange(range.value)"
+                                                    [checked]="selectedPriceRange === range.value" [value]="range.value" class="mr-2 h-5 w-5">
+                                                <label for="">{{range.label}}</label>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                @case ('brand') {
+                                    <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
+                                        @for (brand of brands; track $index) {
+                                            <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="selectedBrand === brand" (click)="onBrandChange(brand)"> {{brand}}</button>
+                                        }
+                                    </div>
+                                }
+                                @case ('color') {
+                                    <div class="flex flex-wrap justify-items-start gap-2 w-full">
+                                        @for (color of colors; track $index) {
+                                            <div (click)="onColorChange(color.name)" class="cursor-pointer p-2 rounded-lg transition duration-200"> 
+                                                <div class="w-5 h-5" [style]="{'background': color.code, 'border': selectedColor === color.name ? '2px solid blue' : (color.border ? color.border : '1px solid #000')}"></div>
+                                                <span class="text-sm mt-1">{{color.name}}</span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
                         </div>
-                    }
-                  </div>
+                    </div>
                 }
-                @case ('brand') {
-                  <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
-                    @for (brand of brands; track $index) {
-                      <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="selectedBrand === brand" (click)="onBrandChange(brand)"> {{brand}}</button>
-                    }
-                  </div>
-                }
-                @case ('color') {
-                  <div class="flex flex-wrap justify-items-start gap-2 w-full">
-                    @for (color of colors; track $index) {
-                      <div (click)="onColorChange(color.name)" class=" cursor-pointer p-2 rounded-lg transition duration-200"> 
-                        <div class="w-5 h-5 " [style]="{'background': color.code,'border': selectedColor === color.name ? '2px solid blue' : (color.border ? color.border : '1px solid #000')}"></div>
-                        <span class="text-sm mt-1">{{color.name}}</span>
-                      </div>
-                      
-                    }
-                  </div>
-                }
-              }
             </div>
-          </div>
-        }
-      </div>
-    </div>
-  }
+        </div>
+    }
 </div>

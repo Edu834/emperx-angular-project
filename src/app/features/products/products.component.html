@@ -5,15 +5,42 @@
       
     </div>
     
-    <app-search [newArrivalsHeader]="showChild" class="w-full sticky top-0"></app-search>
-    @if (!mostrarCategoria) {
-      @if(gender=="men"){
-        <app-men-products></app-men-products>
+    <div class="flex w-full  h-full">
+      
+      @if (mostrarFiltros && mostrarCategoria) {
+        
+        
+          <app-filter-panel [mostrarFiltros]="mostrarFiltros" class=""></app-filter-panel>
+      
+        
+      
+        
+    } 
+      
+      <div class="w-full ">
+      <app-search (toggleFiltrosEvent)="onToggleFiltros($event)" [newArrivalsHeader]="showChild" class="w-full"></app-search>
+      <div>
+        @if (!mostrarCategoria) {
+          @if(gender=="men"){
+            <app-men-products></app-men-products>
+          }
+          @if (gender=="women") {
+            <app-women-products ></app-women-products>
+          }
       }
-      @if (gender=="women") {
-        <app-women-products ></app-women-products>
-      }
-  }
+      </div>
+      <app-products-list></app-products-list>
+      </div>
+    </div>
+      
+    
+  <!-- <div class="bg-amber-500 w-[75%] h-full absolute top-40 right-0 z-0">
+    a
+    <app-products-list class="absolute bottom-0"></app-products-list>
+  </div> -->
+  
+    
+    
 
     
     <!-- <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
