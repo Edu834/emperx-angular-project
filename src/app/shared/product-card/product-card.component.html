@@ -1,4 +1,4 @@
-<div [routerLink]="['/product', product.id]" class="cursor-pointer shadow-md transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+<div [routerLink]="['/product', product.gender, product.category, product.subcategory, product.id]" class="cursor-pointer shadow-md transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
     <img class="w-full h-auto rounded-t-lg" [src]="product.imageUrl" alt="{{ product.name }}" />
     <div class="p-4">
       <h3 class="text-lg font-semibold">{{ product.name }}</h3>

@@ -28,7 +28,7 @@ export const routes: Routes = [
     {path: 'products/:gender', component: ProductsComponent},
     {path: 'products/:gender/:category', component: ProductsComponent},
     {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
-    {path: 'product/:id', component: ProductDetailComponent},
+    {path: 'product/:gender/:category/:subcategory/:id', component: ProductDetailComponent},
 
 
     {path: 'user', 

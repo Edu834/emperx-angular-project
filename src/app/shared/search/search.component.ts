@@ -29,6 +29,7 @@ export class SearchComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.mostrarFiltros = !!params.get('category');
+      this.mostrarFiltros = !params.get('id');
       this.mostrarBotonFiltros = this.mostrarFiltros;
       // this.toggleFiltros = !!params.get('category');
       // this.route.paramMap.subscribe((params) => {
