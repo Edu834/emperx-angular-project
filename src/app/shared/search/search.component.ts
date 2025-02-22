@@ -7,7 +7,7 @@ import { ProductsListComponent } from "../products-list/products-list.component"
 
 @Component({
   selector: 'app-search',
-  imports: [RoutesComponent, ProductsListComponent],
+  imports: [RoutesComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })

@@ -7,17 +7,18 @@ import { WomenProductsComponent } from "./women-products/women-products.componen
 import { MenProductsComponent } from "./men-products/men-products.component";
 import { ProductsListComponent } from "../../shared/products-list/products-list.component";
 import { FilterPanelComponent } from "../../shared/search/filter-panel/filter-panel.component";
+import { ProductDetailComponent } from "./product-detail/product-detail.component";
 
 @Component({
   selector: 'app-products',
-  imports: [HeaderComponent, SearchComponent, FooterComponent, WomenProductsComponent, MenProductsComponent, ProductsListComponent, FilterPanelComponent],
+  imports: [HeaderComponent, SearchComponent, FooterComponent, WomenProductsComponent, MenProductsComponent, ProductsListComponent, FilterPanelComponent, ProductDetailComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
 export class ProductsComponent  {
 
   mostrarFiltros: boolean = true; // Estado compartido para filtros
-
+  detallesVisible: boolean = false;
   // Método que recibe el cambio de SearchComponent
   onToggleFiltros(value: boolean) {
     this.mostrarFiltros = value;
