@@ -2,47 +2,81 @@
     <div class="w-full h-25 sm:h-31">
         <app-header></app-header>
     </div>
-    
+    <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
     <div class="flex w-full h-full">
+        
         <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
+            
             
             @if (product) {
-                <div class="flex flex-col md:flex-row  shadow-lg rounded-lg overflow-hidden mt-6">
+                <div class="flex flex-row  my-6">
                     <!-- Imagen del producto -->
-                    <div class="md:w-1/2 p-4">
-                        <div>
+                    <div class="flex mt-20 w-1/2 h-[500px] space-x-3 ">
+                        <div class="w-1/5 bg-gray-300">
+
+                        </div>
+                        <div class="w-4/5 bg-gray-300">
                             <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-full h-auto rounded-md">
 
                         </div>
                     </div>
                     
                     <!-- Detalles del producto -->
-                    <div class="md:w-1/2 p-6 flex flex-col justify-center">
-                        <h1 class="text-2xl font-bold text-gray-900">{{ product.name }}</h1>
-                        <p class="text-gray-600 mt-2">{{ product.description }}</p>
-                        <p class="text-lg font-semibold mt-2 text-gray-800">Precio: <span class="text-red-500">${{ product.price }}</span></p>
-                        
-                        <!-- Opciones de tamaño y color -->
-                        <div class="mt-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Color:</label>
-                            <div class="flex space-x-2">
-                                <button *ngFor="let color of product.colors" [style.backgroundColor]="color" 
-                                    class="w-6 h-6 rounded-full border"></button>
+                    <div class="w-1/2 flex justify-end ">
+                        <div class="w-full xl:w-2/3 ml-6 bg-white text-center shadow-2xl text-[#2c2c2c] p-10 inter-custom">
+                                <h3 [routerLink]="['/products', product.gender, product.category, product.subcategory]" class="text-xl cursor-pointer">{{ product.subcategory }}</h3>
+                                <h1 class="text-2xl abril-fatface-regular">{{ product.name }}</h1>
+                                <span><i class="fa-regular fa-bookmark text-2xl"></i></span>
+                                <p class="text-[#474747]"> Retail price: <span class="line-through">250€</span></p>
+                            <p class="text-2xl font-semibold mt-2 text-gray-800">${{ product.price }}</p>
+                            <div class="px-5 ">
+                                <div class="flex flex-wrap justify-center gap-2 w-full">
+                                <!-- Opciones de tamaño y color -->
+                                @for (color of colors; track $index) {
+                                    <div (click)="onColorChange(color.name)" class="cursor-pointer p-2 rounded-lg transition duration-200"> 
+                                        <div class="w-5 h-5" [style]="{'background': color.code, 'border': selectedColor === color.name ? '2px solid blue' : (color.border ? color.border : '1px solid #000')}"></div>
+                                       
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="mt-4 text-end ">
+                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Size guide</label>
+                                <select class="border p-2 w-full">
+                                    <option class="text-center text-[#474747]" selected>Size</option>
+
+                                    <!-- <option *ngFor="let size of product.sizes">{{ size }}</option> -->
+                                </select>
+                            </div>
+                            <div class="mt-4 text-end">
+                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Reserve</label>
+                                <input class="w-full p-2 border-1 text-center" type="text" placeholder="Days" >
+                            </div>
+                            <div class="mt-4 text-end flex flex-col w-full">
+                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Condition information</label>
+                                <div class="w-full grid grid-cols-2 gap-2">
+                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Excelent</button>
+                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Very good</button>
+                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Good</button>
+                                    <button class="border p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Satisfactory</button>
+                                </div>
+                                
+                                
+                            </div>
+
+                            </div>
+                            
+                            
+                            
+                            
+                            <button class="mt-6 bg-[#2c2c2c] text-white text-2xl py-3 w-full font-semibold hover:bg-[#2c2c2cad] transition inter-custom">
+                                ADD TO THE BAG
+                            </button>
+                            <div class="inter-custom m-4">
+                                <p>{{product.description}}</p>
                             </div>
                         </div>
                         
-                        <div class="mt-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Tamaño:</label>
-                            <select class="border rounded-md p-2 w-full">
-                                <option *ngFor="let size of product.sizes">{{ size }}</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Botón de compra -->
-                        <button class="mt-6 bg-black text-white py-3 px-6 rounded-lg w-full font-semibold hover:bg-gray-800 transition">
-                            Añadir al carrito
-                        </button>
                     </div>
                 </div>
             }

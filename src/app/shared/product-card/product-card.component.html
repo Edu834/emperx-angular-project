@@ -1,12 +1,22 @@
-<div [routerLink]="['/product', product.gender, product.category, product.subcategory, product.id]" class="cursor-pointer shadow-md transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-    <img class="w-full h-auto rounded-t-lg" [src]="product.imageUrl" alt="{{ product.name }}" />
-    <div class="p-4">
-      <h3 class="text-lg font-semibold">{{ product.name }}</h3>
-      <p class="text-gray-600">Precio: {{ product.price  }}</p>
-      <button 
+<div [routerLink]="['/product', product.gender, product.category, product.subcategory, product.id]" class="cursor-pointer inter-custom text-[#2c2c2c] transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+    <div class="w-full h-[300px] bg-gray-300">
+      <img class="w-full h-auto " [src]="product.imageUrl" alt="{{ product.name }}" />
+    </div>
+    <div class="p-4 ">
+      <div class="w-full flex items-center space-x-2 justify-center">
+        <h3 class="text-lg">{{ product.name }}</h3>
+        <a class="group relative cursor-pointer">
+          <!-- Ícono sin relleno (visible por defecto) -->
+          <i class="fa-regular fa-bookmark text-[#2C2C2C]  transition-opacity duration-300 group-hover:opacity-0"></i>
+          <!-- Ícono con relleno (aparece en hover) -->
+          <i class="fa-solid fa-bookmark text-[#2C2C2C] absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></i>
+        </a>
+      </div>
+      <p class="font-bold text-sm text-center">{{ product.price}}€</p>
+      <!-- <button 
         class="mt-4 w-full bg-blue-500 text-white text-sm py-2 px-4 transition-colors duration-200 hover:bg-blue-600">
         Agregar al Carrito
-      </button>
+      </button> -->
     </div>
   </div>
   

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ProductsListComponent } from "../products-list/products-list.component";
 
+
 @Component({
   selector: 'app-search',
   imports: [RoutesComponent],
@@ -19,24 +20,29 @@ export class SearchComponent implements OnInit {
   textHideFilter: string = "Hide filters";
   @Output() toggleFiltrosEvent = new EventEmitter<boolean>();
   @Input() newArrivalsHeader: boolean | undefined;
+  category: string | undefined;
+  id: string | null | undefined;
 
   constructor(
       private route: ActivatedRoute, 
       
     ) {}
-  ngOnInit(): void {
+    ngOnInit(): void {
+      this.route.paramMap.subscribe((params) => {
+        this.gender = params.get('gender') || '';
+        this.category = params.get('category') || '';
+        this.id = params.get('id'); // Esto captura el `id`, si existe
     
-    this.route.paramMap.subscribe((params) => {
-      this.gender = params.get('gender') || '';
-      this.mostrarFiltros = !!params.get('category');
-      this.mostrarFiltros = !params.get('id');
-      this.mostrarBotonFiltros = this.mostrarFiltros;
-      // this.toggleFiltros = !!params.get('category');
-      // this.route.paramMap.subscribe((params) => {
-      //   this.mostrarFiltros = !!params.get('category');
-      // });
-    });
-  }
+        // Mostrar filtros solo si hay 'gender' y 'category', pero NO un 'id'
+        this.mostrarFiltros = !!this.gender && !!this.category && !this.id;
+    
+        // Controlar si se muestra el botón de filtros
+        this.mostrarBotonFiltros = this.mostrarFiltros;
+      });
+    }
+    
+    
+    
   toggleFiltros() {
     this.mostrarFiltros = !this.mostrarFiltros;
     this.textHideFilter = this.mostrarFiltros ? "Hide filters" : "Show filters";

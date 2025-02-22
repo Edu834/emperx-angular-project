@@ -1,8 +1,9 @@
-<div class="flex flex-wrap justify-start gap-20 w-full p-10">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full ">
     @for (product of products; track $index) {
-        <div class="flex-shrink-0 w-1/4 p-4">
+        <div class="">
             <app-product-card [product]="product"></app-product-card>
         </div>
     }
 </div>
+
     
