@@ -58,22 +58,28 @@ export class ProductsListComponent {
   
     ngOnInit(): void {
       this.route.paramMap.subscribe((params) => {
-        this.gender = params.get('gender') || '';
-        this.mostrarCategoria = !!params.get('category');
-        this.nombreCategoria = params.get('category') || '';
-        this.nombreSubcategoria = params.get('subcategory') || '';
-        if (this.gender === "women") {
-          this.sexo = "M";
-        }else{
-          this.sexo = "H";
-        }
-      });
-      this.service.listArticulos().subscribe((data: any) => {
-        console.log('Todos los articulos:', data);
-        this.listaArticulos = data;
-        this.cargarDatos();
+        this.actualizarSexoYCategoria(params);
+        this.obtenerArticulos();
       });
     }
+    actualizarSexoYCategoria(params: any): void {
+      this.gender = params.get('gender') || '';
+      this.mostrarCategoria = !!params.get('category');
+      this.nombreCategoria = params.get('category') || '';
+      this.sexo = this.gender === "women" ? "M" : "H";
+    }
+    obtenerArticulos(): void {
+      this.service.listArticulos().subscribe({
+        next: (data: any) => {
+          this.listaArticulos = data;
+          this.cargarDatos(); // Filtrar los productos después de obtener los artículos
+        },
+        error: (error) => {
+          console.error('Error al cargar los artículos:', error);
+        }
+      });
+    }
+    
     cargarDatos(): void{
       if(this.nombreCategoria === '' && this.nombreSubcategoria === ''){
         this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.sexo == this.sexo);
@@ -89,6 +95,7 @@ export class ProductsListComponent {
         this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.nombre.toLocaleLowerCase() == this.nombreSubcategoria && articulo.producto.sexo == this.sexo);
         console.log('Articulos por subcategoria:', this.listaArticulos);
         this.cargarCartasProductos();
+        console.log('Productos:', this.products);
       }
     }
 
@@ -96,7 +103,7 @@ export class ProductsListComponent {
       this.products = [];
       let i = 0;
       this.listaArticulos.forEach(e => {
-        let product = this.products.find(product => product.idProducto === e.producto.idProducto);
+        let product = this.products.find(product => product.producto.idProducto === e.producto.idProducto);
         if (product === undefined) {
           i++;
           let tallas: string[] = [e.talla];
@@ -104,7 +111,7 @@ export class ProductsListComponent {
           let articulos: string[] = [e.idArticulo];
           this.products.push({
             id: i,
-            idProducto: e.producto.idProducto,
+            producto: e.producto,
             name: e.producto.nombre,
             price: e.precio,
             imageUrl: 'https://via.placeholder.com/150',
