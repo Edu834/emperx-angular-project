@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ProductsService {
     return this.http.get('http://localhost:8087/api/articulos/buscarPor/Subcategoria/' + idSubcategoria).pipe(
       catchError(error => {
         console.error('There was an error!', error);
-        return of(null);  
+        return of([]);  
       })
     );
   }
@@ -24,7 +25,7 @@ export class ProductsService {
     return this.http.get('http://localhost:8087/api/articulos').pipe(
       catchError(error => {
         console.error('There was an error!', error);
-        return of(null);  
+        return of([]);  
       })
     );
   }
@@ -57,6 +58,14 @@ export class ProductsService {
       catchError(error => {
         console.error('There was an error!', error);
         return of(null);
+      })
+    );
+  }
+  getProductById(id: string) {
+    return this.http.get<Producto>(`http://localhost:8087/api/productos/buscarUno/${id}`).pipe(
+      catchError(error => {
+        console.error('Error fetching product:', error);
+        return of(null);  
       })
     );
   }

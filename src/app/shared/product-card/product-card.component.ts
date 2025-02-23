@@ -1,28 +1,34 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ProductView } from '../../Interfaces/interfaces-globales';
 
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink,],
+  standalone: true,  // Si estás usando Angular 14+ puedes usar "standalone"
+  imports: [RouterLink],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.css'
+  styleUrls: ['./product-card.component.css'] // Cambiado a "styleUrls"
 })
-export class ProductCardComponent  {
+export class ProductCardComponent {
   
-  @Input() product!: Product;
+  @Input() product!: ProductView | undefined; // Asegúrate de que este tipo se defina correctamente en tu archivo de interfaces.
+
+  getSexo(): string {
+    return this.product?.producto.sexo === 'H' ? 'men' : 'women';
+  }
+
+  getCategoria(): string {  
+    return this.product?.producto.subcategoria.categoria.nombre.toLowerCase() ?? '';
+  }
+
+  getSubcategoria(): string {
+    return this.product?.producto.subcategoria.nombre.toLowerCase() ?? '';
+  }
+  // Variable para controlar la visibilidad de los detalles del producto
   detallesVisible: boolean = false;
 
+  // Función para mostrar u ocultar detalles del producto
   mostrarDetallesProducto() {
     this.detallesVisible = !this.detallesVisible;
   }
-}
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-  description?: string;
-  gender: string;
-  category: string;
-  subcategory: string;
 }

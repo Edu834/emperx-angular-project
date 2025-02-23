@@ -16,7 +16,7 @@
 
                         </div>
                         <div class="w-4/5 bg-gray-300">
-                            <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-full h-auto rounded-md">
+                            <img  class="w-full h-auto rounded-md">
 
                         </div>
                     </div>
@@ -24,11 +24,11 @@
                     <!-- Detalles del producto -->
                     <div class="w-1/2 flex justify-end ">
                         <div class="w-full xl:w-2/3 ml-6 bg-white text-center shadow-2xl text-[#2c2c2c] p-10 inter-custom">
-                                <h3 [routerLink]="['/products', product.gender, product.category, product.subcategory]" class="text-xl cursor-pointer">{{ product.subcategory }}</h3>
-                                <h1 class="text-2xl abril-fatface-regular">{{ product.name }}</h1>
+                                <h3  class="text-xl cursor-pointer">{{ product.subcategoria.nombre}}</h3>
+                                <h1 class="text-2xl abril-fatface-regular">{{ product.nombre}}</h1>
                                 <span><i class="fa-regular fa-bookmark text-2xl"></i></span>
                                 <p class="text-[#474747]"> Retail price: <span class="line-through">250€</span></p>
-                            <p class="text-2xl font-semibold mt-2 text-gray-800">${{ product.price }}</p>
+                            <p class="text-2xl font-semibold mt-2 text-gray-800">$100</p>
                             <div class="px-5 ">
                                 <div class="flex flex-wrap justify-center gap-2 w-full">
                                 <!-- Opciones de tamaño y color -->
@@ -73,7 +73,7 @@
                                 ADD TO THE BAG
                             </button>
                             <div class="inter-custom m-4">
-                                <p>{{product.description}}</p>
+                                <p>{{product.descripcion}}</p>
                             </div>
                         </div>
                         

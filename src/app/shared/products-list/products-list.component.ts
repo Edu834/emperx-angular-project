@@ -106,6 +106,7 @@ export class ProductsListComponent {
             id: i,
             idProducto: e.producto.idProducto,
             name: e.producto.nombre,
+            producto: e.producto,
             price: e.precio,
             imageUrl: 'https://via.placeholder.com/150',
             stock: 1,

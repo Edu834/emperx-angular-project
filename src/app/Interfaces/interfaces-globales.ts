@@ -50,4 +50,5 @@ export interface ProductView {
     color: string[];        // Color del producto (opcional)
     size: string[];         // Talla del producto (opcional)
     articulos: string[];     // Articulos del producto
+    producto: Producto;     // Articulos del producto
   }
