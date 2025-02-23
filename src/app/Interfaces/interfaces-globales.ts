@@ -41,8 +41,9 @@ export interface Articulo{
 
 export interface ProductView {
     id: number;             // ID único del array de productos
+    producto: Producto;     // Producto
     idProducto: string;    // ID único del producto
-    name: string;          // Nombre del producto
+    name: string;         // Nombre del producto                       
     price: number;         // Precio del producto
     imageUrl: string;      // URL de la imagen del producto
     description?: string;  // Descripción del producto (opcional)
@@ -50,5 +51,5 @@ export interface ProductView {
     color: string[];        // Color del producto (opcional)
     size: string[];         // Talla del producto (opcional)
     articulos: string[];     // Articulos del producto
-    producto: Producto;     // Articulos del producto
+    
   }
