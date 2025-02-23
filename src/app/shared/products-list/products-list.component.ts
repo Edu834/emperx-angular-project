@@ -56,20 +56,26 @@ export class ProductsListComponent {
   
     ngOnInit(): void {
       this.route.paramMap.subscribe((params) => {
-        this.gender = params.get('gender') || '';
-        this.mostrarCategoria = !!params.get('category');
-        this.nombreCategoria = params.get('category') || '';
-        if (this.gender === "women") {
-          this.sexo = "M";
-        }else{
-          this.sexo = "H";
+        this.actualizarSexoYCategoria(params);
+        this.obtenerArticulos();
+      });
+    }
+    actualizarSexoYCategoria(params: any): void {
+      this.gender = params.get('gender') || '';
+      this.mostrarCategoria = !!params.get('category');
+      this.nombreCategoria = params.get('category') || '';
+      this.sexo = this.gender === "women" ? "M" : "H";
+    }
+    obtenerArticulos(): void {
+      this.service.listArticulos().subscribe(
+        (data: any) => {
+          this.listaArticulos = data;
+          this.cargarDatos(); // Filtrar los productos después de obtener los artículos
+        },
+        (error) => {
+          console.error('Error al cargar los artículos:', error);
         }
-      });
-      this.service.listArticulos().subscribe((data: any) => {
-        console.log('Todos los articulos:', data);
-        this.listaArticulos = data;
-        this.cargarDatos();
-      });
+      );
     }
     cargarDatos(): void{
       if(this.nombreCategoria === ''){
