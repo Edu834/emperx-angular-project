@@ -20,6 +20,9 @@ export class ProductsListComponent {
   // Aquí puedes manejar la lógica para mostrar productos según los filtros
   ngOnChanges() {
     console.log('Filtros recibidos:', this.filters);
+    console.log(this.filters.brand);
+    console.log(this.filters.color);
+    console.log(this.filters.price);
     // Aquí puedes actualizar la lista de productos en función de los filtros
   }
 
