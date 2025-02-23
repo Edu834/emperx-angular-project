@@ -23,6 +23,7 @@ export class ProductsListComponent {
     console.log(this.filters.brand);
     console.log(this.filters.color);
     console.log(this.filters.price);
+
     // Aquí puedes actualizar la lista de productos en función de los filtros
   }
 
@@ -51,6 +52,7 @@ export class ProductsListComponent {
     idSubcategoria: number = 1;
     sexo: string = "H";
     nombreCategoria: string = '';
+    nombreSubcategoria: string = '';
     idCategoria: any = '';
   
   
@@ -59,6 +61,7 @@ export class ProductsListComponent {
         this.gender = params.get('gender') || '';
         this.mostrarCategoria = !!params.get('category');
         this.nombreCategoria = params.get('category') || '';
+        this.nombreSubcategoria = params.get('subcategory') || '';
         if (this.gender === "women") {
           this.sexo = "M";
         }else{
@@ -72,16 +75,20 @@ export class ProductsListComponent {
       });
     }
     cargarDatos(): void{
-      if(this.nombreCategoria === ''){
+      if(this.nombreCategoria === '' && this.nombreSubcategoria === ''){
         this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.sexo == this.sexo);
         console.log('Articulos por sexo:', this.listaArticulos);
         this.cargarCartasProductos();
         console.log('Productos:', this.products);
-      }else{
+      }else if(this.nombreCategoria !== '' && this.nombreSubcategoria === ''){
         this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
         console.log('Articulos por categoria:', this.listaArticulos);
         this.cargarCartasProductos();
         console.log('Productos:', this.products);
+      }else{
+        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.nombre.toLocaleLowerCase() == this.nombreSubcategoria && articulo.producto.sexo == this.sexo);
+        console.log('Articulos por subcategoria:', this.listaArticulos);
+        this.cargarCartasProductos();
       }
     }
 
