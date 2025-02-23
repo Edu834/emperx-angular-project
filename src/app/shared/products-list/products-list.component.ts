@@ -116,18 +116,22 @@ export class ProductsListComponent {
       this.cargarCartasProductos();
       console.log('Productos:', this.products);
     }else if(this.nombreCategoria !== '' && this.nombreSubcategoria === ''){
-      this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
+      if (this.nombreCategoria === 'accesories') {
+        this.nombreCategoria = 'accessories';
+      }
+      this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase().trim() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
       console.log('Articulos por categoria:', this.listaArticulos);
       this.cargarCartasProductos();
       console.log('Productos:', this.products);
     }else{
       if(this.nombreSubcategoria === 'view-all'){
-        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
+        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase().trim() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
       console.log('Articulos por categoria:', this.listaArticulos);
       this.cargarCartasProductos();
       console.log('Productos:', this.products);
       }else{
-        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.nombre.toLocaleLowerCase() == this.nombreSubcategoria && articulo.producto.sexo == this.sexo);
+        console.log('Subcategoria:', this.listaArticulos[0].producto.subcategoria.nombre);
+        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.nombre.toLocaleLowerCase().trim() == this.nombreSubcategoria && articulo.producto.sexo == this.sexo);
         console.log('Articulos por subcategoria:', this.listaArticulos);
         this.cargarCartasProductos();
         console.log('Productos:', this.products);

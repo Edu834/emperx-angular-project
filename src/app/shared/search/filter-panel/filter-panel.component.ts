@@ -30,8 +30,8 @@ export class FilterPanelComponent {
   // Opciones de filtros
   brands: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Under Armour'];
   subcategories: { [key: string]: string[] } = {
-    men: ['View all', 'Dresses', 'Coats & Jackets', 'Tops & Bodysuits', 'T-Shirts', 'Pants', 'Jeans', 'Skirts', 'Shorts', 'Sweaters', 'Shoes', 'Bags & Accessories'],
-    women: ['View all', 'Dresses', 'Coats & Jackets', 'Tops & Bodysuits', 'T-Shirts', 'Pants', 'Jeans', 'Skirts', 'Shorts', 'Sweaters', 'Shoes', 'Bags & Accessories']
+    men: ['View all', 'Suits', 'Coats&Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops&Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats'],
+    women: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats']
   };
 
   sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];  // Opciones de tallas
