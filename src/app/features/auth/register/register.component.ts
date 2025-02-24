@@ -19,8 +19,10 @@ export class RegisterComponent {
   }
 
   registerObj: any = {
-    // firstname: "",
-    // lastname: "",
+    idUsuario: Math.random().toString(36).substr(2, 9),  // Genera un ID aleatorio
+    sexo: "H",
+    firstname: "",
+    lastname: "",
     username: "",
     address: "",
     email: "",
@@ -28,6 +30,7 @@ export class RegisterComponent {
     password: "",
     confirmPassword: ""
   };
+  
 
   register() {
     console.log(this.registerObj)

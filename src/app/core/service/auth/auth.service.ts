@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
+import { catchError, last } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  register(registerObj: {username:"", address:"", email:"", phone:"", password:"", confirmPassword:""}) {
+  register(registerObj: {idUsuario:"", sexo:"", firstname:"", lastname:"", username:"", address:"", email:"", phone:"", password:"", confirmPassword:""}) {
     return this.http.post('http://localhost:8087/api/usuarios/registro', registerObj).pipe(
       catchError(error => {
         console.error('There was an error!', error);
