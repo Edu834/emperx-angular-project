@@ -14,15 +14,18 @@ export class ProductCardComponent {
   @Input() product!: ProductView | undefined; // Asegúrate de que este tipo se defina correctamente en tu archivo de interfaces.
 
   getSexo(): string {
-    return this.product?.producto.sexo === 'H' ? 'men' : 'women';
+    return this.product?.sexo === 'H' ? 'men' : 'women';
   }
 
   getCategoria(): string {  
-    return this.product?.producto.subcategoria.categoria.nombre.toLowerCase() ?? '';
+    return this.product?.subcategoria.categoria.nombre.toLowerCase() ?? '';
   }
 
   getSubcategoria(): string {
-    return this.product?.producto.subcategoria.nombre.toLowerCase() ?? '';
+    return this.product?.subcategoria.nombre.toLowerCase() ?? '';
+  }
+  getName(): string {
+    return this.product?.name ?? '';
   }
   // Variable para controlar la visibilidad de los detalles del producto
   detallesVisible: boolean = false;

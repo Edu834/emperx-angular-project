@@ -30,6 +30,7 @@ export interface Producto{
 export interface Articulo{
     idArticulo: string;
     color: string;
+
     descripcion: string;
     nombre: string;
     precio: number;
@@ -40,15 +41,19 @@ export interface Articulo{
   }
 
 export interface ProductView {
-    id: number;             // ID único del array de productos
-    producto: Producto;     // Producto
-    idProducto: string;    // ID único del producto
+    // id: number;             // ID único del array de productos
+    // producto: Producto;     // Producto
+
+    idProducto: string;
+    subcategoria: SubCategoria;
+    sexo: string;
     name: string;         // Nombre del producto                       
     price: number;         // Precio del producto
     imageUrl: string;      // URL de la imagen del producto
     description?: string;  // Descripción del producto (opcional)
-    stock: number;        // Stock del producto (opcional)
-    color: string[];        // Color del producto (opcional)
+    stock: number;  
+    estados: string[];
+    color: string[];        
     size: string[];         // Talla del producto (opcional)
     articulos: string[];     // Articulos del producto
     

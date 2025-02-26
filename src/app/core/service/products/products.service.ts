@@ -70,5 +70,12 @@ export class ProductsService {
     );
   }
 
-  
+  getArticulosByNameProduct(name: string) {
+    return this.http.get('http://localhost:8087/api/articulos/buscarPorNombreProducto/' + name).pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);  
+      })
+    );
+  }
 }

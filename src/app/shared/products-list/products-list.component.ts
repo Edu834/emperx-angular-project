@@ -150,13 +150,15 @@ export class ProductsListComponent {
           let colores: string[] = [e.color];
           let articulos: string[] = [e.idArticulo];
           this.products.push({
-            id: i,
+            
             idProducto: e.producto.idProducto,
+            subcategoria: e.producto.subcategoria,
+            sexo: e.producto.sexo,
             name: e.producto.nombre,
-            producto: e.producto,
             price: e.precio,
             imageUrl: 'https://via.placeholder.com/150',
             stock: 1,
+            estados: e.estados.map((estado: any) => estado.nombre),
             color: colores,
             size: tallas,
             articulos: articulos
@@ -173,6 +175,8 @@ export class ProductsListComponent {
         }
       });
     }
+ 
+  
   // products: ProductView[] = [
   //   { id: 1, name: 'Producto 1', price: 100, imageUrl: 'https://via.placeholder.com/150' },
   //   { id: 2, name: 'Producto 2', price: 200, imageUrl: 'https://via.placeholder.com/150' },
