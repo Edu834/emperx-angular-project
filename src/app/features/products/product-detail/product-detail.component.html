@@ -53,22 +53,23 @@
                                     </select>
                                 </div>
                             }
-                        @if (availableStates.length > 0) {
-                            <div class="mt-4 text-end flex flex-col w-full">
-                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Condition information</label>
-                                <div class="w-full grid grid-cols-2 gap-2">
+                           
+                            @if (availableStates.length > 0) {
+                                <div class="mt-4 text-end flex flex-col w-full">
+                                  <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer">Condition information</label>
+                                  <div class="w-full grid grid-cols-2 gap-2">
                                     @for (state of availableStates; track $index) {
-                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">{{state}}</button>
-
+                                      <button
+                                        (click)="onSelectedState(state.idArticulo)"
+                                        [disabled]="state.deshabilitado"
+                                        [class]="{'selected-state': selectedStateId === state.idArticulo}"
+                                        class="border p-3 text-center w-full hover:bg-[#2c2c2c] hover:text-white transition">
+                                        {{ state.estados }} 
+                                      </button>
                                     }
-
-            
-                                    
+                                  </div>
                                 </div>
-                                
-                                
-                            </div>
-                        }
+                              }
                             
 
                             <div class="mt-4 text-end">

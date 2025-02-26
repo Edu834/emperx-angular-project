@@ -1,0 +1,9 @@
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.selected-state {
+    border-width: 3px; /* Borde más grueso */
+    border-color: #000; /* Color del borde */
+    background-color: #f0f0f0; /* Fondo resaltado */
+  }

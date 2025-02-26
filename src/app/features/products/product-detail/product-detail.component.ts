@@ -22,7 +22,7 @@ export class ProductDetailComponent implements OnInit {
   availableSizes: string[] = [];
   selectedSize: string | null = null;
   listaArticulos: any;
-  availableStates: string[] = [];
+  availableStates: { idArticulo: string; estados: string; deshabilitado: boolean; }[] = [];
   
   resumenProductosConArticulos: ProductView[] = [];
   articulos: Articulo[] = [];
@@ -120,15 +120,36 @@ onSelectSize(event: Event): void {
 }
 
 updateAvailableStates(): void {
-    if (this.selectedColor && this.selectedSize) {
-        const states = this.articulos
-            .filter(articulo => articulo.color === this.selectedColor && articulo.talla === this.selectedSize) // Filtra por color y talla
-            .flatMap(articulo => articulo.estados.map(estado => estado.nombre)); // Mapea solo los estados
-        
-        this.availableStates = Array.from(new Set(states)); // Elimina duplicados
-        console.log('Estados disponibles para el color y talla seleccionados:', this.availableStates);
-    } else {
-        this.availableStates = []; // Limpia los estados si no hay color o talla seleccionada
-    }
+  if (this.selectedColor && this.selectedSize) {
+      const filteredArticulos = this.articulos.filter(
+          articulo => articulo.color === this.selectedColor && articulo.talla === this.selectedSize
+      );
+
+      // Agrupar estados por artículo y verificar si tiene "Alquilado" o "Retirado"
+      this.availableStates = filteredArticulos.map(articulo => {
+          const estadoNombres = articulo.estados.map(estado => estado.nombre);
+          const tieneEstadoRestringido = estadoNombres.some(estado => estado.includes("Alquilado") || estado.includes("Retirado"));
+
+          return {
+              idArticulo: articulo.idArticulo,
+              estados: estadoNombres.join(' - '), // Unir estados con separador
+              deshabilitado: tieneEstadoRestringido // Marcar si el artículo debe deshabilitarse
+          };
+      });
+
+      console.log('Estados agrupados con restricción:', this.availableStates);
+  } else {
+      this.availableStates = []; // Vaciar si no hay selección válida
+  }
 }
+
+selectedStateId: string | null = null; // Variable para almacenar el estado seleccionado
+
+onSelectedState(idArticulo: string): void {
+  this.selectedStateId = idArticulo; // Almacena el idArticulo seleccionado
+  const selectedState = this.availableStates.find(articulo => articulo.idArticulo === idArticulo);
+  console.log('Estado seleccionado:', selectedState);
+}
+
+
 }
