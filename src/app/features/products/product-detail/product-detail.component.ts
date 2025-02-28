@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProductDetailComponent implements OnInit {
   
+ 
+  
   showChild = false;
   @Input() detallesVisible: boolean | undefined;
   

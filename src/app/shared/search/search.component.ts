@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit {
       this.route.paramMap.subscribe((params) => {
         this.gender = params.get('gender') || '';
         this.category = params.get('category') || '';
-        this.id = params.get('id'); // Esto captura el `id`, si existe
+        this.id = params.get('name'); // Esto captura el `id`, si existe
     
         // Mostrar filtros solo si hay 'gender' y 'category', pero NO un 'id'
         this.mostrarFiltros = !!this.gender && !!this.category && !this.id;
