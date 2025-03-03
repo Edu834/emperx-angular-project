@@ -4,6 +4,7 @@
     <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
       Profile
     </h1>
+    <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
     @if (isLoading) {
       <div>Cargando...</div>
     }
@@ -11,15 +12,18 @@
       <p class="text-red-600">Error</p>
     }
     @if (user && !isLoading) {
-      <h2>Bienvenido, {{ user.firstname }} {{ user.lastname }}</h2>
-      <p><strong>Username:</strong> {{ user.username }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Dirección:</strong> {{ user.direccion }}</p>
+      <div>
+        <h2>Bienvenido, {{ user.firstname }} {{ user.lastname }}</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Dirección:</strong> {{ user.direccion }}</p>
       
-      <p><strong>Sexo:</strong> {{ user.sexo }}</p>
-      <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+        <p><strong>Sexo:</strong> {{ user.sexo }}</p>
+        <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+      </div>
+      
     }
- 
+  </div>
     <app-footer></app-footer>
   </div>
   

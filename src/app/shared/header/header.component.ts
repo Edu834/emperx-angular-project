@@ -2,6 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
 import { AuthService } from '../../core/service/auth/auth.service';
+import { UserService } from '../../core/service/user/user.service';
+import { User } from '../../core/service/auth/user';
 
 @Component({
   selector: 'app-header',
@@ -11,8 +13,9 @@ import { AuthService } from '../../core/service/auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
   isAuthenticated: boolean = false;  // Estado inicial
-
-  constructor(private authService: AuthService) {}
+  name: string = '';  // Nombre del usuario
+  error: string | undefined;
+  constructor(private authService: AuthService, private userService: UserService) {}
 
 
 
@@ -35,9 +38,32 @@ export class HeaderComponent implements OnInit {
       }, 500); 
     }, 30000);
 
+    if (sessionStorage.getItem('token')) {
+      this.authService.userData.subscribe(userData => {
+        console.log(userData
+        );
+    });}
     
+    this.userService.getAuthenticatedUser().subscribe({
+      next: (data) => {
+        if (data) {
+          this.name = data.firstname;  
+        } else {
+          this.error = 'No se pudo obtener la información del usuario.';
+        }
+        
+      },
+      error: (err) => {
+        this.error = 'Error al cargar la información del usuario.';
+        console.error(err);
+        
+      }
+      
+    });
     this.authService.isAuthenticated().subscribe(authStatus => {
       this.isAuthenticated = authStatus;} );
+
+      
   }
 
   
