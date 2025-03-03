@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../auth/user';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { User } from './user';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,18 @@ export class UserService {
       })
     );
   }
-
+  
+  updateUser(userData: any): Observable<any> {
+    return this.http.put<any>('http://localhost:8087/api/usuarios', userData).pipe(
+      catchError(error => {
+        console.error('Error al actualizar el usuario:', error);
+        return throwError(() => new Error(error.error?.message || 'Error al actualizar el usuario'));
+      }),
+      tap(response => {
+        console.log('Usuario actualizado con éxito:', response);
+      })
+    );
+  }
   
 
   private handleError(error:HttpErrorResponse){

@@ -1,29 +1,72 @@
 <div class="w-full min-h-screen flex flex-col ">
     
     <app-header></app-header>
-    <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
-      Profile
-    </h1>
-    <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
-    @if (isLoading) {
-      <div>Cargando...</div>
-    }
-    @if (error) {
-      <p class="text-red-600">Error</p>
-    }
-    @if (user && !isLoading) {
-      <div>
-        <h2>Bienvenido, {{ user.firstname }} {{ user.lastname }}</h2>
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>Dirección:</strong> {{ user.direccion }}</p>
-      
-        <p><strong>Sexo:</strong> {{ user.sexo }}</p>
-        <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+    
+    
+      @if (isLoading) {
+        <div>Cargando...</div>
+      }
+      @if (error) {
+        <p class="text-red-600">Error</p>
+      }
+      @if (user && !isLoading) {
+          <!-- Footer -->
+  <div class=" text-[#2C2C2C] py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div class="flex flex-col md:flex-row justify-between  inter-custom ">
+        <div class="pt-40 flex  justify-between w-full">
+          <div class="flex items-start">
+            <div class="rounded-full bg-[#D9D9D9] lg:w-30 lg:h-30 w-20 h-20  flex items-center justify-center text-white text-4xl font-bold inter-custom mr-6">
+              {{user.firstname.charAt(0)}}
+            </div>
+            <div>
+              <h1 class="text-3xl md:text-4xl lg:mb-3  lg:text-6xl pt-2 abril-fatface-regular">{{user.firstname +' '+ user.lastname}}</h1>
+              <h3 class="lg:text-2xl">{{date}} </h3>
+            </div>
+          </div>
+          <div class="pt-2 hover:underline">
+            <a [routerLink]="['/user/settings']">Settings</a>
+          </div>
+          
+        </div>
+
+      </div>
+      <div class="mt-10">
+        <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2">
+          <h2 class="text-4xl font-bold">Orders</h2>
+        </div>
+        <div class="text-xl flex justify-between">
+          <span>Latest orders</span>
+          <div [routerLink]="['/user/orders']" routerLinkActive="router-link-active"  class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
+        </div>
+      </div>
+      <div class="mt-10">
+        <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2">
+          <h2 class="text-4xl font-bold">Favorites</h2>
+        </div>
+        <div class="text-xl flex justify-between">
+          <span>Latest favorites</span>
+          <div [routerLink]="['/user/favorites']" class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
+        </div>
+      </div>
+      <div class="mt-10">
+        <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2">
+          <h2 class="text-4xl font-bold">Reviews</h2>
+        </div>
+        <div class="text-xl flex justify-between">
+          <span>Latest reviews</span>
+          <div [routerLink]="['/user/reviews']" class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
+        </div>
       </div>
       
-    }
+  
+    </div>
   </div>
+  
+        
+        
+      }
+  
     <app-footer></app-footer>
   </div>
   

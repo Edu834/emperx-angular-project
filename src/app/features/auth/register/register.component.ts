@@ -53,6 +53,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.registerError = '';
       const registerRequest: RegisterRequest = {
+        
         username: this.registerForm.get('username')?.value,
         firstname: this.registerForm.get('firstname')?.value,
         lastname: this.registerForm.get('lastname')?.value,

@@ -8,4 +8,5 @@ export interface User {
     direccion: string;
     sexo: string;
     telefono: string;
+    fechaAlta: Date;
 }

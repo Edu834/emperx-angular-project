@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
 import { AuthService } from '../../core/service/auth/auth.service';
 import { UserService } from '../../core/service/user/user.service';
-import { User } from '../../core/service/auth/user';
+import { User } from '../../core/service/user/user';
 
 @Component({
   selector: 'app-header',
