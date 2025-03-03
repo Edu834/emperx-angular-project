@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../auth/user';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,29 @@ export class UserService {
       catchError(this.handleError)
     );
 }
+
+
   
 }
+
+  getAuthenticatedUser(): Observable<User | null> {
+    const token = sessionStorage.getItem('token'); 
+    if (!token) {
+      return of(null); 
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Configurar el encabezado
+
+
+    return this.http.get<User>(`http://localhost:8087/api/usuarios/me`, {headers}).pipe(
+      catchError(error => {
+        console.error('Error al obtener el usuario autenticado', error);
+        return of(null);  
+      })
+    );
+  }
+
+
   private handleError(error:HttpErrorResponse){
     if(error.status === 0){
       console.error('An error occurred:', error.error);

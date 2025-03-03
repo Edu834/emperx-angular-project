@@ -1,57 +1,65 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError, last } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, last, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { User } from './user';
+import { LoginRequest } from '../../../features/auth/login/loginRequest';
+import { RegisterRequest } from '../../../features/auth/register/RegisterRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(private http: HttpClient, private router: Router) {}
-
-  register(registerObj: {idUsuario:"", sexo:"", firstname:"", lastname:"", username:"", address:"", email:"", phone:"", password:"", confirmPassword:""}) {
-    return this.http.post('http://localhost:8087/api/usuarios/registro', registerObj).pipe(
-      catchError(error => {
-        console.error('There was an error!', error);
-        return of(null);  
-      })
-    );
-  }
-
-  // Método para autenticar al usuario
-  login(loginObj: { username: string, password: string }) {
-    return this.http.post('http://localhost:8087/api/usuarios/login', loginObj).pipe(
-      catchError(error => {
-        console.error('There was an error!', error);
-        return of(null);  
-      })
-    );
-  }
-
   
-  saveUser(data: any) {
-    if (data && data.username) {
-      // Almacenar los datos del usuario en el localStorage
-      localStorage.setItem('user', JSON.stringify(data));  
-      this.router.navigate(['/home']);  // Redirigir a la página de inicio
-    } else {
-      throw new Error('No user data received');
-    }
+  currentUserLoginOn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  currentUserData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  constructor(private http: HttpClient, private router: Router) {
+    this.currentUserLoginOn=new BehaviorSubject<boolean>(sessionStorage.getItem('token') !=null);
+    this.currentUserData=new BehaviorSubject<any>((sessionStorage.getItem('token') || ""));
+  } 
+
+  register(credentials: RegisterRequest): Observable<any> {
+    return this.http.post<any>('http://localhost:8087/auth/register', credentials).pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);  
+      })
+    );
   }
 
-  // Método para verificar si el usuario está autenticado
-  isAuthenticated(): boolean {
-    const user = localStorage.getItem('user');
-    return !!user;  // Si hay un usuario en el localStorage, está autenticado
+  login(credentials: LoginRequest): Observable<any> {
+    return this.http.post<any>('http://localhost:8087/auth/login', credentials).pipe(
+      tap((userData) => {
+        sessionStorage.setItem('token', userData.token);
+        this.currentUserLoginOn.next(true);
+        this.currentUserData.next(userData.token);
+      }),
+      map((userData) => userData.token),
+      catchError(error => {
+        console.error('Error en la autenticación:', error);
+        return throwError(() => new Error(error.error?.message || 'Error desconocido en el login'));
+      })
+    );
   }
+  
+  get userData(): Observable<User> {
+    return this.currentUserData.asObservable();
+  }
+  
+ // Método para cerrar sesión
+ logout() {
+  sessionStorage.removeItem('token');
+  this.currentUserLoginOn.next(false); // 🔹 Notificar que cerró sesión
+  this.currentUserData.next(null);
+  this.router.navigate(['/login']); // Redirigir al login
+}
 
-  // Método para cerrar sesión
-  logout() {
-    localStorage.removeItem('user');
-    this.router.navigate(['/login']);
-  }
+// Método para obtener el estado de autenticación
+isAuthenticated(): Observable<boolean> {
+  return this.currentUserLoginOn.asObservable();
+}
 
   
 }

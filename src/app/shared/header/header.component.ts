@@ -10,11 +10,11 @@ import { AuthService } from '../../core/service/auth/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-  isAuthenticated: boolean = false;
+  isAuthenticated: boolean = false;  // Estado inicial
 
-  constructor(private authService: AuthService) {
-    this.isAuthenticated = this.authService.isAuthenticated();
-  }
+  constructor(private authService: AuthService) {}
+
+
 
   logout() {
     this.authService.logout();
@@ -32,8 +32,12 @@ export class HeaderComponent implements OnInit {
         this.currentIndex = (this.currentIndex + 1) % this.texts.length;
         this.text = this.texts[this.currentIndex];
         this.fade = false;
-      }, 500); // Duración de la transición
+      }, 500); 
     }, 30000);
+
+    
+    this.authService.isAuthenticated().subscribe(authStatus => {
+      this.isAuthenticated = authStatus;} );
   }
 
   

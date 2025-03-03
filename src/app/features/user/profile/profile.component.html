@@ -4,10 +4,22 @@
     <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
       Profile
     </h1>
-    <p>{{user?.firstname}}</p>
-    <p>{{user?.lastname}}</p>
-    <p>{{user?.username}}</p>
-   
+    @if (isLoading) {
+      <div>Cargando...</div>
+    }
+    @if (error) {
+      <p class="text-red-600">Error</p>
+    }
+    @if (user && !isLoading) {
+      <h2>Bienvenido, {{ user.firstname }} {{ user.lastname }}</h2>
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Dirección:</strong> {{ user.direccion }}</p>
+      
+      <p><strong>Sexo:</strong> {{ user.sexo }}</p>
+      <p><strong>Teléfono:</strong> {{ user.telefono }}</p>
+    }
+ 
     <app-footer></app-footer>
   </div>
   
