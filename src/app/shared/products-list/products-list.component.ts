@@ -101,6 +101,7 @@ export class ProductsListComponent {
     this.service.listArticulos().subscribe({
       next: (data: any) => {
         this.listaArticulos = data;
+        
         this.cargarDatos(); // Filtrar los productos después de obtener los artículos
       },
       error: (error) => {
@@ -150,7 +151,6 @@ export class ProductsListComponent {
           let colores: string[] = [e.color];
           let articulos: string[] = [e.idArticulo];
           this.products.push({
-            
             idProducto: e.producto.idProducto,
             subcategoria: e.producto.subcategoria,
             sexo: e.producto.sexo,
@@ -161,7 +161,8 @@ export class ProductsListComponent {
             estados: e.estados.map((estado: any) => estado.nombre),
             color: colores,
             size: tallas,
-            articulos: articulos
+            articulos: articulos,
+            galeria: e.producto.galeria
           });
         } else {
           product.stock += 1;

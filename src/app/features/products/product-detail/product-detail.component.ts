@@ -37,6 +37,29 @@ export class ProductDetailComponent implements OnInit {
       this.name = params.get('name') || '';
       this.obtenerArticulosDelProducto(this.name);
     });
+    console.log(this.product?.galeria.fotoFrontal)
+    if (this.product && this.product.galeria) {
+      this.fotoSeleccionada = this.product.galeria.fotoFrontal
+    }
+  }
+
+  fotoSeleccionada: string = '';
+
+
+  // Obtener todas las fotos de la galería
+  getFotosGaleria(): string[] {
+    return [
+      this.product?.galeria.fotoFrontal,
+      this.product?.galeria.fotoTrasera,
+      this.product?.galeria.fotoModeloCerca,
+      this.product?.galeria.fotoModeloFrontal,
+      this.product?.galeria.fotoModeloTrasera
+    ].filter(foto => foto !== undefined) as string[];
+  }
+
+  // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
+  cambiarImagen(foto: string): void {
+    this.fotoSeleccionada = foto;
   }
 
   obtenerArticulosDelProducto(name: string): void {
@@ -73,7 +96,8 @@ export class ProductDetailComponent implements OnInit {
           estados: e.estados.map((estado: any) => estado.nombre),
           color: [e.color],
           size: [e.talla],
-          articulos: [e.idArticulo]
+          articulos: [e.idArticulo],
+          galeria: e.producto.galeria
         });
       } else {
         this.product.stock += e.stock;

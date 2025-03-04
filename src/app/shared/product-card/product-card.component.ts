@@ -10,7 +10,7 @@ import { ProductView } from '../../Interfaces/interfaces-globales';
   styleUrls: ['./product-card.component.css'] // Cambiado a "styleUrls"
 })
 export class ProductCardComponent {
-  
+  foto: string = '';
   @Input() product!: ProductView | undefined; // Asegúrate de que este tipo se defina correctamente en tu archivo de interfaces.
 
   getSexo(): string {
@@ -26,6 +26,12 @@ export class ProductCardComponent {
   }
   getName(): string {
     return this.product?.name ?? '';
+  }
+  getFoto(): string {
+    console.log('Foto:', this.product?.galeria);
+    this.foto = this.product?.galeria.fotoFrontal ?? ''
+    
+    return this.foto;
   }
   // Variable para controlar la visibilidad de los detalles del producto
   detallesVisible: boolean = false;

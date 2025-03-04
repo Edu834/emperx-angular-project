@@ -1,8 +1,9 @@
 <div [routerLink]="['/product', getSexo(), getCategoria(), getSubcategoria(), getName()]" 
      class="cursor-pointer inter-custom text-[#2c2c2c] transition-transform duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-    <div class="w-full h-[300px] bg-gray-300">
-        <img class="w-full h-auto" alt="{{ product?.name }}" />
+     <div class="w-full h-[300px] bg-gray-300">
+        <img class="w-full h-full object-cover" [src]="product?.galeria?.fotoFrontal" alt="{{ product?.name }}"/>
     </div>
+    
     <div class="p-4">
         <div class="w-full flex items-center space-x-2 justify-center">
             <h3 class="text-lg">{{ product?.name }}</h3>
