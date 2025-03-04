@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LoginRequest } from '../../../features/auth/login/loginRequest';
-import { RegisterRequest } from '../../../features/auth/register/RegisterRequest';
+import { RegisterRequest } from '../../../features/auth/register/registerRequest';
+
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,7 @@ export class AuthService {
   }
 
   // 🔹 Guardar token y establecer expiración a partir del campo `exp` en el token
-  private setToken(token: string): void {
+  public setToken(token: string): void {
     const expirationTime = this.getExpirationTimeFromToken(token);
     if (expirationTime) {
       sessionStorage.setItem(this.tokenKey, token);
@@ -63,9 +64,12 @@ export class AuthService {
       this.scheduleTokenRemoval(expirationTime - Date.now()); // Establecemos el tiempo de expiración exacto
     }
   }
+ 
+  
 
+  
   // 🔹 Obtener token si no ha expirado
-  getToken(): string | null {
+getToken(): string | null {
     const expiration = sessionStorage.getItem(this.expirationKey);
     if (expiration && Date.now() > +expiration) {
       this.removeToken();

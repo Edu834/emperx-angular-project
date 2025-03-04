@@ -38,7 +38,7 @@ export class UserService {
   }
   
   updateUser(userData: any): Observable<any> {
-    return this.http.put<any>('http://localhost:8087/api/usuarios', userData).pipe(
+    return this.http.put<any>('http://localhost:8087/auth', userData).pipe(
       catchError(error => {
         console.error('Error al actualizar el usuario:', error);
         return throwError(() => new Error(error.error?.message || 'Error al actualizar el usuario'));

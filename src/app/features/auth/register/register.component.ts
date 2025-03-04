@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 
-import { RegisterRequest } from './RegisterRequest';
+import { RegisterRequest } from './registerRequest';
 
 @Component({
   selector: 'app-register',

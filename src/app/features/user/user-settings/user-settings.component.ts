@@ -25,7 +25,7 @@ export class UserSettingsComponent {
       username: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
       telefono: ['', Validators.required],
       direccion: ['', Validators.required],
@@ -62,17 +62,29 @@ export class UserSettingsComponent {
   
   onSubmit(): void {
     if (this.editForm.valid) {
-      // Usamos 'editForm.value' directamente si se ajusta al tipo de User
       const userData: User = this.editForm.value;
-      console.log(this.editForm.value);
+  
       this.userService.updateUser(userData).subscribe({
-        
+        next: (response: any) => {
+          if (response && response.token) {
+            console.log(response.token)
+            sessionStorage.setItem('token', response.token);
+  
+            // ✅ Si tienes un AuthService, actualiza el token allí también
+            this.authService.setToken(response.token);
+  
+            console.log("Usuario actualizado correctamente");
+            this.router.navigate(['/perfil']); // Redirigir al perfil
+          }
+        },
+        error: (error) => {
+          console.error("Error al actualizar usuario", error);
+          this.editError = "Error al actualizar usuario. Inténtalo de nuevo.";
+        }
       });
     } else {
-      // Si el formulario no es válido, puedes manejarlo aquí
       console.error("Formulario inválido");
       this.editError = "Por favor, completa todos los campos correctamente.";
     }
   }
-  
 }
