@@ -9,15 +9,12 @@
   }
   
   button:hover {
-    background-color: #4b5563;
+    background-color: rgba(167, 167, 167, 0.541);
+    color: #2c2c2c;
   }
   
   button:focus {
     outline: none;
-  }
-  
-  .carousel-item {
-    transition: transform 0.3s ease;
   }
   
   .carousel-container::-webkit-scrollbar {
