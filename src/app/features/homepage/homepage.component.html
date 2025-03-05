@@ -14,7 +14,16 @@
     <div class="w-full mt-45 ">
       <app-carrousel></app-carrousel>
     </div>
-    
+    <div class="flex w-full items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom mt-20">
+      
+      <div [routerLink]="['/products/women']" routerLinkActive="router-link-active"  class="flex items-end lg:text-9xl  md:text-8xl text-6xl women-poster lg:h-[1000px] md:h-[700px] h-[500px] abril-fatface-regular  text-white w-full">
+        WOMEN
+      </div>
+      <div [routerLink]="['/products/men']" class="flex items-end lg:text-9xl md:text-8xl text-6xl justify-end men-poster  lg:h-[1000px] md:h-[700px] h-[500px] abril-fatface-regular  text-white w-full">
+        MEN
+      </div>
+      
+    </div>
    
     <app-footer></app-footer>
   </div>
