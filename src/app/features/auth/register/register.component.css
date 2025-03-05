@@ -1,0 +1,8 @@
+.disabled{
+    cursor: not-allowed;
+    background-color: #b3010181;
+    color: #313131;
+    border: 1px solid #ccc;
+    
+    pointer-events: none;
+}

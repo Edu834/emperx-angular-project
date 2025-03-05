@@ -1,47 +1,73 @@
 
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuthService } from '../../../core/service/auth/auth.service';
 import { Location } from '@angular/common';
+import { LoginRequest } from './loginRequest';
 
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
   
+  loginError:string="";
+  loginForm:any;
 
-  // Método para volver atrás
-  
-  loginObj: any = {
-    username: "",
-    password: ""
-  };
-
-
-  constructor(private authService: AuthService, private router: Router, private location: Location) {}
-  goBack(): void {
-    this.location.back();
-  }
-  onLogin() {
-    this.authService.login(this.loginObj).subscribe({
-      next: data => {
-        if (data) {
-          // Guardar el token y redirigir al home
-          this.authService.saveUser(data);
-        } else {
-          alert('Usuario o contraseña incorrectos');
-        }
-      },
-      error: error => {
-        alert('Hubo un problema con el inicio de sesión');
-      }
+  constructor(private formBuilder:FormBuilder, private router:Router, private loginService: AuthService) {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+  }
+
+  get email(){
+    return this.loginForm.controls.username;
+  }
+
+  get password()
+  {
+    return this.loginForm.controls.password;
+  }
+
+  login(){
+    
+    if(this.loginForm.valid){
+      this.loginError="";
+      this.loginService.login(this.loginForm.value as LoginRequest).subscribe({
+        next: (userData) => {
+          console.log(userData);
+        },
+        error: (errorData) => {
+          console.error(errorData);
+          this.loginError = "Error al iniciar sesión: " + (errorData.error|| "Intente nuevamente.");
+        },
+        complete: () => {
+          console.info("Login completo");
+          this.router.navigateByUrl('/inicio');
+          this.loginForm.reset();
+          
+        }
+      })
+
+    }
+    else{
+      this.loginForm.markAllAsTouched();
+      alert("Error al ingresar los datos.");
+    }
+  }
+  
+  goHome(){
+    this.router.navigateByUrl('/inicio');
   }
 }
 

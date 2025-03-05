@@ -2,6 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ToggleMenuComponent } from './toggle-menu/toggle-menu.component';
 import { AuthService } from '../../core/service/auth/auth.service';
+import { UserService } from '../../core/service/user/user.service';
+import { User } from '../../core/service/user/user';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +12,12 @@ import { AuthService } from '../../core/service/auth/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-  isAuthenticated: boolean = false;
+  isAuthenticated: boolean = false;  // Estado inicial
+  name: string = '';  // Nombre del usuario
+  error: string | undefined;
+  constructor(private authService: AuthService, private userService: UserService) {}
 
-  constructor(private authService: AuthService) {
-    this.isAuthenticated = this.authService.isAuthenticated();
-  }
+
 
   logout() {
     this.authService.logout();
@@ -32,8 +35,35 @@ export class HeaderComponent implements OnInit {
         this.currentIndex = (this.currentIndex + 1) % this.texts.length;
         this.text = this.texts[this.currentIndex];
         this.fade = false;
-      }, 500); // Duración de la transición
+      }, 500); 
     }, 30000);
+
+    if (sessionStorage.getItem('token')) {
+      this.authService.userData.subscribe(userData => {
+        console.log(userData
+        );
+    });}
+    
+    this.userService.getAuthenticatedUser().subscribe({
+      next: (data) => {
+        if (data) {
+          this.name = data.firstname;  
+        } else {
+          this.error = 'No se pudo obtener la información del usuario.';
+        }
+        
+      },
+      error: (err) => {
+        this.error = 'Error al cargar la información del usuario.';
+        console.error(err);
+        
+      }
+      
+    });
+    this.authService.isAuthenticated().subscribe(authStatus => {
+      this.isAuthenticated = authStatus;} );
+
+      
   }
 
   
