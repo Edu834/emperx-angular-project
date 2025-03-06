@@ -63,3 +63,10 @@ export interface ProductView {
   articulos: string[];     // Artículos relacionados al producto
   galeria: Galeria;        // Ahora `galeria` es un objeto de tipo `Galeria`
 }
+
+export interface ArticuloEnPedidoDTO{
+  idArticulo: string;
+  idUsuario: string;
+  cantidad: number;
+  diasAlquiler: number;
+}
