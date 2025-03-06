@@ -3,10 +3,12 @@
     <div #carousel class="flex h-full  overflow-x-hidden overflow-y-hidden scroll-smooth">
       <!-- Usamos *ngFor para iterar sobre los productos -->
       <div *ngFor="let product of products" class="h-full w-[300px] flex-shrink-0 bg-white  shadow-md ">
-        <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]"  class="h-full cursor-pointer">
+        <!-- <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]"  class="h-full cursor-pointer">
           <img  [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-full object-cover product-image">
-          <!-- <h3 class="text-xl font-semibold mt-2">{{ product.name }}</h3> -->
-        </div>
+        </div> -->
+        <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]" class="w-full relative mx-auto h-auto overflow-hidden">
+          <img [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-auto relative z-0transition-all duration-300 hover:scale-110">
+          </div>
       </div>
     </div>
     

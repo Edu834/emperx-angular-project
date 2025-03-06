@@ -33,10 +33,22 @@ export class UserService {
       catchError(error => {
         console.error('Error al obtener el usuario autenticado', error);
         return of(null);  
+        
       })
     );
   }
   
+  // getAuthenticatedUserId(): Observable<number | null> {
+  //   return this.getAuthenticatedUser().pipe(
+  //     map(user => user ? user.id_usuario : null),
+  //     catchError(error => {
+  //       console.error('Error al obtener el ID del usuario autenticado', error);
+  //       return of(null);
+  //     })
+  //   );
+  // }
+  
+
   updateUser(userData: any): Observable<any> {
     return this.http.put<any>('http://localhost:8087/auth/edit', userData).pipe(
       catchError(error => {
