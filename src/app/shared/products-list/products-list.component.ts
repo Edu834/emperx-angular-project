@@ -67,7 +67,7 @@ export class ProductsListComponent {
         cumpleFiltros = cumpleFiltros && articulo.color === this.filtros.color;
       }
       if (this.filtros.price) {
-        cumpleFiltros = cumpleFiltros && articulo.precio <= this.filtros.price;
+        cumpleFiltros = cumpleFiltros && articulo.producto.precio <= this.filtros.price;
       }
       if (this.filtros.size) {
         cumpleFiltros = cumpleFiltros && articulo.talla === this.filtros.size;
@@ -107,6 +107,15 @@ export class ProductsListComponent {
         console.error('Error al cargar los artículos:', error);
       }
     });
+    this.service.filtrar(this.filtros).subscribe({
+      next: (data: any) => {
+        this.listaArticulos = data;
+        this.cargarDatos(); // Filtrar los productos después de obtener los artículos
+      },
+      error: (error) => {
+        console.error('Error al cargar los artículos:', error);
+      }
+    });
   }
   
   cargarDatos(): void{
@@ -123,6 +132,7 @@ export class ProductsListComponent {
       console.log('Articulos por categoria:', this.listaArticulos);
       this.cargarCartasProductos();
       console.log('Productos:', this.products);
+
     }else{
       if(this.nombreSubcategoria === 'view-all'){
         this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase().trim() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
@@ -154,7 +164,7 @@ export class ProductsListComponent {
             idProducto: e.producto.idProducto,
             name: e.producto.nombre,
             producto: e.producto,
-            price: e.precio,
+            price: e.producto.precio,
             imageUrl: 'https://via.placeholder.com/150',
             stock: 1,
             color: colores,
@@ -173,26 +183,4 @@ export class ProductsListComponent {
         }
       });
     }
-  // products: ProductView[] = [
-  //   { id: 1, name: 'Producto 1', price: 100, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 2, name: 'Producto 2', price: 200, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 3, name: 'Producto 3', price: 300, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 4, name: 'Producto 4', price: 400, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 5, name: 'Producto 5', price: 500, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 6, name: 'Producto 6', price: 600, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 7, name: 'Producto 7', price: 700, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 8, name: 'Producto 8', price: 800, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 9, name: 'Producto 9', price: 900, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 10, name: 'Producto 10', price: 1000, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 11, name: 'Producto 11', price: 1100, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 12, name: 'Producto 12', price: 1200, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 13, name: 'Producto 13', price: 1300, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 14, name: 'Producto 14', price: 1400, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 15, name: 'Producto 15', price: 1500, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 16, name: 'Producto 16', price: 1600, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 17, name: 'Producto 17', price: 1700, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 18, name: 'Producto 18', price: 1800, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 19, name: 'Producto 19', price: 1900, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 20, name: 'Producto 20', price: 2000, imageUrl: 'https://via.placeholder.com/150' }
-  // ];
 }

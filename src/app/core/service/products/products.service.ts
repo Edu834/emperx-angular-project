@@ -70,5 +70,14 @@ export class ProductsService {
     );
   }
 
+  filtrar(filters: any) {
+    return this.http.post(`http://localhost:8087/api/articulos/filtrar`, filters).pipe(
+      catchError(error => {
+        console.error('Error fetching product:', error);
+        return of(null);  
+      })
+    );
+  }
+
   
 }

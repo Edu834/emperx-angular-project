@@ -23,6 +23,7 @@ export interface Producto{
     marca: string;
     nombre: string;
     sexo: string;
+    precio: number;
     galeria: Galeria;
     subcategoria: SubCategoria;
   }
@@ -32,8 +33,8 @@ export interface Articulo{
     color: string;
     descripcion: string;
     nombre: string;
-    precio: number;
     stock: number;
+    codigoColor: string;
     talla: string;
     estados: Estado[];
     producto: Producto;
@@ -51,5 +52,11 @@ export interface ProductView {
     color: string[];        // Color del producto (opcional)
     size: string[];         // Talla del producto (opcional)
     articulos: string[];     // Articulos del producto
-    
   }
+
+export interface Filtro {
+  marca: string;
+  precio: string;
+  talla: string[];
+  color: string;
+}

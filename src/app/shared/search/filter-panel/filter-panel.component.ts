@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 export class FilterPanelComponent {
   @Input() mostrarFiltros: boolean = false;  // Usamos un valor por defecto (false)
   @Output() filtrosAplicados = new EventEmitter<any>();
-
   // Filtros seleccionados
   selectedBrand: string | null = null;
   selectedColor: string | null = null;
