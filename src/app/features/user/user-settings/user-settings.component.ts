@@ -18,6 +18,7 @@ export class UserSettingsComponent {
   editError: string = '';
   editForm: FormGroup;
   currentUserData: User | null = null;
+  date: string | undefined;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private location: Location, private userService: UserService) {
     this.editForm = this.formBuilder.group({
@@ -25,11 +26,17 @@ export class UserSettingsComponent {
       username: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       telefono: ['', Validators.required],
       direccion: ['', Validators.required],
       sexo: ['', Validators.required],
+      fechaNacimiento: [''],
+      country: [''],
+      province: [''],
+      city: [''],
+      zipCode: [''],
+
     });
   }
 
@@ -47,10 +54,15 @@ export class UserSettingsComponent {
         this.editForm.controls['telefono'].setValue(userData.telefono);
         this.editForm.controls['direccion'].setValue(userData.direccion);
         this.editForm.controls['sexo'].setValue(userData.sexo);
+        this.editForm.controls['country'].setValue(userData.country);
+        this.editForm.controls['province'].setValue(userData.province);
+        this.editForm.controls['city'].setValue(userData.city);
+        this.editForm.controls['zipCode'].setValue(userData.zipCode);
         this.editForm.controls['password'].setValue(userData.password);
-        
+        this.editForm.controls['fechaNacimiento'].setValue(userData.fechaNacimiento);
         console.log(userData.id_usuario);
         console.log(this.currentUserData);
+        this.date = this.getDate(this.currentUserData.fechaAlta);
       }
     });
   }
@@ -59,7 +71,14 @@ export class UserSettingsComponent {
   goBack(): void {
     this.location.back();
   }
-  
+  getDate(fechaAlta: string | Date): string {
+    const date = new Date(fechaAlta);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long' 
+    };
+    return `Member since ${date.toLocaleDateString('en-US', options)}`;
+  }
   onSubmit(): void {
     if (this.editForm.valid) {
       const userData: User = this.editForm.value;
@@ -74,7 +93,7 @@ export class UserSettingsComponent {
             this.authService.setToken(response.token);
   
             console.log("Usuario actualizado correctamente");
-            this.router.navigate(['/perfil']); // Redirigir al perfil
+            this.router.navigate(['/user/profile']); // Redirigir al perfil
           }
         },
         error: (error) => {

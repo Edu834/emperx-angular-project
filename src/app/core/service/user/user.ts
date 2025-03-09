@@ -9,4 +9,10 @@ export interface User {
     sexo: string;
     telefono: string;
     fechaAlta: Date;
+    fechaNacimiento: Date;
+    country: string;
+    province: string;
+    city: string;
+    zipCode: number;
+    
 }
