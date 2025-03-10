@@ -75,9 +75,46 @@
 
                     </select>
                 </div>
-                <div class="col-start-3 col-span-5">
-                    <label for="password" class="block text-sm font-medium mb-2">Password*</label>
-                    <input id="password" type="password" formControlName="password" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                <!-- Sección de Password -->
+                <div class="col-start-3 col-span-5 flex justify-between">
+                  <label for="password" class="block text-sm font-medium mb-6">Password*</label>
+                  <a (click)="openModal()" class="underline text-blue-600 cursor-pointer">Edit</a>
+                </div>
+
+                <!-- Modal para cambiar la contraseña -->
+                <div *ngIf="isModalOpen" class="fixed inset-0 z-50 bg-[#ffffff7e] bg-opacity-50 flex items-center justify-center">
+                  <div class="bg-white p-6 rounded-lg w-96">
+                    <h3 class="text-xl font-semibold mb-4">Change Password</h3>
+                    
+                    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+                      <!-- Contraseña actual -->
+                      <div class="mb-4">
+                        <label for="currentPassword" class="block text-sm font-medium mb-2">Current Password</label>
+                        <input id="currentPassword" type="password" formControlName="currentPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Nueva contraseña -->
+                      <div class="mb-4">
+                        <label for="newPassword" class="block text-sm font-medium mb-2">New Password</label>
+                        <input id="newPassword" type="password" formControlName="newPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Confirmación de nueva contraseña -->
+                      <div class="mb-4">
+                        <label for="confirmNewPassword" class="block text-sm font-medium mb-2">Confirm New Password</label>
+                        <input id="confirmNewPassword" type="password" formControlName="confirmNewPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Mensaje de error -->
+                      <div *ngIf="editError" class="text-red-500 text-sm mb-3">{{ editError }}</div>
+
+                      <!-- Botones -->
+                      <div class="flex justify-end">
+                        <button type="button" (click)="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2  mr-2">Cancel</button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 ">Save</button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
                 <div class="col-start-3 col-span-5">
                   <label for="password" class="block text-sm font-medium mb-2">Birth date</label>
@@ -111,7 +148,13 @@
               </div>
               <div class=" flex justify-end items-center h-30 ">
                 <!-- <button type="submit" [disabled]="editForm.invalid" class="w-full bg-blue-500 text-white p-2  mt-4">Save Changes</button> -->
-                <button class="bg-[#d9d9d9] opacity-40 w-50 h-10 text-xl  hover:border  border-[#292929]">Save changes</button>
+                <button 
+                [disabled]="!editForm.dirty || editForm.invalid"
+                [ngClass]="{'opacity-40': !editForm.dirty || editForm.invalid}"
+                class="bg-[#d9d9d9] w-50 h-10 text-xl hover:border border-[#292929] transition-opacity duration-300"
+              >
+                Save changes
+              </button>
               </div>
                 <!-- <button type="submit" [disabled]="editForm.invalid" class="w-full bg-blue-500 text-white p-2  mt-4">Save Changes</button> -->
             </form>

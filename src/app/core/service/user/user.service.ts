@@ -8,6 +8,9 @@ import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 })
 export class UserService {
 
+   
+
+
   constructor(private http:HttpClient) { }
 
   getUsers(id:number):Observable<User>{ {
@@ -61,7 +64,16 @@ export class UserService {
     );
   }
   
+  changePassword(idUsuario: number, passwordActual: string, nuevaPassword: string): Observable<any> {
+    const body = {
+      idUsuario: idUsuario,        // Se agrega el id del usuario
+      passwordActual: passwordActual,
+      nuevaPassword: nuevaPassword
+    };
 
+    // Suponiendo que el backend tenga un endpoint para cambiar la contraseña
+    return this.http.put<any>(`http://localhost:8087/auth/change-password`, body);
+  }
   private handleError(error:HttpErrorResponse){
     if(error.status === 0){
       console.error('An error occurred:', error.error);
