@@ -1,7 +1,13 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full ">
     @for (product of products; track $index) {
-        <div class="">
+        <div class="relative">
             <app-product-card [product]="product"></app-product-card>
+            <button 
+                (click)="toggleFavorito(product)" 
+                class="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md"
+            >
+                {{ esFavorito(product.idProducto) ? 'si' : 'no' }}
+            </button>
         </div>
     }
 </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { Articulo, ProductView } from '../../../Interfaces/interfaces-globales';
@@ -23,6 +23,7 @@ export class CarrouselComponent implements AfterViewInit {
   // ];
 
   @ViewChild('carousel') carousel: any;
+  @Input() product!: ProductView | undefined; 
 
   ngAfterViewInit() {
     // Inicializamos el scroll en 0 cuando la vista se haya cargado
@@ -76,6 +77,7 @@ export class CarrouselComponent implements AfterViewInit {
 
 
   ngOnInit(): void {
+
     this.route.paramMap.subscribe((params) => {
       this.obtenerArticulos();
     });
@@ -118,6 +120,7 @@ export class CarrouselComponent implements AfterViewInit {
           articulos: articulos,
           galeria: e.producto.galeria
         });
+        
       } else {
         product.stock += 1;
         if (!product.color.includes(e.color)) {
@@ -130,6 +133,18 @@ export class CarrouselComponent implements AfterViewInit {
       }
       // Limitar a 10 productos
   this.products = this.products.slice(0, 10  );
+  
     });
+    
   }
+  
+  verProducto(product: ProductView): void {
+    const sexoTransformado = product.sexo === 'H' ? 'men' : product.sexo === 'M' ? 'women' : product.sexo.toLowerCase();
+    const categoriaTransformada = product.subcategoria.categoria.nombre.toLowerCase();
+    const subcategoriaTransformada = product.subcategoria.nombre.toLowerCase();
+    const nombreTransformado = product.name.toLowerCase();
+
+    this.router.navigate(['/product', sexoTransformado, categoriaTransformada, subcategoriaTransformada, nombreTransformado]);
+}
+
 }

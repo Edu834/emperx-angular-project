@@ -6,7 +6,7 @@
         <!-- <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]"  class="h-full cursor-pointer">
           <img  [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-full object-cover product-image">
         </div> -->
-        <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]" class="w-full relative mx-auto h-auto overflow-hidden">
+        <div (click)="verProducto(product)" class="w-full relative mx-auto h-auto overflow-hidden">
           <img [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-auto relative z-0transition-all duration-300 hover:scale-110">
           </div>
       </div>
