@@ -6,12 +6,14 @@ import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
 import { FooterComponent } from "../../../shared/footer/footer.component";
 import { FormsModule } from '@angular/forms';
+import { FavoritesService } from '../../../core/service/favorites/favorites.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule]
+  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule]
 })
 export class ProductDetailComponent implements OnInit {
   
@@ -30,9 +32,10 @@ export class ProductDetailComponent implements OnInit {
   articulos: Articulo[] = [];
   name: string = '';
 
-  constructor(private route: ActivatedRoute, private service: ProductsService) {}
+  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService) {}
 
   ngOnInit(): void {
+    // this.cargarFavoritos();
     this.route.paramMap.subscribe((params) => {
       
       this.name = params.get('name') || '';
@@ -90,7 +93,7 @@ export class ProductDetailComponent implements OnInit {
           subcategoria: e.producto.subcategoria,
           sexo: e.producto.sexo,
           name: e.producto.nombre,
-          price: e.precio,
+          price: e.producto.precio,
           imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://via.placeholder.com/150',
           description: e.producto.descripcion,
           stock: e.stock,
@@ -105,7 +108,7 @@ export class ProductDetailComponent implements OnInit {
         if (!this.product.color.includes(e.color)) this.product.color.push(e.color);
         if (!this.product.size.includes(e.talla)) this.product.size.push(e.talla);
         if (!this.product.articulos.includes(e.idArticulo)) this.product.articulos.push(e.idArticulo);
-        this.product.price = (this.product.price + e.precio) / 2; // Promediar precio
+       
       }
     });
   
@@ -178,5 +181,25 @@ onSelectedState(idArticulo: string): void {
   console.log('Estado seleccionado:', selectedState);
 }
 
+favoritos: number[] = [];
+  cargarFavoritos() {
+    this.favoritesService.getFavoritos().subscribe(favoritos => {
+      this.favoritos = favoritos.map(p => p.idProducto);
+    });
+  }
+   // Método para añadir o quitar de favoritos
+toggleFavorito(producto: ProductView) {
+  console.log('Producto:', producto);
+  if (this.favoritesService.esFavorito(producto.idProducto)) {
+    this.favoritesService.eliminarFavorito(producto.idProducto);
+  } else {
+    this.favoritesService.agregarFavorito(producto);
+  }
+  this.cargarFavoritos();
+}
 
+// Verificar si un producto está en favoritos
+esFavorito(productoId: string): boolean {
+  return this.favoritesService.esFavorito(productoId);
+}
 }
