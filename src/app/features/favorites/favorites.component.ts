@@ -21,12 +21,16 @@ export class FavoritesComponent implements OnInit {
   favoritos: ProductView[] = [];
 
   ngOnInit() {
-    this.favoritos = this.favoritosService.getFavoritos();
+    this.favoritosService.getFavoritos().subscribe((data: ProductView[]) => {
+      this.favoritos = data;
+    });
   }
 
   eliminarFavorito(productId: string) {
     console.log('Eliminar favorito', productId);
     this.favoritosService.eliminarFavorito(productId);
-    this.favoritos = this.favoritosService.getFavoritos(); // Actualizar la lista
+    this.favoritosService.getFavoritos().subscribe((data: ProductView[]) => {
+      this.favoritos = data;
+    }); // Actualizar la lista
   }
 }

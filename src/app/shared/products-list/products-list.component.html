@@ -2,12 +2,7 @@
     @for (product of products; track $index) {
         <div class="relative">
             <app-product-card [product]="product"></app-product-card>
-            <button 
-                (click)="toggleFavorito(product)" 
-                class="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md"
-            >
-                {{ esFavorito(product.idProducto) ? 'si' : 'no' }}
-            </button>
+            
         </div>
     }
 </div>

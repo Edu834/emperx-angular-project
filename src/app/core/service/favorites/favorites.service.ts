@@ -1,43 +1,59 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
   private storageKey = 'favoritos';
+  private favoritos: any[] = [];
+  private favoritesSubject = new BehaviorSubject<any[]>([]);
 
-  constructor() {}
+  constructor() {
+    this.cargarFavoritos();
+  }
 
-  // Obtener la lista de favoritos desde localStorage
-  getFavoritos(): any[] {
+  // Obtener el observable de favoritos
+  getFavoritos() {
+    return this.favoritesSubject.asObservable();
+  }
+
+  // Cargar favoritos desde localStorage al iniciar el servicio
+  private cargarFavoritos() {
     try {
       const favoritos = localStorage.getItem(this.storageKey);
-      return favoritos ? JSON.parse(favoritos) : [];
+      this.favoritos = favoritos ? JSON.parse(favoritos) : [];
+      this.favoritesSubject.next(this.favoritos);
     } catch (error) {
       console.error('Error al cargar favoritos:', error);
-      return [];
+      this.favoritos = [];
     }
   }
 
   // Agregar un producto a favoritos
   agregarFavorito(producto: any) {
-    let favoritos = this.getFavoritos();
     const productoId = String(producto.idProducto); // Asegurar que es string
 
-    if (!favoritos.some((p) => String(p.idProducto) === productoId)) {
-      favoritos.push({ ...producto, idProducto: productoId }); // Asegurar consistencia
-      localStorage.setItem(this.storageKey, JSON.stringify(favoritos));
+    if (!this.favoritos.some((p) => String(p.idProducto) === productoId)) {
+      this.favoritos.push({ ...producto, idProducto: productoId });
+      this.actualizarStorage();
     }
   }
 
   // Eliminar un producto de favoritos
   eliminarFavorito(productId: string) {
-    let favoritos = this.getFavoritos().filter((p) => String(p.idProducto) !== productId);
-    localStorage.setItem(this.storageKey, JSON.stringify(favoritos));
+    this.favoritos = this.favoritos.filter((p) => String(p.idProducto) !== productId);
+    this.actualizarStorage();
   }
 
   // Verificar si un producto está en favoritos
   esFavorito(productId: string): boolean {
-    return this.getFavoritos().some((p) => String(p.idProducto) === productId);
+    return this.favoritos.some((p) => String(p.idProducto) === productId);
+  }
+
+  // Actualizar localStorage y emitir cambios
+  private actualizarStorage() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.favoritos));
+    this.favoritesSubject.next([...this.favoritos]);
   }
 }

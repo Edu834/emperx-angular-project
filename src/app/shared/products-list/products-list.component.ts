@@ -84,7 +84,7 @@ export class ProductsListComponent {
 
 
   ngOnInit(): void {
-    this.cargarFavoritos();
+   
     this.route.paramMap.subscribe((params) => {
       this.actualizarSexoYCategoria(params);
       this.obtenerArticulos();
@@ -158,7 +158,7 @@ export class ProductsListComponent {
             subcategoria: e.producto.subcategoria,
             sexo: e.producto.sexo,
             name: e.producto.nombre,
-            price: e.precio,
+            price: e.producto.precio,
             imageUrl: 'https://via.placeholder.com/150',
             stock: 1,
             estados: e.estados.map((estado: any) => estado.nombre),
@@ -180,23 +180,5 @@ export class ProductsListComponent {
       });
     }
     
-    favoritos: number[] = [];
-    cargarFavoritos() {
-      this.favoritos = this.favoritesService.getFavoritos().map(p => p.idProducto);
-    }
-     // Método para añadir o quitar de favoritos
-  toggleFavorito(producto: ProductView) {
-    console.log('Producto:', producto);
-    if (this.favoritesService.esFavorito(producto.idProducto)) {
-      this.favoritesService.eliminarFavorito(producto.idProducto);
-    } else {
-      this.favoritesService.agregarFavorito(producto);
-    }
-    this.cargarFavoritos();
-  }
-
-  // Verificar si un producto está en favoritos
-  esFavorito(productoId: string): boolean {
-    return this.favoritesService.esFavorito(productoId);
-  }
+  
 }

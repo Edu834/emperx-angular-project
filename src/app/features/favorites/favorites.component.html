@@ -4,8 +4,24 @@
   
   <div class=" text-[#2C2C2C] py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-40">
-      
       <div class="">
+        <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2 flex justify-between">
+          <h2 class="text-4xl font-bold">Favorites</h2>
+          <img (click)="goBack()" src="/flecha.svg" alt="">
+        </div>
+        @if (favoritos.length===0) {
+          <p>No tienes productos favoritos aún.</p>
+        }
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full ">
+          @for (product of favoritos; track $index) {
+          <div class="relative">
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+          }
+
+        </div>
+      </div>
+      <!-- <div class="">
         <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2 flex justify-between">
           <h2>Mis Favoritos</h2>
           <div *ngIf="favoritos.length === 0">
@@ -26,7 +42,7 @@
 </div>
         </div>
         
-      </div>
+      </div> -->
       
       
   

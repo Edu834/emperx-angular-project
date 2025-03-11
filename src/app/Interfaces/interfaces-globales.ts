@@ -31,6 +31,7 @@ export interface Producto {
   descripcion: string;
   marca: string;
   nombre: string;
+  precio: number;
   sexo: string;
   galeria: Galeria;  // Ahora galeria es de tipo Galeria (objeto completo)
   subcategoria: SubCategoria;
