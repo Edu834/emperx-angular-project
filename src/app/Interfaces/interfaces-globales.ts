@@ -60,7 +60,8 @@ export interface ProductView {
   stock: number;
   estados: string[];
   color: string[];
-  size: string[];          // Talla del producto (opcional)
+  size: string[];  
+  marca:string;        // Talla del producto (opcional)
   articulos: string[];     // Artículos relacionados al producto
   galeria: Galeria;        // Ahora `galeria` es un objeto de tipo `Galeria`
 }

@@ -165,7 +165,8 @@ export class ProductsListComponent {
             color: colores,
             size: tallas,
             articulos: articulos,
-            galeria: e.producto.galeria
+            galeria: e.producto.galeria,
+            marca: e.producto.marca
           });
         } else {
           product.stock += 1;

@@ -18,7 +18,8 @@ import { CommonModule } from '@angular/common';
 export class ProductDetailComponent implements OnInit {
   
  
-  
+  mostrarBotonFiltros: boolean = false;
+  mostrarFiltros: boolean = false;
   showChild = false;
   @Input() detallesVisible: boolean | undefined;
   
@@ -50,16 +51,20 @@ export class ProductDetailComponent implements OnInit {
   fotoSeleccionada: string = '';
 
 
-  // Obtener todas las fotos de la galería
   getFotosGaleria(): string[] {
+    if (!this.product || !this.product.galeria) {
+      return ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];  // Retorna un array con una imagen por defecto
+    }
+  
     return [
-      this.product?.galeria.fotoFrontal,
-      this.product?.galeria.fotoTrasera,
-      this.product?.galeria.fotoModeloCerca,
-      this.product?.galeria.fotoModeloFrontal,
-      this.product?.galeria.fotoModeloTrasera
-    ].filter(foto => foto !== undefined) as string[];
+      this.product.galeria.fotoFrontal,
+      this.product.galeria.fotoTrasera,
+      this.product.galeria.fotoModeloCerca,
+      this.product.galeria.fotoModeloFrontal,
+      this.product.galeria.fotoModeloTrasera
+    ].filter(foto => !!foto); // Filtra las imágenes no definidas
   }
+  
 
   // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
   cambiarImagen(foto: string): void {
@@ -94,14 +99,15 @@ export class ProductDetailComponent implements OnInit {
           sexo: e.producto.sexo,
           name: e.producto.nombre,
           price: e.producto.precio,
-          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://via.placeholder.com/150',
+          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg',
           description: e.producto.descripcion,
           stock: e.stock,
           estados: e.estados.map((estado: any) => estado.nombre),
           color: [e.color],
           size: [e.talla],
           articulos: [e.idArticulo],
-          galeria: e.producto.galeria
+          galeria: e.producto.galeria,
+          marca: e.producto.marca
         });
       } else {
         this.product.stock += e.stock;

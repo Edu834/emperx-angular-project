@@ -15,45 +15,41 @@
     <div class="w-full h-full bg-linear-to-t to-[#BE0000] from-[#9C0000] pb-6 ">
     
     <div class="max-w-6xl md:px-8 xl:mx-auto inter-custom relative z-10">
-        <!-- Caja de búsqueda -->
-        <div class="relative flex justify-between items-center px-4 bg-[#D9D9D9] h-[50px] sm:w-[70%] w-[60%] xl:w-[35%] abril-fatface-regular shadow-md">
-            <i class="fa-solid fa-magnifying-glass pr-4"></i>
-            <input 
-              [(ngModel)]="query" 
-              (keyup)="onSearchChange()" 
-              (keydown.enter)="onEnter()" 
-              class="w-full h-full text-end focus:outline-none" 
-              type="text" 
-              placeholder="Search"
-            />
-          
-  
-          <div class="absolute top-13 left-0 w-full z-20 ">
-            <div class="overflow-auto max-h-100 bg-white" *ngIf="productosFiltrados.length > 0 && query.length > 0">
-                <div class="flex" *ngFor="let producto of productosFiltrados">
-                    
-                        <div class="w-[20%] h-30">
-                            <img class="object-cover" [src]="producto.galeria?.fotoFrontal" alt="Imagen de producto" />
-                        </div>
-                    <div>
-                        <h3 class="text-2xl">{{ producto.nombre }}</h3>
-                        <div class="flex justify-between text-md inter-custom">
-                            <p>{{ producto.subcategoria.nombre }} - {{ producto.subcategoria.categoria.nombre }}</p>
-                            <button (click)="redirigir(producto)">Ver Producto</button>
-                        </div>
-                    </div>
-                  
-                  
+      <div class="relative flex justify-between items-center px-4 bg-[#D9D9D9] h-[50px] sm:w-[70%] w-[60%] xl:w-[35%] abril-fatface-regular shadow-md" #searchBox>
+        <i class="fa-solid fa-magnifying-glass pr-4"></i>
+        <input 
+          [(ngModel)]="query" 
+          (keyup)="onSearchChange()" 
+          (keydown.enter)="onEnter()" 
+          class="w-full h-full text-end focus:outline-none" 
+          type="text" 
+          placeholder="Search"
+        />
+      
+        <!-- Sección de productos filtrados -->
+        <div class="absolute top-13 left-0 w-full z-20" *ngIf="query.length > 0 && showProductList">
+          <div class="overflow-auto max-h-100 bg-white" *ngIf="productosFiltrados.length > 0">
+            <div class="flex" *ngFor="let producto of productosFiltrados">
+              <div class="w-[20%] h-30">
+                <img class="object-cover" [src]="producto.galeria?.fotoFrontal" alt="Imagen de producto" />
+              </div>
+              <div>
+                <h3 class="text-2xl">{{ producto.nombre }}</h3>
+                <div class="flex justify-between text-md inter-custom">
+                  <p>{{ producto.subcategoria.nombre }} - {{ producto.subcategoria.categoria.nombre }}</p>
+                  <button (click)="verProducto(producto)">Ver Producto</button>
                 </div>
               </div>
-              
-              <!-- Mensaje si no hay resultados -->
-              <div *ngIf="productosFiltrados.length === 0 && query.length > 0">
-                No se encontraron resultados.
-              </div>
+            </div>
           </div>
           
+          <!-- Mensaje si no se encontraron resultados -->
+          <div *ngIf="productosFiltrados.length === 0 && query.length > 0">
+            No se encontraron resultados.
+          </div>
         </div>
+      </div>
+  
         <!-- <div class="flex justify-between items-center px-4 bg-[#D9D9D9] h-[50px] sm:w-[70%] w-[60%] xl:w-[35%] abril-fatface-regular shadow-md">
             <i class="fa-solid fa-magnifying-glass pr-4"></i>
             
