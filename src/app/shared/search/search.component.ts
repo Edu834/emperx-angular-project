@@ -80,7 +80,7 @@ export class SearchComponent implements OnInit {
       this.showProductList = false; // Ocultar la lista
     } else {
       this.productosFiltrados = this.productos.filter(producto => 
-        producto.name?.toLowerCase().includes(queryLower) ||
+        producto.nombre?.toLowerCase().includes(queryLower) ||
         producto.subcategoria?.nombre?.toLowerCase().includes(queryLower) ||
         producto.subcategoria?.categoria?.nombre?.toLowerCase().includes(queryLower) ||
         producto.marca?.toLowerCase().includes(queryLower)
