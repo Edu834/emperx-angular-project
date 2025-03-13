@@ -15,6 +15,7 @@ import { FavoritesComponent } from './features/user/favorites/favorites.componen
 import { UserReviewsComponent } from './features/user/user-reviews/user-reviews.component';
 import { UserSettingsComponent } from './features/user/user-settings/user-settings.component';
 import { ProductDetailComponent } from './features/products/product-detail/product-detail.component';
+import { BagComponent } from './features/user/bag/bag.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -36,6 +37,7 @@ export const routes: Routes = [
       children: [
         { path: 'profile', component: ProfileComponent},
         { path: 'orders', component: OrdersComponent },
+        { path: 'bag', component: BagComponent },
         { path: 'favorites', component: FavoritesComponent },
         { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
         { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente

@@ -19,9 +19,9 @@
     </div>
 
     <div>
-      @for (order of orders; track $index) {
+      @for (articulo of carrito?.articulosEnPedido; track $index) {
         <div class="">
-            <p> {{order.estado}}</p>
+            <p> {{articulo.estado}}</p>
         </div>
     }
     </div>

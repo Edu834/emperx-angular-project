@@ -7,6 +7,7 @@ import { User } from '../../core/service/user/user';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [RouterLink, RouterLinkActive, ToggleMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
