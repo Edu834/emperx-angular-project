@@ -11,10 +11,11 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { ProductsComponent } from './features/products/products.component';
 import { ProfileComponent } from './features/user/profile/profile.component';
 import { OrdersComponent } from './features/user/orders/orders.component';
-import { FavoritesComponent } from './features/user/favorites/favorites.component';
+
 import { UserReviewsComponent } from './features/user/user-reviews/user-reviews.component';
 import { UserSettingsComponent } from './features/user/user-settings/user-settings.component';
 import { ProductDetailComponent } from './features/products/product-detail/product-detail.component';
+import { FavoritesComponent } from './features/favorites/favorites.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -28,15 +29,14 @@ export const routes: Routes = [
     {path: 'products/:gender', component: ProductsComponent},
     {path: 'products/:gender/:category', component: ProductsComponent},
     {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
-    {path: 'product/:gender/:category/:subcategory/:id', component: ProductDetailComponent},
-
+    {path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent},
+    {path: 'favorites', component: FavoritesComponent },
 
     {path: 'user', 
       canActivate: [authGuard],
       children: [
         { path: 'profile', component: ProfileComponent},
         { path: 'orders', component: OrdersComponent },
-        { path: 'favorites', component: FavoritesComponent },
         { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
         { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente
         { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }

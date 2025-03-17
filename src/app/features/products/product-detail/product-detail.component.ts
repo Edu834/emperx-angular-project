@@ -1,76 +1,211 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { Articulo, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
 import { FooterComponent } from "../../../shared/footer/footer.component";
+import { FormsModule } from '@angular/forms';
+import { FavoritesService } from '../../../core/service/favorites/favorites.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent]
+  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule]
 })
 export class ProductDetailComponent implements OnInit {
-
-  showChild =  false;
+  
+ 
+  mostrarBotonFiltros: boolean = false;
+  mostrarFiltros: boolean = false;
+  showChild = false;
   @Input() detallesVisible: boolean | undefined;
-  product!: Producto | undefined; 
-  colors = [
-    { name: 'Negro', code: '#000000' },
-    { name: 'Azul', code: '#007bff' },
-    { name: 'Marrón', code: '#8B4513' },
-    { name: 'Verde', code: '#4CAF50' },
-    { name: 'Gris', code: '#808080' },
-    { name: 'Multicolor', code: 'linear-gradient(45deg, red, blue, yellow, green)' },
-    { name: 'Naranja', code: '#FF5722' },
-    { name: 'Rosa', code: '#E91E63' },
-    { name: 'Morado', code: '#9C27B0' },
-    { name: 'Rojo', code: '#F44336' },
-    { name: 'Blanco', code: '#FFFFFF', border: '1px solid #ccc' },
-    { name: 'Amarillo', code: '#FFEB3B' },
-  ];
   
   selectedColor: string | null = null;
-
-  constructor(private route: ActivatedRoute, private productsService: ProductsService) {}
-id: string = '';
-  ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id') || '';
-    console.log(this.id)
+  availableSizes: string[] = [];
+  selectedSize: string | null = null;
+  listaArticulos: any;
+  availableStates: { idArticulo: string; estados: string; deshabilitado: boolean; }[] = [];
   
-    
-    if (this.id) {
-      this.getProductDetails(this.id);
-    } else {
-      console.error('ID del producto no válido');
+  resumenProductosConArticulos: ProductView[] = [];
+  articulos: Articulo[] = [];
+  name: string = '';
+
+  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService) {}
+
+  ngOnInit(): void {
+    // this.cargarFavoritos();
+    this.route.paramMap.subscribe((params) => {
+      
+      this.name = params.get('name') || '';
+      this.obtenerArticulosDelProducto(this.name);
+    });
+    console.log(this.product?.galeria.fotoFrontal)
+    if (this.product && this.product.galeria) {
+      this.fotoSeleccionada = this.product.galeria.fotoFrontal
     }
-    console.log('ID del producto:', this.id);
   }
 
-  getProductDetails(productId: string): void {
-    this.productsService.getProductById(productId).subscribe(
-      (product: Producto | null) => {
-        if (product) {
-          this.product = product;
-          console.log('Producto obtenido:', product.subcategoria.nombre);
-        } else {
-          console.error('Producto no encontrado');
-        }
+  fotoSeleccionada: string = '';
+
+
+  getFotosGaleria(): string[] {
+    if (!this.product || !this.product.galeria) {
+      return ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];  // Retorna un array con una imagen por defecto
+    }
+  
+    return [
+      this.product.galeria.fotoFrontal,
+      this.product.galeria.fotoTrasera,
+      this.product.galeria.fotoModeloCerca,
+      this.product.galeria.fotoModeloFrontal,
+      this.product.galeria.fotoModeloTrasera
+    ].filter(foto => !!foto); // Filtra las imágenes no definidas
+  }
+  
+
+  // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
+  cambiarImagen(foto: string): void {
+    this.fotoSeleccionada = foto;
+  }
+
+  obtenerArticulosDelProducto(name: string): void {
+    this.service.getArticulosByNameProduct(name).subscribe({
+      next: (data: any) => {
+        this.articulos = data;
+        console.log('Artículos del producto:', this.articulos);
+        this.cargarDatos(data); 
       },
-      (error: any) => {
-        console.error('Error al obtener el producto:', error);
+      error: (error) => {
+        console.error('Error al cargar los artículos:', error);
       }
-    );
+    });
   }
 
-  onColorChange(color: string) {
-    this.selectedColor = this.selectedColor === color ? null : color;
-    console.log('Color seleccionado:', this.selectedColor ?? 'Ninguno');
+  product: ProductView | undefined;
+
+  cargarDatos(data: any[]): void {
+    this.resumenProductosConArticulos = []; // Limpiar productos previos
+  
+    data.forEach(e => {
+      this.product = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
+  
+      if (!this.product) {
+        this.resumenProductosConArticulos.push({
+          idProducto: e.producto.idProducto,
+          subcategoria: e.producto.subcategoria,
+          sexo: e.producto.sexo,
+          name: e.producto.nombre,
+          price: e.producto.precio,
+          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg',
+          description: e.producto.descripcion,
+          stock: e.stock,
+          estados: e.estados.map((estado: any) => estado.nombre),
+          color: [e.color],
+          size: [e.talla],
+          articulos: [e.idArticulo],
+          galeria: e.producto.galeria,
+          marca: e.producto.marca
+        });
+      } else {
+        this.product.stock += e.stock;
+        if (!this.product.color.includes(e.color)) this.product.color.push(e.color);
+        if (!this.product.size.includes(e.talla)) this.product.size.push(e.talla);
+        if (!this.product.articulos.includes(e.idArticulo)) this.product.articulos.push(e.idArticulo);
+       
+      }
+    });
+  
+    console.log('Producto final consolidado:', this.resumenProductosConArticulos);
   }
 
-  getSelectedColor(): string {
-    return this.selectedColor ? this.selectedColor : 'Sin color seleccionado';
+  onSelectedColor(color: string): void {
+    this.selectedColor = color; // Almacena el color seleccionado
+    console.log('Color seleccionado:', this.selectedColor);
+
+    // Reinicia la talla seleccionada y las tallas disponibles
+    this.selectedSize = null; // Reinicia la talla seleccionada a null
+    this.availableSizes = []; // Limpia las tallas disponibles
+    this.availableStates = []; // Limpia los estados disponibles
+
+    this.updateAvailableSizes(); // Actualiza las tallas disponibles al seleccionar un color
+}
+
+updateAvailableSizes(): void {
+    if (this.selectedColor) {
+        // Filtra las tallas según el color seleccionado
+        const sizes = this.articulos
+            .filter(articulo => articulo.color === this.selectedColor) // Filtra por color
+            .map(articulo => articulo.talla); // Mapea solo las tallas
+        
+        this.availableSizes = Array.from(new Set(sizes)); // Elimina duplicados
+        console.log('Tallas disponibles para el color seleccionado:', this.availableSizes);
+    } else {
+        this.availableSizes = []; // Limpia las tallas si no hay color seleccionado
+    }
+}
+
+
+onSelectSize(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement; // Hacemos un casting a HTMLSelectElement
+    this.selectedSize = selectElement.value; // Ahora podemos acceder a 'value' sin errores
+    console.log('Talla seleccionada:', this.selectedSize);
+    this.updateAvailableStates(); // Actualiza los estados disponibles al seleccionar una talla
+}
+
+updateAvailableStates(): void {
+  if (this.selectedColor && this.selectedSize) {
+      const filteredArticulos = this.articulos.filter(
+          articulo => articulo.color === this.selectedColor && articulo.talla === this.selectedSize
+      );
+
+      // Agrupar estados por artículo y verificar si tiene "Alquilado" o "Retirado"
+      this.availableStates = filteredArticulos.map(articulo => {
+          const estadoNombres = articulo.estados.map(estado => estado.nombre);
+          const tieneEstadoRestringido = estadoNombres.some(estado => estado.includes("Alquilado") || estado.includes("Retirado"));
+
+          return {
+              idArticulo: articulo.idArticulo,
+              estados: estadoNombres.join(' - '), // Unir estados con separador
+              deshabilitado: tieneEstadoRestringido // Marcar si el artículo debe deshabilitarse
+          };
+      });
+
+      console.log('Estados agrupados con restricción:', this.availableStates);
+  } else {
+      this.availableStates = []; // Vaciar si no hay selección válida
   }
+}
+
+selectedStateId: string | null = null; // Variable para almacenar el estado seleccionado
+
+onSelectedState(idArticulo: string): void {
+  this.selectedStateId = idArticulo; // Almacena el idArticulo seleccionado
+  const selectedState = this.availableStates.find(articulo => articulo.idArticulo === idArticulo);
+  console.log('Estado seleccionado:', selectedState);
+}
+
+favoritos: number[] = [];
+  cargarFavoritos() {
+    this.favoritesService.getFavoritos().subscribe(favoritos => {
+      this.favoritos = favoritos.map(p => p.idProducto);
+    });
+  }
+   // Método para añadir o quitar de favoritos
+toggleFavorito(producto: ProductView) {
+  console.log('Producto:', producto);
+  if (this.favoritesService.esFavorito(producto.idProducto)) {
+    this.favoritesService.eliminarFavorito(producto.idProducto);
+  } else {
+    this.favoritesService.agregarFavorito(producto);
+  }
+  this.cargarFavoritos();
+}
+
+// Verificar si un producto está en favoritos
+esFavorito(productoId: string): boolean {
+  return this.favoritesService.esFavorito(productoId);
+}
 }

@@ -1,0 +1,39 @@
+.carousel-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  button {
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  
+  button:hover {
+    background-color: rgba(167, 167, 167, 0.541);
+    color: #2c2c2c;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  .carousel-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .carousel-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+  
+  .carousel-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .product-image {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .product-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }

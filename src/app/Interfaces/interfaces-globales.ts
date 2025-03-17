@@ -2,8 +2,14 @@ export interface Estado{
     idEstado: number;
     nombre: string;
   }
-export  interface Galeria{
-    
+  export interface Galeria {
+    idGaleria: number;
+    fotoFrontal: string;
+    fotoTrasera: string;
+    fotoModeloFrontal: string;
+    fotoModeloTrasera: string;
+    fotoModeloCostado: string;
+    fotoModeloCerca: string;
   }
 export  interface Categoria{
     idCategoria: number;
@@ -22,8 +28,8 @@ export interface Producto{
     descripcion: string;
     marca: string;
     nombre: string;
-    sexo: string;
     precio: number;
+    sexo: string;
     galeria: Galeria;
     subcategoria: SubCategoria;
   }
@@ -33,27 +39,29 @@ export interface Articulo{
     color: string;
     descripcion: string;
     nombre: string;
+    precio: number;
     stock: number;
-    codigoColor: string;
     talla: string;
     estados: Estado[];
     producto: Producto;
   }
 
 export interface ProductView {
-    id: number;             // ID único del array de productos
-    producto: Producto;     // Producto
-    idProducto: string;    // ID único del producto
-    name: string;         // Nombre del producto                       
-    price: number;         // Precio del producto
-    imageUrl: string;      // URL de la imagen del producto
-    description?: string;  // Descripción del producto (opcional)
-    stock: number;        // Stock del producto (opcional)
-    color: string[];        // Color del producto (opcional)
-    size: string[];         // Talla del producto (opcional)
-    articulos: string[];     // Articulos del producto
-  }
-
+  idProducto: string;
+  subcategoria: SubCategoria;
+  sexo: string;
+  name: string;            // Nombre del producto
+  price: number;           // Precio del producto
+  imageUrl: string;        // URL de la imagen principal del producto
+  description?: string;    // Descripción del producto (opcional)
+  stock: number;
+  estados: string[];
+  color: string[];
+  size: string[];  
+  marca:string;        // Talla del producto (opcional)
+  articulos: string[];     // Artículos relacionados al producto
+  galeria: Galeria;        // Ahora `galeria` es un objeto de tipo `Galeria`
+}
 export interface Filtro {
   marca: string;
   precio: string;

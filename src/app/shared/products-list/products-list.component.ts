@@ -3,6 +3,7 @@ import { ProductCardComponent } from "../product-card/product-card.component";
 import { Articulo, Categoria, ProductView } from '../../Interfaces/interfaces-globales';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../core/service/products/products.service';
+import { FavoritesService } from '../../core/service/favorites/favorites.service';
 
 @Component({
   selector: 'app-products-list',
@@ -27,7 +28,8 @@ export class ProductsListComponent {
     constructor(
       private route: ActivatedRoute, 
       private service: ProductsService,
-      private router: Router
+      private router: Router,
+      private favoritesService: FavoritesService 
     ) {}
     
     idSubcategoria: number = 1;
@@ -82,6 +84,7 @@ export class ProductsListComponent {
 
 
   ngOnInit(): void {
+   
     this.route.paramMap.subscribe((params) => {
       this.actualizarSexoYCategoria(params);
       this.obtenerArticulos();
@@ -101,6 +104,17 @@ export class ProductsListComponent {
     this.service.listArticulos().subscribe({
       next: (data: any) => {
         this.listaArticulos = data;
+        
+        this.cargarDatos(); // Filtrar los productos después de obtener los artículos
+      },
+      error: (error) => {
+        console.error('Error al cargar los artículos:', error);
+      }
+    });
+    this.service.filtrar(this.filtros).subscribe({
+      next: (data: any) => {
+        this.listaArticulos = data;
+        
         this.cargarDatos(); // Filtrar los productos después de obtener los artículos
       },
       error: (error) => {
@@ -160,16 +174,20 @@ export class ProductsListComponent {
           let colores: string[] = [e.color];
           let articulos: string[] = [e.idArticulo];
           this.products.push({
-            id: i,
             idProducto: e.producto.idProducto,
+            subcategoria: e.producto.subcategoria,
+            sexo: e.producto.sexo,
             name: e.producto.nombre,
-            producto: e.producto,
-            price: e.producto.precio,
+            
+            price: e.precio,
             imageUrl: 'https://via.placeholder.com/150',
             stock: 1,
+            estados: e.estados.map((estado: any) => estado.nombre),
             color: colores,
             size: tallas,
-            articulos: articulos
+            articulos: articulos,
+            galeria: e.producto.galeria,
+            marca: e.producto.marca
           });
         } else {
           product.stock += 1;
@@ -183,4 +201,6 @@ export class ProductsListComponent {
         }
       });
     }
+    
+  
 }

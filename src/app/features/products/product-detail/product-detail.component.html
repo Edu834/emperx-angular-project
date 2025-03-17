@@ -9,59 +9,92 @@
             
             
             @if (product) {
-                <div class="flex flex-row  my-6">
+                <div class="flex flex-row items-center my-6">
                     <!-- Imagen del producto -->
-                    <div class="flex mt-20 w-1/2 h-[500px] space-x-3 ">
-                        <div class="w-1/5 bg-gray-300">
-
+                    <div class="flex  w-full h-[500px]">
+                        <!-- Barra lateral con miniaturas -->
+                        <div class="w-1/5 flex flex-col  bg-gray-200 overflow-y-auto" >
+                            
+                            @for (foto of getFotosGaleria(); track $index) {
+                                <div >
+                                    <img [src]="foto" alt="Imagen producto" 
+                                    class="cursor-pointer  object-cover  hover:opacity-75" 
+                                    (click)="cambiarImagen(foto)">
+                                </div>
+                                
+                            }
+                          
                         </div>
-                        <div class="w-4/5 bg-gray-300">
-                            <img  class="w-full h-auto rounded-md">
 
+                        <!-- Imagen principal -->
+                        <div class="w-4/5 flex justify-center items-center">
+                            <div class=" h-full w-full">
+                                <img  [src]="fotoSeleccionada || product?.galeria?.fotoFrontal" alt="Imagen principal producto" class="w-full h-full rounded-md object-contain ">
+                            </div>
                         </div>
-                    </div>
+                      </div>
                     
                     <!-- Detalles del producto -->
-                    <div class="w-1/2 flex justify-end ">
-                        <div class="w-full xl:w-2/3 ml-6 bg-white text-center shadow-2xl text-[#2c2c2c] p-10 inter-custom">
+                    <div class="flex justify-end w-1/2 pl-10">
+                        <div class="w-full  bg-white text-center shadow-2xl text-[#2c2c2c] p-10 inter-custom">
                                 <h3  class="text-xl cursor-pointer">{{ product.subcategoria.nombre}}</h3>
-                                <h1 class="text-2xl abril-fatface-regular">{{ product.nombre}}</h1>
-                                <span><i class="fa-regular fa-bookmark text-2xl"></i></span>
-                                <p class="text-[#474747]"> Retail price: <span class="line-through">250€</span></p>
-                            <p class="text-2xl font-semibold mt-2 text-gray-800">$100</p>
+                                <h1 class="text-2xl abril-fatface-regular">{{ product.name}}</h1>
+                                <button 
+                                (click)="toggleFavorito(product)" 
+                                class=" p-2 "
+                                >
+                                <i [ngClass]="esFavorito(product.idProducto) ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'" 
+                                class="text-[#2C2C2C] text-xl">
+                                </i>
+                                </button>
+                                <p class="text-[#474747]"> Retail price: <span class="line-through">{{ product.price}}</span></p>
+                            <p class="text-2xl font-semibold mt-2 text-gray-800"><span>Precio final</span> </p>
                             <div class="px-5 ">
                                 <div class="flex flex-wrap justify-center gap-2 w-full">
                                 <!-- Opciones de tamaño y color -->
-                                @for (color of colors; track $index) {
-                                    <div (click)="onColorChange(color.name)" class="cursor-pointer p-2 rounded-lg transition duration-200"> 
-                                        <div class="w-5 h-5" [style]="{'background': color.code, 'border': selectedColor === color.name ? '2px solid blue' : (color.border ? color.border : '1px solid #000')}"></div>
+                                @for (color of product.color; track $index) {
+                                    <div (click)="onSelectedColor(color)" class="cursor-pointer p-2 rounded-lg transition duration-200"> 
+                                        <div class="bg-amber-400">
+                                            <span >{{color}}</span>
+                                        </div>
                                        
                                     </div>
                                 }
                             </div>
+                            @if (availableSizes.length > 0) {
+                                <div class="mt-4 text-end">
+                                    <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer">Size guide</label>
+                                    <select [(ngModel)]="selectedSize" (change)="onSelectSize($event)" class="border p-2 w-full">
+                                        <option class="text-center text-[#474747]" value="" disabled selected>Select Size</option>
+                                        
+                                        @for (size of availableSizes; track $index) {
+                                            <option [value]="size">{{size}}</option> 
+                                        }
+                                    </select>
+                                </div>
+                            }
+                           
+                            @if (availableStates.length > 0) {
+                                <div class="mt-4 text-end flex flex-col w-full">
+                                  <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer">Condition information</label>
+                                  <div class="w-full grid grid-cols-2 gap-2">
+                                    @for (state of availableStates; track $index) {
+                                      <button
+                                        (click)="onSelectedState(state.idArticulo)"
+                                        [disabled]="state.deshabilitado"
+                                        [class]="{'selected-state': selectedStateId === state.idArticulo}"
+                                        class="border p-3 text-center w-full hover:bg-[#2c2c2c] hover:text-white transition">
+                                        {{ state.estados }} 
+                                      </button>
+                                    }
+                                  </div>
+                                </div>
+                              }
+                            
 
-                            <div class="mt-4 text-end ">
-                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Size guide</label>
-                                <select class="border p-2 w-full">
-                                    <option class="text-center text-[#474747]" selected>Size</option>
-
-                                    <!-- <option *ngFor="let size of product.sizes">{{ size }}</option> -->
-                                </select>
-                            </div>
                             <div class="mt-4 text-end">
                                 <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Reserve</label>
                                 <input class="w-full p-2 border-1 text-center" type="text" placeholder="Days" >
-                            </div>
-                            <div class="mt-4 text-end flex flex-col w-full">
-                                <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Condition information</label>
-                                <div class="w-full grid grid-cols-2 gap-2">
-                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Excelent</button>
-                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Very good</button>
-                                    <button class="border  p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Good</button>
-                                    <button class="border p-3 text-center w-full  hover:bg-[#2c2c2c] hover:text-white transition">Satisfactory</button>
-                                </div>
-                                
-                                
                             </div>
 
                             </div>
@@ -73,7 +106,7 @@
                                 ADD TO THE BAG
                             </button>
                             <div class="inter-custom m-4">
-                                <p>{{product.descripcion}}</p>
+                                <p>{{product.description}}</p>
                             </div>
                         </div>
                         

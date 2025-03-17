@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+
+
+                
 .app-container {
     background-image: url('assets/background/noisy_background.png');
     background-size: cover;         
@@ -27,3 +31,22 @@
     text-decoration: underline;
    
   }
+  .men-poster{
+    background-image: url('assets/men-poster.png');
+    background-size: cover;
+    background-position: center;
+    /* transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; */
+  } 
+  /* .men-poster:hover , .women-poster:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  } */
+  .women-poster{
+    background-image: url('assets/women-poster.png');
+    background-size: cover;
+    background-position: center;
+    /* transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; */
+  }
+.letterpress{
+  font-family: 'CF Letterpress Type PERSONAL', sans-serif;                                         
+}

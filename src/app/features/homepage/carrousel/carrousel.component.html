@@ -1,0 +1,32 @@
+<div class="justify-center">
+    <!-- Contenedor del carrusel que se desplaza -->
+    <div #carousel class="flex h-full  overflow-x-hidden overflow-y-hidden scroll-smooth">
+      <!-- Usamos *ngFor para iterar sobre los productos -->
+      <div *ngFor="let product of products" class="h-full w-[300px] flex-shrink-0 bg-white  shadow-md ">
+        <!-- <div [routerLink]="['/product', product.sexo, product.subcategoria.categoria.nombre , product.subcategoria.nombre, product.name]"  class="h-full cursor-pointer">
+          <img  [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-full object-cover product-image">
+        </div> -->
+        <div (click)="verProducto(product)" class="w-full relative mx-auto h-auto overflow-hidden">
+          <img [src]="product?.galeria?.fotoModeloFrontal" alt="{{ product.name }}" class="w-full h-auto relative z-0transition-all duration-300 hover:scale-110">
+          </div>
+      </div>
+    </div>
+    
+   
+  
+    <div class="flex justify-center items-center space-x-10 text-[#A3A3A3] mt-5">
+        <button class="border-1 border-[#A3A3A3] p-1 h-10 cursor-pointer">
+            Discover ({{listaArticulos.length}})
+        </button>
+        <div >
+            <button (click)="prevSlide()" class=" border-1 border-[#A3A3A3]  w-10 h-10 ">
+                &#8592;
+              </button>
+              <button (click)="nextSlide()" class=" border-1 border-[#A3A3A3]   w-10 h-10 ">
+                &#8594;
+              </button>
+        </div>
+        
+    </div>
+  </div>
+  

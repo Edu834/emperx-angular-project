@@ -8,11 +8,154 @@
     </div>
     <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
     
-    <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
+    <!-- <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
       Home Page
-    </h1>
+    </h1> -->
+    <div class="w-full mt-45 ">
+      <app-carrousel ></app-carrousel>
+    </div>
+    <div class="flex w-full items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8  mt-20">
   
-   
+      <div [routerLink]="['/products/women']" 
+           routerLinkActive="router-link-active"  
+           class="group hover:inset-ring-2 inset-ring-[#9C0000] flex items-end lg:text-9xl md:text-8xl text-6xl women-poster lg:h-[1000px] md:h-[700px] h-[500px] abril-fatface-regular text-white w-full transition-all duration-300">
+        <span class="group-hover:scale-100 group-hover:text-[105%] transition-all duration-300 cursor-pointer">WOMEN</span>
+      </div>
+    
+      <div [routerLink]="['/products/men']" 
+           class="group hover:inset-ring-2 inset-ring-[#9C0000] flex items-end lg:text-9xl md:text-8xl text-6xl justify-end men-poster lg:h-[1000px] md:h-[700px] h-[500px] abril-fatface-regular text-white w-full transition-all duration-300">
+        <span class="group-hover:scale-100 group-hover:text-[105%] transition-all duration-300 cursor-pointer">MEN</span>
+      </div>
+    
+    </div>
+    
+    <div class="abril-fatface-regular relative items-start text-[#292929] flex flex-col w-full   py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8  mt-20 ">
+      <div class="w-full h-[170px] relative">
+        <div class="absolute right-0">
+          <p class="text-8xl font-bold rotate-10 text-right letterpress">How <br>works</p>
+        </div>
+      </div>
+      <div class="flex justify-between w-full bg-[#D9D9D9] p-5 pb-10">
+        <div>
+          <p class="lg:text-7xl">1.Find</p> 
+          <p class="lg:text-4xl">exclusive pieces.</p>
+        </div>
+        <div>
+          <p class="lg:text-7xl">2.Rent</p>
+          <p class="lg:text-4xl">risk-free and enjoy.</p>
+  
+        </div>
+        <div>
+          <p class="lg:text-7xl">3.Return</p>
+          <p class="lg:text-4xl">at a pickup point.</p>
+  
+        </div>
+      </div>
+      <div class="flex bg-[#292929] text-2xl space-x-6 text-white cursor-pointer p-4">
+        <!-- <p class="hover:underline">More about</p> -->
+        <p class=" group relative w-max">
+          <span>More about</span>
+          <span class="absolute -bottom-1 left-0 w-0 transition-all h-0.5 bg-white group-hover:w-full"></span>
+          </p>
+        <img (click)="goBack()"  src="/flecha-blanca.svg" alt="">
+
+      </div>
+    </div>
+    <div>
+      
+    </div>
+    <div class="bg-[#fcfbf7] overflow-x-auto cursor-pointer mt-40 w-full flex justify-between abril-fatface-regular text-6xl text-[#292929] shadow-lg">
+      
+      <div [routerLink]="['/products/men/ready-to-wear/t-shirts']" class="w-full group min-w-[300px]">
+        <div class="border-2 border-[#9C0000] h-[550px] relative transition-all duration-300 group-hover:shadow-inner group-hover:shadow-[#FF0000]">
+          <img class="relative z-0 w-full h-full object-cover" src="/tshirts_subcategory.png" alt="">
+          <a  class="absolute w-full h-full top-0 left-0 bg-white opacity-0 z-10 transition-opacity duration-300 hover:opacity-20"></a>
+        </div>
+        <div class="flex justify-center">
+          <p class=" group  relative w-max pt-2">
+            <span>T-Shirts</span>
+            <span class="absolute -bottom-1 left-0 w-0 transition-all h-1 bg-[#292929] group-hover:w-full"></span>
+          </p>
+        </div>
+        
+      </div>
+    
+      <div [routerLink]="['/products/men/shoes']" class="w-full min-w-[300px] group">
+        <div class="border-2 border-[#9C0000] h-[550px] relative transition-all duration-300 group-hover:shadow-inner group-hover:shadow-[#FF0000]">
+          <img class="relative z-0 w-full h-full object-cover" src="/shoes_subcategory.png" alt="">
+          <a class="absolute w-full h-full top-0 left-0 bg-white opacity-0 z-10 transition-opacity duration-300 hover:opacity-20"></a>
+        </div>
+        <div class="flex justify-center">
+          <p class=" group  relative w-max pt-2">
+            <span>Shoes</span>
+            <span class="absolute -bottom-1 left-0 w-0 transition-all h-1 bg-[#292929] group-hover:w-full"></span>
+          </p>
+        </div>
+      </div>
+    
+      <div [routerLink]="['/products/men/ready-to-wear/jeans-&-trousers']" class="w-full min-w-[300px] group">
+        <div class="border-2 border-[#9C0000] h-[550px] relative transition-all duration-300 group-hover:shadow-inner group-hover:shadow-[#FF0000]">
+          <img class="relative z-0 w-full h-full object-cover" src="/jeans_subcategory.png" alt="">
+          <a class="absolute w-full h-full top-0 left-0 bg-white opacity-0 z-10 transition-opacity duration-300 hover:opacity-20"></a>
+        </div>
+        <div class="flex justify-center">
+          <p class=" group  relative w-max pt-2">
+            <span>Jeans</span>
+            <span class="absolute -bottom-1 left-0 w-0 transition-all h-1 bg-[#292929] group-hover:w-full"></span>
+          </p>
+        </div>
+      </div>
+    
+      <div [routerLink]="['/products/women/bags']" class="w-full group min-w-[300px]">
+        <div class="border-2 border-[#9C0000] h-[550px] relative transition-all duration-300 group-hover:shadow-inner group-hover:shadow-[#FF0000]">
+          <img class="relative z-0 w-full h-full object-cover" src="/bags_subcategory.png" alt="">
+          <a class="absolute w-full h-full top-0 left-0 bg-white opacity-0 z-10 transition-opacity duration-300 hover:opacity-20"></a>
+        </div>
+        <div class="flex justify-center">
+          <p class=" group  relative w-max pt-2">
+            <span>Bags</span>
+            <span class="absolute -bottom-1 left-0 w-0 transition-all h-1 bg-[#292929] group-hover:w-full"></span>
+          </p>
+        </div>
+      </div>
+    
+      <div [routerLink]="['/products/men/ready-to-wear/coats&jackets']" class="w-full group pb-4 min-w-[300px]">
+        <div class="border-2 border-[#9C0000] h-[550px] relative transition-all duration-300 group-hover:shadow-inner group-hover:shadow-[#FF0000]">
+          <img class="relative z-0 w-full h-full object-cover" src="/coat_subcategory.png" alt="">
+          <a class="absolute w-full h-full top-0 left-0 bg-white opacity-0 z-10 transition-opacity duration-300 hover:opacity-20"></a>
+        </div>
+        <div class="flex justify-center">
+          <p class=" group  relative w-max pt-2">
+            <span>Coats</span>
+            <span class="absolute -bottom-1 left-0 w-0 transition-all h-1 bg-[#292929] group-hover:w-full"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex w-full items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8  mt-20">
+      <div>
+        <img src="/hermes-logo-0.png" alt="">
+      </div>
+      <div>
+        <img src="/descarga-Photoroom (1).png" alt="">
+      </div>
+      <div>
+        <img src="/prada-logo-png-transparent.png" alt="">
+      </div>
+      <div>
+        <img src="/stussy-logo-Photoroom.png" alt="">
+      </div>
+    </div>
+    
+    <div class="w-full h-[500px] bg-linear-to-t to-[#BE0000] from-[#9C0000] relative mt-50 text-[#292929] flex flex-col items-center justify-center">
+        <div class="flex w-full items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 ">
+          <p class="text-8xl font-bold letterpress -top-45 -rotate-10 absolute">Last <br>reviews</p>
+        </div>
+
+    </div>
+    
+    
     <app-footer></app-footer>
   </div>
   

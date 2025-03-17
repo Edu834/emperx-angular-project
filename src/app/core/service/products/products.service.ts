@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 
 @Injectable({
@@ -79,5 +79,18 @@ export class ProductsService {
     );
   }
 
-  
+ 
+
+  getArticulosByNameProduct(name: string) {
+    return this.http.get('http://localhost:8087/api/articulos/buscarPorNombreProducto/' + name).pipe(
+      catchError(error => {
+        console.error('There was an error!', error);
+        return of(null);  
+      })
+    );
+  }
+
+  obtenerProductos(): Observable<any> {
+    return this.http.get<any>('http://localhost:8087/api/productos/');
+  }
 }
