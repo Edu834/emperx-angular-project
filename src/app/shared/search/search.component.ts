@@ -11,7 +11,7 @@ import { ProductView } from '../../Interfaces/interfaces-globales';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, RoutesComponent, FilterPanelComponent, ProductsListComponent],
+  imports: [CommonModule, FormsModule, RoutesComponent],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })

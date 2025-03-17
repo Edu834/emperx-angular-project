@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { FilterService } from '../../../core/service/filter/filter.service';
 
 @Component({
   selector: 'app-filter-panel',
@@ -10,8 +11,9 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./filter-panel.component.css']
 })
 export class FilterPanelComponent {
-  @Input() mostrarFiltros: boolean = false;  // Usamos un valor por defecto (false)
+  @Input() mostrarFiltros: boolean = false;
   @Output() filtrosAplicados = new EventEmitter<any>();
+
   // Filtros seleccionados
   selectedBrand: string | null = null;
   selectedColor: string | null = null;
@@ -19,7 +21,7 @@ export class FilterPanelComponent {
   selectedSizes: string[] = [];
 
   // Variables relacionadas con la navegación
-  genderRoute: string = 'men'; // Default a 'men', puede ser 'women' según la ruta
+  genderRoute: string = 'men';
   category: string = 'view-all';
   subcategory: string = 'view-all';
   isCheckedMen: boolean = false;
@@ -29,11 +31,11 @@ export class FilterPanelComponent {
   // Opciones de filtros
   brands: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Under Armour'];
   subcategories: { [key: string]: string[] } = {
-    men: ['View all', 'Suits', 'Coats&Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops&Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats'],
+    men: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats'],
     women: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats']
   };
 
-  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];  // Opciones de tallas
+  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   readonly priceRanges = [
     { label: '0€ - 25€', value: '0-25' },
@@ -57,29 +59,31 @@ export class FilterPanelComponent {
     { name: 'Amarillo', code: '#FFEB3B' },
   ];
 
-  // Constructor para la inyección de dependencias
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private filterService: FilterService) {}
 
   ngOnInit(): void {
-    // Obtener parámetros de la ruta
     this.route.paramMap.subscribe((params) => {
       this.genderRoute = params.get('gender') || 'men';
       this.category = params.get('category') || 'view-all';
       this.subcategory = params.get('subcategory') || 'view-all';
+      this.selectedBrand = params.get('brand') || null;
+      this.selectedColor = params.get('color') || null;
+      this.selectedPriceRange = params.get('price') || null;
+      this.selectedSizes = params.get('sizes') ? params.get('sizes')!.split(',') : [];
 
       this.activeSubcategory = this.subcategories[this.genderRoute]?.find(
         sub => sub.toLowerCase().replace(/ /g, '-') === this.subcategory
       ) || 'View all';
 
-      // Sincronizar con los filtros iniciales
       this.isCheckedMen = this.genderRoute === 'men';
       this.isCheckedWomen = this.genderRoute === 'women';
 
       this.mostrarFiltros = !!this.category;
     });
+
+    this.updateFilters();
   }
 
-  // Métodos de cambio de filtro
   onColorChange(color: string) {
     this.selectedColor = this.selectedColor === color ? null : color;
     this.updateFilters();
@@ -98,13 +102,13 @@ export class FilterPanelComponent {
   onGenderChange(gender: string) {
     this.isCheckedMen = gender === 'men';
     this.isCheckedWomen = gender === 'women';
-    this.router.navigate(['/products', gender, this.category, this.subcategory]);
+    this.router.navigate(['/products', gender, this.category, this.subcategory], { queryParamsHandling: 'merge' });
   }
 
   onSubcategoryChange(subcategory: string) {
     this.activeSubcategory = subcategory;
     this.subcategory = subcategory.toLowerCase().replace(/ /g, '-');
-    this.router.navigate(['/products', this.genderRoute, this.category, this.subcategory]);
+    this.router.navigate(['/products', this.genderRoute, this.category, this.subcategory], { queryParamsHandling: 'merge' });
   }
 
   onSizeChange(size: string) {
@@ -116,39 +120,38 @@ export class FilterPanelComponent {
     this.updateFilters();
   }
 
-  // Método para actualizar la URL con los filtros aplicados
   updateFilters() {
-    const queryParams: any = {};
-    if (this.selectedBrand) queryParams.brand = this.selectedBrand;
-    if (this.selectedColor) queryParams.color = this.selectedColor;
-    if (this.selectedPriceRange) queryParams.price = this.selectedPriceRange;
-    if (this.selectedSizes.length > 0) queryParams.sizes = this.selectedSizes.join(',');
+    const filters: any = {
+      brand: this.selectedBrand || undefined,
+      color: this.selectedColor || undefined,
+      price: this.selectedPriceRange || undefined,
+      sizes: this.selectedSizes.length > 0 ? this.selectedSizes : undefined
+    };
 
-    this.router.navigate([], { queryParams });
-    this.filtrosAplicados.emit(queryParams);
-    console.log(queryParams)
-    // this.filtrosAplicados.emit(queryParams);
+    this.filterService.applyFilters(filters);
 
+    this.router.navigate([], {
+      queryParams: Object.fromEntries(Object.entries(filters).filter(([_, v]) => v != null)),
+      queryParamsHandling: 'merge'
+    });
   }
 
-  // Métodos para obtener los valores de los filtros seleccionados
   getSelectedBrand(): string {
-    return this.selectedBrand ? this.selectedBrand : 'Sin marca seleccionada';
+    return this.selectedBrand || 'Sin marca seleccionada';
   }
 
   getFilteredPriceRange(): string {
-    return this.selectedPriceRange ? this.selectedPriceRange : 'Sin filtro de precio';
+    return this.selectedPriceRange || 'Sin filtro de precio';
   }
 
   getSelectedColor(): string {
-    return this.selectedColor ? this.selectedColor : 'Sin color seleccionado';
+    return this.selectedColor || 'Sin color seleccionado';
   }
 
   getSelectedSizes(): string {
     return this.selectedSizes.length ? this.selectedSizes.join(', ') : 'Ninguna talla seleccionada';
   }
 
-  // Manejo de la visibilidad de los filtros
   filterVisibility: { [key: string]: boolean } = {
     gender: true,
     subcategory: false,
