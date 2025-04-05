@@ -1,10 +1,22 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full ">
-    @for (product of products; track $index) {
-        <div class="relative">
-            <app-product-card [product]="product"></app-product-card>
-            
-        </div>
-    }
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="300"
+  (scrolled)="onScroll()"
+>
+  @for (product of productosPaginados; track $index) {
+    <div class="relative">
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+  }
+  <div *ngIf="loading" class="text-center mt-8 text-gray-500">
+    <p>Cargando productos...</p>
+  </div>
+  
+  <!-- <div *ngIf="!loading && productosPaginados.length >= products.length" class="text-center mt-8 text-gray-400">
+    <p>No hay más productos para mostrar.</p>
+  </div> -->
 </div>
 
-    
+

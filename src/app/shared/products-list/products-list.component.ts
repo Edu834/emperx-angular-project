@@ -1,50 +1,60 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductCardComponent } from "../product-card/product-card.component";
-import { Articulo, Categoria, ProductView } from '../../Interfaces/interfaces-globales';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Articulo, ProductView } from '../../Interfaces/interfaces-globales';
+import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../core/service/products/products.service';
-import { FavoritesService } from '../../core/service/favorites/favorites.service';
 import { FilterService } from '../../core/service/filter/filter.service';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, InfiniteScrollDirective, CommonModule],
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css']
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy {
   showChild = false;
   listaArticulos: Articulo[] = [];
+  listaArticulosOriginal: Articulo[] = [];
   products: ProductView[] = [];
+  productosPaginados: ProductView[] = [];
+  filtros: any = {};
+  filtrosSubscription!: Subscription;
   gender: string = ''; 
   mostrarCategoria: boolean = false;
-  filtros: any = {};
-  
-  idSubcategoria: number = 1;
-  sexo: string = "H";
   nombreCategoria: string = '';
   nombreSubcategoria: string = '';
+  sexo: string = "H";
   idCategoria: any = '';
 
+  // Paginación
+  pageSize: number = 6;
+  currentPage: number = 1;
+  loading: boolean = false;
+
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private service: ProductsService,
-    private filterService: FilterService  // Inyectamos el servicio de filtros
+    private filterService: FilterService
   ) {}
 
   ngOnInit(): void {
-    // Escuchar cambios en la URL para actualizar género y categoría
     this.route.paramMap.subscribe((params) => {
       this.actualizarSexoYCategoria(params);
       this.obtenerArticulos();
     });
 
-    // Escuchar cambios en los filtros del `FilterService`
-    this.filterService.filters$.subscribe(filters => {
+    this.filtrosSubscription = this.filterService.filters$.subscribe(filters => {
       this.filtros = filters;
-      this.aplicarFiltros();
+      this.aplicarFiltros(); // Aplicamos los filtros cada vez que cambian
     });
+  }
+
+  ngOnDestroy(): void {
+    this.filtrosSubscription?.unsubscribe();
   }
 
   actualizarSexoYCategoria(params: any): void {
@@ -56,11 +66,11 @@ export class ProductsListComponent implements OnInit {
   }
 
   obtenerArticulos(): void {
-    // Obtener todos los artículos de la API
     this.service.listArticulos().subscribe({
       next: (data: any) => {
-        this.listaArticulos = data;
-        this.aplicarFiltros(); // Filtrar los productos después de obtener los artículos
+        this.listaArticulosOriginal = data;
+        this.listaArticulos = [...data];
+        this.aplicarFiltros(); // Aplicamos los filtros cuando obtenemos los artículos
       },
       error: (error) => {
         console.error('Error al cargar los artículos:', error);
@@ -68,47 +78,50 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
+  // Método para aplicar filtros a los artículos
   aplicarFiltros(): void {
     console.log('Aplicando filtros:', this.filtros);
+    let articulosFiltrados = [...this.listaArticulosOriginal];
 
-    // Filtrar `listaArticulos` según los filtros aplicados
-    let articulosFiltrados = this.listaArticulos.filter(articulo => {
-      let cumpleFiltros = true;
+    // Filtramos los productos de acuerdo a los filtros aplicados
+    if (this.filtros) {
+      articulosFiltrados = articulosFiltrados.filter(articulo => {
+        let cumpleFiltros = true;
 
-      if (this.filtros.brand) {
+        if (this.filtros.brand) {
           cumpleFiltros = cumpleFiltros && articulo.producto.marca === this.filtros.brand;
-      }
-      if (this.filtros.color) {
+        }
+        if (this.filtros.color) {
           cumpleFiltros = cumpleFiltros && articulo.color === this.filtros.color;
-      }
-      if (this.filtros.priceRange) {
-          const [minPrice, maxPrice] = this.filtros.priceRange.split('-').map(Number);
+        }
+        if (this.filtros.priceRange) {
+          const [minPrice, maxPrice] = (this.filtros.priceRange || '0-999999').split('-').map(Number);
           cumpleFiltros = cumpleFiltros && articulo.producto.precio >= minPrice && articulo.producto.precio <= maxPrice;
-      }
-      if (this.filtros.size) {
-          cumpleFiltros = cumpleFiltros && articulo.talla === this.filtros.size;
-      }
+        }
+        if (this.filtros.size && this.filtros.size.length > 0) {
+          cumpleFiltros = cumpleFiltros && this.filtros.size.includes(articulo.talla);
+        }
 
-      return cumpleFiltros;
-  });
+        return cumpleFiltros;
+      });
+    }
 
-
-
-    // Aplicar filtros de género y categoría
-    if (this.nombreCategoria === '' && this.nombreSubcategoria === '') {
-      articulosFiltrados = articulosFiltrados.filter(a => a.producto.sexo === this.sexo);
-    } else if (this.nombreCategoria !== '' && this.nombreSubcategoria === '') {
-      articulosFiltrados = articulosFiltrados.filter(a => 
-        a.producto.subcategoria.categoria.nombre.toLowerCase().trim() === this.nombreCategoria && 
-        a.producto.sexo === this.sexo
-      );
-    } else if (this.nombreSubcategoria !== '' && this.nombreSubcategoria !== 'view-all') {
+    // Filtros por categoría y subcategoría
+    if (this.nombreSubcategoria && this.nombreSubcategoria !== 'view-all') {
       articulosFiltrados = articulosFiltrados.filter(a => 
         a.producto.subcategoria.nombre.toLowerCase().trim() === this.nombreSubcategoria &&
         a.producto.sexo === this.sexo
       );
+    } else if (this.nombreCategoria && this.nombreCategoria !== 'view-all') {
+      articulosFiltrados = articulosFiltrados.filter(a => 
+        a.producto.subcategoria.categoria.nombre.toLowerCase().trim() === this.nombreCategoria &&
+        a.producto.sexo === this.sexo
+      );
+    } else {
+      articulosFiltrados = articulosFiltrados.filter(a => a.producto.sexo === this.sexo);
     }
 
+    // Actualizamos la lista de productos filtrados
     this.listaArticulos = articulosFiltrados;
     this.cargarCartasProductos();
   }
@@ -141,5 +154,29 @@ export class ProductsListComponent implements OnInit {
         product.articulos.push(e.idArticulo);
       }
     });
+
+    this.currentPage = 1;
+    this.productosPaginados = this.products.slice(0, this.pageSize);
   }
+
+  onScroll(): void {
+    if (this.loading) return;
+  
+    this.loading = true;
+  
+    setTimeout(() => {
+      const nextPage = this.currentPage + 1;
+      const start = (nextPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+  
+      const siguientes = this.products.slice(start, end);
+      if (siguientes.length > 0) {
+        this.productosPaginados = [...this.productosPaginados, ...siguientes];
+        this.currentPage = nextPage;
+      }
+  
+      this.loading = false;
+    }, 500);
+  }
+  
 }
