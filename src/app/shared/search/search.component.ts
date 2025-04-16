@@ -1,31 +1,31 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductsService } from '../../core/service/products/products.service';
 import { RoutesComponent } from './routes/routes.component';
-import { FilterPanelComponent } from './filter-panel/filter-panel.component';
-import { ProductsListComponent } from '../products-list/products-list.component';
-import { ProductView } from '../../Interfaces/interfaces-globales';
 import { FilterService } from '../../core/service/filter/filter.service';
+import { FilterSummaryComponent } from "./filter-summary/filter-summary.component";
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, RoutesComponent],
+  imports: [CommonModule, FormsModule, RoutesComponent, FilterSummaryComponent],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-
-  query: string = ''; // Valor del input de búsqueda
-  productos: any[] = []; // Todos los productos disponibles
-  productosFiltrados: any[] = []; // Productos filtrados basados en la búsqueda
-  showProductList: boolean = false; // Variable para controlar la visibilidad de la lista de productos
+  query: string = '';
+  productos: any[] = [];
+  productosFiltrados: any[] = [];
+  showProductList: boolean = false;
+  filtrosSeleccionados: any = {};
 
   @ViewChild('searchBox') searchBox!: ElementRef;
 
-  gender: string = ''; 
+  gender: string = '';
   category: string | undefined;
   name: string | null | undefined;
 
@@ -36,8 +36,6 @@ export class SearchComponent implements OnInit {
   @Output() toggleFiltrosEvent = new EventEmitter<boolean>();
   @Input() newArrivalsHeader: boolean | undefined;
 
-  filters: Record<string, any> = {}; // Cambié 'any' por un tipo más específico
-
   constructor(
     private route: ActivatedRoute,
     private productoService: ProductsService,
@@ -46,48 +44,29 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obtener todos los productos desde la API
     this.productoService.obtenerProductos().subscribe({
       next: (data) => {
-        console.log('Productos obtenidos:', data);
         this.productos = data || [];
+        this.applyFilters(); // aplicar filtros si ya hay
       },
       error: (err) => {
         console.error('Error obteniendo productos:', err);
       }
     });
 
-    // Suscribirse a los cambios de filtros
     this.filterService.filters$.subscribe(filters => {
-      this.filters = filters;
-      this.applyFilters(); // Aplicar filtros después de que se actualicen
+      this.filtrosSeleccionados = filters;
+      this.applyFilters();
     });
 
-    // Manejo de parámetros de ruta
     this.route.paramMap.subscribe((params) => {
       this.gender = params.get('gender') || '';
       this.category = params.get('category') || '';
-      this.name = params.get('name'); // Capturar el nombre del producto si existe
+      this.name = params.get('name');
 
-      // Mostrar filtros solo si hay 'gender' y 'category', pero NO un 'name'
       this.mostrarFiltros = !!this.gender && !!this.category && !this.name;
       this.mostrarBotonFiltros = this.mostrarFiltros;
     });
-  }
-
-  // Obtener las claves de los filtros para mostrar dinámicamente
-  objectKeys(obj: any): string[] {
-    return Object.keys(obj);
-  }
-
-  // Eliminar filtro desde el FilterDisplayComponent
-  removeFilter(filterKey: string): void {
-    this.filterService.removeFilter(filterKey);
-  }
-
-  // Actualizar un filtro desde el componente de filtros
-  updateFilter(key: string, value: any): void {
-    this.filterService.updateFilter(key, value);
   }
 
   toggleFiltros(): void {
@@ -96,20 +75,52 @@ export class SearchComponent implements OnInit {
     this.toggleFiltrosEvent.emit(this.mostrarFiltros);
   }
 
-  // Método para aplicar filtros a la lista de productos
+  // 👇 Eliminar individualmente un filtro desde FilterSummary
+onEliminarFiltro(filtro: { nombre: string, valor: string }) {
+  const { nombre, valor } = filtro;
+
+  if (!this.filtrosSeleccionados[nombre]) return;
+
+  // Si es un array (como talla o color múltiple)
+  if (Array.isArray(this.filtrosSeleccionados[nombre])) {
+    this.filtrosSeleccionados[nombre] = this.filtrosSeleccionados[nombre].filter((v: string) => v !== valor);
+
+    // Si el array queda vacío, eliminamos la propiedad
+    if (this.filtrosSeleccionados[nombre].length === 0) {
+      delete this.filtrosSeleccionados[nombre];
+    }
+  } 
+  // Si es un valor único (como brand o priceRange)
+  else if (this.filtrosSeleccionados[nombre] === valor) {
+    delete this.filtrosSeleccionados[nombre];
+  }
+
+  // ✅ Aplicar los filtros actualizados globalmente
+  this.filterService.applyFilters({ ...this.filtrosSeleccionados });
+}
+
+
   applyFilters(): void {
-    if (Object.keys(this.filters).length > 0) {
+    const filters = this.filtrosSeleccionados;
+
+    if (Object.keys(filters).length > 0) {
       this.productosFiltrados = this.productos.filter(producto =>
-        Object.keys(this.filters).every(filterKey => {
-          const filterValue = this.filters[filterKey];
-          if (filterKey === 'gender' && producto.sexo) {
-            return producto.sexo === filterValue;
+        Object.keys(filters).every(key => {
+          const value = filters[key];
+
+          if (key === 'gender' && producto.sexo) {
+            return producto.sexo === value;
           }
-          if (filterKey === 'category' && producto.subcategoria) {
-            return producto.subcategoria.categoria.nombre === filterValue;
+
+          if (key === 'category' && producto.subcategoria) {
+            return producto.subcategoria.categoria.nombre === value;
           }
-          // Agregar más filtros según sea necesario
-          return true;
+
+          if (Array.isArray(value)) {
+            return value.includes(producto[key]);
+          }
+
+          return producto[key] === value;
         })
       );
     } else {
@@ -117,12 +128,11 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  // Método para filtrar productos, categorías y subcategorías
   onSearchChange(): void {
     const queryLower = this.query.toLowerCase().trim();
-    if (this.query.trim() === '') {
-      this.productosFiltrados = []; // Si no hay texto, vaciar los productos filtrados
-      this.showProductList = false; // Ocultar la lista
+    if (queryLower === '') {
+      this.productosFiltrados = [];
+      this.showProductList = false;
     } else {
       this.productosFiltrados = this.productos.filter(producto =>
         producto.nombre?.toLowerCase().includes(queryLower) ||
@@ -130,28 +140,26 @@ export class SearchComponent implements OnInit {
         producto.subcategoria?.categoria?.nombre?.toLowerCase().includes(queryLower) ||
         producto.marca?.toLowerCase().includes(queryLower)
       );
-      
-      this.showProductList = this.productosFiltrados.length > 0; // Mostrar la lista si hay resultados
+
+      this.showProductList = this.productosFiltrados.length > 0;
     }
   }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     if (!this.searchBox.nativeElement.contains(event.target)) {
-      this.showProductList = false; // Ocultar la lista de productos
+      this.showProductList = false;
     } else {
-      this.showProductList = true; // Mostrar la lista de productos
+      this.showProductList = true;
     }
   }
 
-  // Redirigir al producto, categoría o subcategoría cuando se presiona Enter
   onEnter(): void {
     if (this.productosFiltrados.length > 0) {
       this.redirigir(this.productosFiltrados[0]);
     }
   }
 
-  // Redirigir a la página de detalle correspondiente
   redirigir(item: any): void {
     if (item.idProducto) {
       this.router.navigate(['/producto', item.idProducto]);
@@ -165,26 +173,13 @@ export class SearchComponent implements OnInit {
   }
 
   verProducto(product: any): void {
-    console.log('Ver producto:', product);
+    if (!product) return;
 
-    if (!product) {
-        console.error('❌ Producto inválido:', product);
-        return;
-    }
+    const sexo = product.sexo === 'H' ? 'men' : product.sexo === 'M' ? 'women' : product.sexo.toLowerCase();
+    const categoria = product.subcategoria?.categoria?.nombre?.toLowerCase() || 'unknown';
+    const subcategoria = product.subcategoria?.nombre?.toLowerCase() || 'unknown';
+    const nombre = product.nombre?.toLowerCase().trim() || 'unknown';
 
-    const sexoTransformado = product.sexo
-        ? product.sexo === 'H' ? 'men' : product.sexo === 'M' ? 'women' : product.sexo.toLowerCase()
-        : 'unknown';
-
-    const categoriaTransformada = product.subcategoria?.categoria?.nombre?.toLowerCase() || 'unknown';
-    const subcategoriaTransformada = product.subcategoria?.nombre?.toLowerCase() || 'unknown';
-    const nombreTransformado = product.nombre?.toLowerCase().trim() || 'unknown';
-
-    console.log('🟢 Sexo:', sexoTransformado);
-    console.log('🟢 Categoría:', categoriaTransformada);
-    console.log('🟢 Subcategoría:', subcategoriaTransformada);
-    console.log('🟢 Nombre transformado:', nombreTransformado);
-
-    this.router.navigate(['/product', sexoTransformado, categoriaTransformada, subcategoriaTransformada, nombreTransformado]);
+    this.router.navigate(['/product', sexo, categoria, subcategoria, nombre]);
   }
 }

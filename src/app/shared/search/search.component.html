@@ -49,13 +49,14 @@
           </div>
         </div>
       </div>
-      <!-- Mostrar filtros seleccionados -->
+      
+      <!-- Mostrar filtros seleccionados
       <div *ngIf="filters">
         <div *ngFor="let filter of objectKeys(filters)">
           <span>{{ filter }}: {{ filters[filter] }}</span>
           <button (click)="removeFilter(filter)">Deseleccionar</button>
         </div>
-      </div>
+      </div> -->
         <!-- <div class="flex justify-between items-center px-4 bg-[#D9D9D9] h-[50px] sm:w-[70%] w-[60%] xl:w-[35%] abril-fatface-regular shadow-md">
             <i class="fa-solid fa-magnifying-glass pr-4"></i>
             
@@ -112,10 +113,18 @@
         <div class="flex w-full justify-between mx-auto text-white">
             <app-routes></app-routes>
             @if (mostrarBotonFiltros) {
+              <div class="flex content-end cursor-pointer space-x-1">
+                <app-filter-summary class="content-end mr-4"
+                  (eliminarFiltro)="onEliminarFiltro($event)">
+                </app-filter-summary>
                 <div class="content-end cursor-pointer space-x-1" (click)="toggleFiltros()">
+                    
                     <span class="hover:underline">{{textHideFilter}}</span> 
                     <button ><i class="fa-solid fa-sliders "></i></button>
                 </div>
+              </div>
+                
+                
             }
             
             

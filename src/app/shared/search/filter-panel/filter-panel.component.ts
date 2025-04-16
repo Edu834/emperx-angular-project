@@ -33,7 +33,7 @@ export class FilterPanelComponent implements OnInit {
     women: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats']
   };
 
-  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // sizes: string[] = ['XXS','XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL', '6XL', '7XL', '8XL', '9XL', '10XL'];
 
   readonly priceRanges = [
     { label: '0€ - 25€', value: '0-25' },
@@ -78,10 +78,7 @@ export class FilterPanelComponent implements OnInit {
       this.category = params.get('category') || 'view-all';
       this.subcategory = params.get('subcategory') || 'view-all';
 
-      this.selectedBrand = params.get('brand') || null;
-      this.selectedColor = params.get('color') || null;
-      this.selectedPriceRange = params.get('price') || null;
-      this.selectedSizes = params.get('sizes') ? params.get('sizes')!.split(',') : [];
+      
 
       this.activeSubcategory = this.subcategories[this.genderRoute]?.find(
         sub => sub.toLowerCase().replace(/ /g, '-') === this.subcategory
@@ -95,6 +92,9 @@ export class FilterPanelComponent implements OnInit {
 
     this.filterService.filters$.subscribe(filters => {
       this.selectedSizes = filters.size || [];
+      this.selectedBrand = filters.brand || null;
+      this.selectedColor = filters.color || null;
+      this.selectedPriceRange = filters.priceRange || null;
     });
   }
 
@@ -127,30 +127,30 @@ export class FilterPanelComponent implements OnInit {
     this.updateFilters();
   }
 
-  // Método para eliminar un filtro individual
-  onRemoveFilter(filterName: string, value: string): void {
-    switch (filterName) {
-      case 'brand':
-        if (this.selectedBrand === value) {
-          this.selectedBrand = null;
-        }
-        break;
-      case 'color':
-        if (this.selectedColor === value) {
-          this.selectedColor = null;
-        }
-        break;
-      case 'priceRange':
-        if (this.selectedPriceRange === value) {
-          this.selectedPriceRange = null;
-        }
-        break;
-      case 'size':
-        this.selectedSizes = this.selectedSizes.filter(size => size !== value);
-        break;
-    }
-    this.updateFilters();
-  }
+  // // Método para eliminar un filtro individual
+  // onRemoveFilter(filterName: string, value: string): void {
+  //   switch (filterName) {
+  //     case 'brand':
+  //       if (this.selectedBrand === value) {
+  //         this.selectedBrand = null;
+  //       }
+  //       break;
+  //     case 'color':
+  //       if (this.selectedColor === value) {
+  //         this.selectedColor = null;
+  //       }
+  //       break;
+  //     case 'priceRange':
+  //       if (this.selectedPriceRange === value) {
+  //         this.selectedPriceRange = null;
+  //       }
+  //       break;
+  //     case 'size':
+  //       this.selectedSizes = this.selectedSizes.filter(size => size !== value);
+  //       break;
+  //   }
+  //   this.updateFilters();
+  // }
 
   // Método para cambiar el género (hombres/mujeres)
   onGenderChange(gender: string) {
