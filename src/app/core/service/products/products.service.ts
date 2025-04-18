@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { Producto, ProductView, Subcategoria } from '../../../Interfaces/interfaces-globales';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
+  
+  
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -53,14 +55,16 @@ export class ProductsService {
       })
     );
   }
-  listSubcategorias() {
-    return this.http.get('http://localhost:8087/api/articulos/subcategorias').pipe(
+  listSubcategorias(nombreCat: string): Observable<Subcategoria[] | null> {
+    return this.http.get<Subcategoria[]>('http://localhost:8087/api/articulos/subcategorias/' + nombreCat).pipe(
       catchError(error => {
         console.error('There was an error!', error);
         return of(null);
       })
     );
   }
+  
+  
   getProductById(id: string) {
     return this.http.get<Producto>(`http://localhost:8087/api/productos/buscarUno/${id}`).pipe(
       catchError(error => {

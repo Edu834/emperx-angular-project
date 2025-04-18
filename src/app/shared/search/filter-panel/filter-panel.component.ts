@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../core/service/filter/filter.service';
+import { ProductsService } from '../../../core/service/products/products.service';
+import { Subcategoria } from '../../../Interfaces/interfaces-globales';
 
 @Component({
   selector: 'app-filter-panel',
@@ -28,10 +30,8 @@ export class FilterPanelComponent implements OnInit {
 
   brands: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Under Armour'];
 
-  subcategories: { [key: string]: string[] } = {
-    men: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats'],
-    women: ['View all', 'Suits', 'Coats & Jackets', 'Dresses', 'Skirts', 'T-Shirts', 'Tops & Bodysuits', 'Jeans & Trousers', 'Knitwear', 'Sweatshirts', 'Totes', 'Clutches', 'Boots', 'Sneakers', 'Watches', 'Hats']
-  };
+  subcategories: string[] = [];
+
 
   // sizes: string[] = ['XXS','XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '4XL', '5XL', '6XL', '7XL', '8XL', '9XL', '10XL'];
 
@@ -65,11 +65,13 @@ export class FilterPanelComponent implements OnInit {
     brand: false,
     color: false
   };
+ 
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private productService: ProductsService // <- Este debe estar aquí
   ) {}
 
   ngOnInit(): void {
@@ -77,19 +79,16 @@ export class FilterPanelComponent implements OnInit {
       this.genderRoute = params.get('gender') || 'men';
       this.category = params.get('category') || 'view-all';
       this.subcategory = params.get('subcategory') || 'view-all';
-
-      
-
-      this.activeSubcategory = this.subcategories[this.genderRoute]?.find(
-        sub => sub.toLowerCase().replace(/ /g, '-') === this.subcategory
-      ) || 'View all';
-
+  
       this.isCheckedMen = this.genderRoute === 'men';
       this.isCheckedWomen = this.genderRoute === 'women';
-
+  
+      // 🆕 Obtener subcategorías dinámicas desde el servicio
+      this.getSubcategoriasDinamicas(this.category);
+      console.log("hola",this.getSubcategoriasDinamicas)
       this.updateFilters();
     });
-
+  
     this.filterService.filters$.subscribe(filters => {
       this.selectedSizes = filters.size || [];
       this.selectedBrand = filters.brand || null;
@@ -97,6 +96,32 @@ export class FilterPanelComponent implements OnInit {
       this.selectedPriceRange = filters.priceRange || null;
     });
   }
+
+  getSubcategoriasDinamicas(categoryName: string): void {
+    if (!categoryName || categoryName === 'view-all') {
+      this.subcategories = ['View all'];
+      return;
+    }
+  
+    this.productService.listSubcategorias(categoryName).subscribe((data: Subcategoria[] | null) => {
+      if (Array.isArray(data) && data.length > 0) {
+        // Mapear nombres y eliminar 'Skirts' y 'Dresses' si estás en 'men'
+        let nombresSubcategorias = data.map(sub => sub.nombre);
+  
+        if (this.genderRoute === 'men') {
+          nombresSubcategorias = nombresSubcategorias.filter(
+            nombre => nombre.toLowerCase() !== 'skirts' && nombre.toLowerCase() !== 'dresses'
+          );
+        }
+  
+        this.subcategories = ['View all', ...nombresSubcategorias];
+      } else {
+        this.subcategories = ['View all'];
+      }
+    });
+  }
+  
+
 
   toggleDropdown(filter: string) {
     this.filterVisibility[filter] = !this.filterVisibility[filter];

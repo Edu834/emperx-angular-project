@@ -16,7 +16,7 @@ export  interface Categoria{
     nombre: string;
     descripcion: string;
   }
-export interface SubCategoria{
+export interface Subcategoria{
     idSubcategoria: number;
     nombre: string;
     descripcion: string;
@@ -31,7 +31,7 @@ export interface Producto{
     precio: number;
     sexo: string;
     galeria: Galeria;
-    subcategoria: SubCategoria;
+    subcategoria: Subcategoria;
   }
   
 export interface Articulo{
@@ -48,7 +48,7 @@ export interface Articulo{
 
 export interface ProductView {
   idProducto: string;
-  subcategoria: SubCategoria;
+  subcategoria: Subcategoria;
   sexo: string;
   name: string;            // Nombre del producto
   price: number;           // Precio del producto

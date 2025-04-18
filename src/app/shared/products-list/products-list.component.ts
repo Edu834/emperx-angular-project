@@ -41,6 +41,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private filterService: FilterService
   ) {}
 
+  
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.actualizarSexoYCategoria(params);
@@ -137,7 +138,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
           subcategoria: e.producto.subcategoria,
           sexo: e.producto.sexo,
           name: e.producto.nombre,
-          price: e.precio,
+          price: e.producto.precio,
           imageUrl: 'https://via.placeholder.com/150',
           stock: 1,
           estados: e.estados.map((estado: any) => estado.nombre),

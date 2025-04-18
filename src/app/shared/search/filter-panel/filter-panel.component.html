@@ -26,11 +26,16 @@
                                 }
                                 @case ('subcategory') {
                                     <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
-                                        @for (subcategory of subcategories[genderRoute]; track $index) {
-                                            <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
-                                        }
+                                      @for (subcategory of subcategories; track $index) {
+                                        <button 
+                                          class="text-start text-2xl hover:underline"
+                                          [class.activeSubcategory]="activeSubcategory === subcategory"
+                                          (click)="onSubcategoryChange(subcategory)">
+                                          {{ subcategory }}
+                                        </button>
+                                      }
                                     </div>
-                                }
+                                  }
                                 @case ('size') {
                                     <div class="flex flex-wrap justify-start gap-2 w-full">
                                         @for (size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']; track $index) {
