@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ProductCardComponent } from "../product-card/product-card.component";
 import { Articulo, ProductView } from '../../Interfaces/interfaces-globales';
 import { ActivatedRoute } from '@angular/router';
@@ -29,11 +29,15 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   nombreSubcategoria: string = '';
   sexo: string = "H";
   idCategoria: any = '';
+  @Output() articulosCargados = new EventEmitter<Articulo[]>();
 
   // Paginación
   pageSize: number = 6;
   currentPage: number = 1;
   loading: boolean = false;
+  availableSizes: string[] = [];
+  
+
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +45,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     private filterService: FilterService
   ) {}
 
-  
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.actualizarSexoYCategoria(params);
@@ -71,34 +75,48 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       next: (data: any) => {
         this.listaArticulosOriginal = data;
         this.listaArticulos = [...data];
+        this.articulosCargados.emit(this.listaArticulosOriginal); // 👈 aquí
+
         this.aplicarFiltros(); // Aplicamos los filtros cuando obtenemos los artículos
+        this.filterService.setAvailableSizesFromCategory(this.listaArticulos, this.nombreCategoria, this.nombreSubcategoria);
+
       },
       error: (error) => {
         console.error('Error al cargar los artículos:', error);
       }
     });
   }
-
+  obtenerTallasDisponibles(articulos: Articulo[]): string[] {
+    const tallas = articulos.map(a => a.talla).filter((value, index, self) => self.indexOf(value) === index);
+    return tallas;
+  }
   // Método para aplicar filtros a los artículos
   aplicarFiltros(): void {
     console.log('Aplicando filtros:', this.filtros);
-    let articulosFiltrados = [...this.listaArticulosOriginal];
+    let articulosFiltrados = [...this.listaArticulosOriginal];  // Copia de la lista original de artículos
 
     // Filtramos los productos de acuerdo a los filtros aplicados
     if (this.filtros) {
       articulosFiltrados = articulosFiltrados.filter(articulo => {
         let cumpleFiltros = true;
 
-        if (this.filtros.brand) {
-          cumpleFiltros = cumpleFiltros && articulo.producto.marca === this.filtros.brand;
+        // Filtrar por marcas (múltiples marcas permitidas)
+        if (this.filtros.brand && this.filtros.brand.length > 0) {
+          cumpleFiltros = cumpleFiltros && this.filtros.brand.includes(articulo.producto.marca);
         }
+
+        // Filtrar por color
         if (this.filtros.color) {
           cumpleFiltros = cumpleFiltros && articulo.color === this.filtros.color;
         }
+
+        // Filtrar por rango de precio
         if (this.filtros.priceRange) {
           const [minPrice, maxPrice] = (this.filtros.priceRange || '0-999999').split('-').map(Number);
           cumpleFiltros = cumpleFiltros && articulo.producto.precio >= minPrice && articulo.producto.precio <= maxPrice;
         }
+
+        // Filtrar por talla (si existen tallas seleccionadas)
         if (this.filtros.size && this.filtros.size.length > 0) {
           cumpleFiltros = cumpleFiltros && this.filtros.size.includes(articulo.talla);
         }
@@ -124,8 +142,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     // Actualizamos la lista de productos filtrados
     this.listaArticulos = articulosFiltrados;
-    this.cargarCartasProductos();
-  }
+    this.cargarCartasProductos();  // Método para recargar las cartas de productos
+}
+
 
   cargarCartasProductos(): void {
     this.products = [];

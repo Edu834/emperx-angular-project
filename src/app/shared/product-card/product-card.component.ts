@@ -19,7 +19,7 @@ export class ProductCardComponent {
     return this.product?.sexo === 'H' ? 'men' : 'women';
   }
   getPrice(): number {
-    console.log(this.product)
+    // console.log(this.product)
     return this.product.price;
   }
   getCategoria(): string {  
