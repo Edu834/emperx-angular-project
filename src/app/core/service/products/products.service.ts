@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Producto, ProductView, Subcategoria } from '../../../Interfaces/interfaces-globales';
+import { Articulo, Producto, ProductView, Subcategoria } from '../../../Interfaces/interfaces-globales';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +23,11 @@ export class ProductsService {
       })
     );
   }
-  listArticulos() {
-    return this.http.get('http://localhost:8087/api/articulos').pipe(
+  listArticulos(): Observable<Articulo[]> {
+    return this.http.get<Articulo[]>('http://localhost:8087/api/articulos').pipe(
       catchError(error => {
         console.error('There was an error!', error);
-        return of([]);  
+        return of([] as Articulo[]);  // Devuelve array vacío tipado
       })
     );
   }

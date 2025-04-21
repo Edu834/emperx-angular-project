@@ -13,164 +13,58 @@
             <nav class="hidden xl:flex gap-6 text-md cursor-pointer">
                 <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline ">Home</a>
 
-
-
+                <!-- Women's Menu - Dynamic Implementation -->
                 <div class="group ">
                     <a [routerLink]="['/products/women']" class=" hover:underline">Women</a>
                     <!-- Menú desplegable -->
                     <div class="absolute w-full left-0 ">
                         <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
-
                             <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
+                                <div *ngFor="let categoria of getCategories('women')">
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">{{ getCategoryDisplayName('women', categoria) }}</h3>
                                     <ul class="text-md inter-custom ">
                                         <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/view-all']">View all</a>
+                                                [routerLink]="['/products/women', categoria, 'view-all']">View all</a>
                                         </li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/suits']">Suits</a></li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/coats-&-jackets']">Coats &
-                                                Jackets</a></li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/dresses']">Dresses</a>
+                                        <li *ngFor="let subcategoria of getSubcategories('women', categoria)">
+                                            <a class="hover:underline"
+                                                [routerLink]="['/products/women', categoria, subcategoria]">
+                                                {{ getSubcategoryDisplayName('women', categoria, subcategoria) }}
+                                            </a>
                                         </li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/skirts']">Skirts</a></li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/tops-&-bodysuits']">Tops &
-                                                Bodysuits</a></li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/jeans-&-trousers']">Jeans &
-                                                Trousers</a></li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/knitwear']">Knitwear</a>
-                                        </li>
-                                        <li><a class="hover:underline"
-                                                [routerLink]="['/products/women/ready-to-wear/sweatshirts']">Sweatshirts</a>
-                                        </li>
-
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
-                                    <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/shoulder-bags']">Shoulder Bags</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/totes-&-backpacks']">Totes & Backpacks</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/clutches']">Clutches</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/top-handle']">Top Handle</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
-                                    <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/sneakers']">Sneakers</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/boots']">Boots</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/flats']">Flats</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/heels']">Heels</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/tabis']">Tabis</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
-                                    <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/eyewear']">Eyewear</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/small-leather-goods']">Small leather goods</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/jewelry']">Jewelry</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/other-accessories']">Other accessories</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
-                                    <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/wedding']">Wedding</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/gala']">Gala</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/baptism']">Baptism</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/parties']">Parties</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/cultural']">Cultural</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/beach']">Beach</a></li>
                                     </ul>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
                 </div>
 
-                <div class="group ">
+                <!-- Men's Menu - Dynamic Implementation -->
+                <div class="group">
                     <a [routerLink]="['/products/men']" class="hover:underline">Men</a>
                     <!-- Menú desplegable -->
-                    <div class="absolute w-full left-0 ">
-                        <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
-
-                            <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
-                                    <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/suits']">Suits</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/coats-&-jackets']">Coats & Jackets</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/t-shirts']">T-Shirts</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/jeans-&-trousers']">Jeans & Trousers</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/knitwear']">Knitwear</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/sweatshirts']">Sweatshirts</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
-                                    <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/shoulder-bags']">Shoulder Bags</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/totes-&-backpacks']">Totes & Backpacks</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/clutches']">Clutches</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/top-handle']">Top Handle</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
-                                    <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/sneakers']">Sneakers</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/boots']">Boots</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/flats']">Flats</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/heels']">Heels</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/tabis']">Tabis</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
+                    <div class="absolute w-full left-0">
+                        <div class="hidden group-hover:block w-full bg-[#2C2C2C] text-white shadow-lg py-4 mt-8">
+                            <div class="grid grid-cols-5 py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <div *ngFor="let categoria of getCategories('men')">
+                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">{{ getCategoryDisplayName('men', categoria) }}</h3>
                                     <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/view-all']">View all</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/eyewear']">Eyewear</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/small-leather-goods']">Small leather goods</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/jewelry']">Jewelry</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/other-accessories']">Other accessories</a></li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
-                                    <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/wedding']">Wedding</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/gala']">Gala</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/baptism']">Baptism</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/parties']">Parties</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/cultural']">Cultural</a></li>
-                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/beach']">Beach</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/men', categoria, 'view-all']">View all</a>
+                                        </li>
+                                        <li *ngFor="let subcategoria of getSubcategories('men', categoria)">
+                                            <a class="hover:underline"
+                                                [routerLink]="['/products/men', categoria, subcategoria]">
+                                                {{ getSubcategoryDisplayName('men', categoria, subcategoria) }}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
-                <!-- <a href="#" class="hover:underline">Events</a> -->
+                  
                 <a [routerLink]="['/about-us']" routerLinkActive="active" class="hover:underline">About us</a>
                 <a [routerLink]="['/how-works']" routerLinkActive="active" class="hover:underline">How works</a>
             </nav>
