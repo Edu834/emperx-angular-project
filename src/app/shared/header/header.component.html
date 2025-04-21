@@ -1,9 +1,10 @@
-<header class="w-full border-b border-gray-300 fixed top-0 left-0 transition-all ease-in-out z-20 bg-white bg-opacity-50"
-        [class]="{
+<header
+    class="w-full border-b border-gray-300 fixed top-0 left-0 transition-all ease-in-out z-20 bg-white bg-opacity-50"
+    [class]="{
             'translate-y-[-100%]': !isHeaderVisible,
             'translate-y-0': isHeaderVisible
           }">
-    <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500" >
+    <div class="bg-[#2C2C2C] text-white text-center py-2 text-xs inter-custom transition-opacity duration-500">
         <p class="transition-opacity duration-500" [class.opacity-0]="fade" [class.opacity-100]="!fade">{{ text }}</p>
     </div>
     <div class="flex items-center justify-between py-4 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 inter-custom">
@@ -11,79 +12,95 @@
             <button (click)="toggleComponent()" class="text-2xl xl:hidden">&#9776;</button>
             <nav class="hidden xl:flex gap-6 text-md cursor-pointer">
                 <a [routerLink]="['/home']" routerLinkActive="active" class="hover:underline ">Home</a>
-               
-                
-                
+
+
+
                 <div class="group ">
-                    <a [routerLink]="['/products/women']"  class=" hover:underline">Women</a>
+                    <a [routerLink]="['/products/women']" class=" hover:underline">Women</a>
                     <!-- Menú desplegable -->
-                     <div class="absolute w-full left-0 ">
+                    <div class="absolute w-full left-0 ">
                         <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
-                        
+
                             <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Suits</a></li>
-                                        <li><a class="hover:underline" href="#">Coats & Jackets</a></li>
-                                        <li><a class="hover:underline" href="#">Dresses</a></li>
-                                        <li><a class="hover:underline" href="#">Skirts</a></li>
-                                        <li><a class="hover:underline" href="#">T-Shirts</a></li>
-                                        <li><a class="hover:underline" href="#">Tops & Bodysuits</a></li>
-                                        <li><a class="hover:underline" href="#">Jeans & Trousers</a></li>
-                                        <li><a class="hover:underline" href="#">Knitwear</a></li>
-                                        <li><a class="hover:underline" href="#">Sweatshirts</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/view-all']">View all</a>
+                                        </li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/suits']">Suits</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/coats-&-jackets']">Coats &
+                                                Jackets</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/dresses']">Dresses</a>
+                                        </li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/skirts']">Skirts</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/tops-&-bodysuits']">Tops &
+                                                Bodysuits</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/jeans-&-trousers']">Jeans &
+                                                Trousers</a></li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/knitwear']">Knitwear</a>
+                                        </li>
+                                        <li><a class="hover:underline"
+                                                [routerLink]="['/products/women/ready-to-wear/sweatshirts']">Sweatshirts</a>
+                                        </li>
+
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Shoulder Bags</a></li>
-                                        <li><a class="hover:underline" href="#">Totes & Backpacks</a></li>
-                                        <li><a class="hover:underline" href="#">Clutches</a></li>
-                                        <li><a class="hover:underline" href="#">Top Handle</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/shoulder-bags']">Shoulder Bags</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/totes-&-backpacks']">Totes & Backpacks</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/clutches']">Clutches</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/bags/top-handle']">Top Handle</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Sneakers</a></li>
-                                        <li><a class="hover:underline" href="#">Boots</a></li>
-                                        <li><a class="hover:underline" href="#">Flats</a></li>
-                                        <li><a class="hover:underline" href="#">Heels</a></li>
-                                        <li><a class="hover:underline" href="#">Tabis</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/sneakers']">Sneakers</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/boots']">Boots</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/flats']">Flats</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/heels']">Heels</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/shoes/tabis']">Tabis</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
                                     <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Eyewear</a></li>
-                                        <li><a class="hover:underline" href="#">Small leather goods</a></li>
-                                        <li><a class="hover:underline" href="#">Jewlery</a></li>
-                                        <li><a class="hover:underline" href="#">Other accesories</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/eyewear']">Eyewear</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/small-leather-goods']">Small leather goods</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/jewelry']">Jewelry</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/accessories/other-accessories']">Other accessories</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
                                     <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" href="#">Wedding</a></li>
-                                        <li><a class="hover:underline" href="#">Gala</a></li>
-                                        <li><a class="hover:underline" href="#">Baptism</a></li>
-                                        <li><a class="hover:underline" href="#">Parties</a></li>
-                                        <li><a class="hover:underline" href="#">Cultural</a></li>
-                                        <li><a class="hover:underline" href="#">Beach</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/wedding']">Wedding</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/gala']">Gala</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/baptism']">Baptism</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/parties']">Parties</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/cultural']">Cultural</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/women/events/beach']">Beach</a></li>
                                     </ul>
                                 </div>
                             </div>
-                           
-                            
+
+
                         </div>
-                     </div>
-                    
+                    </div>
+
                 </div>
 
                 <div class="group ">
@@ -91,113 +108,121 @@
                     <!-- Menú desplegable -->
                     <div class="absolute w-full left-0 ">
                         <div class=" hidden group-hover:block w-full bg-[#2C2C2C] text-white  shadow-lg  py-4 mt-8">
-                        
+
                             <div class="grid grid-cols-5 py-4 max-w-6xl  mx-auto px-4 sm:px-6 lg:px-8 ">
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Ready-to-wear</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Suits</a></li>
-                                        <li><a class="hover:underline" href="#">Coats & Jackets</a></li>
-                                        <li><a class="hover:underline" href="#">Dresses</a></li>
-                                        <li><a class="hover:underline" href="#">T-Shirts</a></li>
-                                        <li><a class="hover:underline" href="#">Tops & Bodysuits</a></li>
-                                        <li><a class="hover:underline" href="#">Jeans & Trousers</a></li>
-                                        <li><a class="hover:underline" href="#">Knitwear</a></li>
-                                        <li><a class="hover:underline" href="#">Sweatshirts</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/suits']">Suits</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/coats-&-jackets']">Coats & Jackets</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/t-shirts']">T-Shirts</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/jeans-&-trousers']">Jeans & Trousers</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/knitwear']">Knitwear</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/ready-to-wear/sweatshirts']">Sweatshirts</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Bags</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Shoulder Bags</a></li>
-                                        <li><a class="hover:underline" href="#">Totes & Backpacks</a></li>
-                                        <li><a class="hover:underline" href="#">Clutches</a></li>
-                                        <li><a class="hover:underline" href="#">Top Handle</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/shoulder-bags']">Shoulder Bags</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/totes-&-backpacks']">Totes & Backpacks</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/clutches']">Clutches</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/bags/top-handle']">Top Handle</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Shoes</h3>
                                     <ul class="text-md inter-custom ">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Sneakers</a></li>
-                                        <li><a class="hover:underline" href="#">Boots</a></li>
-                                        <li><a class="hover:underline" href="#">Flats</a></li>
-                                        <li><a class="hover:underline" href="#">Heels</a></li>
-                                        <li><a class="hover:underline" href="#">Tabis</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/sneakers']">Sneakers</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/boots']">Boots</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/flats']">Flats</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/heels']">Heels</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/shoes/tabis']">Tabis</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Accessories</h3>
                                     <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" href="#">View all</a></li>
-                                        <li><a class="hover:underline" href="#">Eyewear</a></li>
-                                        <li><a class="hover:underline" href="#">Small leather goods</a></li>
-                                        <li><a class="hover:underline" href="#">Jewlery</a></li>
-                                        <li><a class="hover:underline" href="#">Other accesories</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/view-all']">View all</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/eyewear']">Eyewear</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/small-leather-goods']">Small leather goods</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/jewelry']">Jewelry</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/accessories/other-accessories']">Other accessories</a></li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h3 class="text-xl abril-fatface-regular font-bold mb-3">Events</h3>
                                     <ul class="text-md inter-custom">
-                                        <li><a class="hover:underline" href="#">Wedding</a></li>
-                                        <li><a class="hover:underline" href="#">Gala</a></li>
-                                        <li><a class="hover:underline" href="#">Baptism</a></li>
-                                        <li><a class="hover:underline" href="#">Parties</a></li>
-                                        <li><a class="hover:underline" href="#">Cultural</a></li>
-                                        <li><a class="hover:underline" href="#">Beach</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/wedding']">Wedding</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/gala']">Gala</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/baptism']">Baptism</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/parties']">Parties</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/cultural']">Cultural</a></li>
+                                        <li><a class="hover:underline" [routerLink]="['/products/men/events/beach']">Beach</a></li>
                                     </ul>
                                 </div>
                             </div>
-                           
-                            
+
+
                         </div>
-                     </div>
+                    </div>
                 </div>
                 <!-- <a href="#" class="hover:underline">Events</a> -->
-                <a [routerLink]="['/about-us']" routerLinkActive="active"  class="hover:underline">About us</a>
-                <a [routerLink]="['/how-works']" routerLinkActive="active"  class="hover:underline">How works</a>
+                <a [routerLink]="['/about-us']" routerLinkActive="active" class="hover:underline">About us</a>
+                <a [routerLink]="['/how-works']" routerLinkActive="active" class="hover:underline">How works</a>
             </nav>
         </div>
         <!-- Título y elementos de la derecha -->
         <div class="text-[#2C2C2C] flex items-center gap-4 abril-fatface-regular">
-            <a [routerLink]="['/home']" class="text-3xl sm:text-6xl font-bold mx-5 text-[#2C2C2C] cursor-pointer">EMPERX</a>
+            <a [routerLink]="['/home']"
+                class="text-3xl sm:text-6xl font-bold mx-5 text-[#2C2C2C] cursor-pointer">EMPERX</a>
             <a [routerLink]="['/favorites']" class="group relative transition duration-300 cursor-pointer">
                 <!-- Icono sin relleno (por defecto) -->
-                <i class="fa-regular fa-bookmark text-[#2C2C2C] text-2xl transition duration-300 hover:text-[#2C2C2C]"></i>
+                <i
+                    class="fa-regular fa-bookmark text-[#2C2C2C] text-2xl transition duration-300 hover:text-[#2C2C2C]"></i>
                 <!-- Icono con relleno al hacer hover -->
-                <i class="fa-solid fa-bookmark text-[#2C2C2C] text-2xl absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"></i>
+                <i
+                    class="fa-solid fa-bookmark text-[#2C2C2C] text-2xl absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"></i>
             </a>
             <a class="group relative transition duration-300 cursor-pointer">
                 <i class="fa-solid fa-bag-shopping text-[#2C2C2C] text-2xl"></i>
             </a>
-            
+
             @if (!isAuthenticated) {
-                <a [routerLink]="['/login']" class="text-md hover:underline">Sign in</a>
+            <a [routerLink]="['/login']" class="text-md hover:underline">Sign in</a>
             } @else {
-                <!-- Ícono de usuario con menú desplegable -->
-                <div class="relative group ">
-                    <span class="mr-2 ">Hola, {{name}}</span>
-                    <i class="fa-regular fa-user text-[#2C2C2C] text-2xl cursor-pointer"></i>
-                    
-                    <!-- Menú desplegable con animación desde arriba -->
-                    <div class="absolute right-0 mt-2 w-48 bg-[#2c2c2c] border border-gray-200 shadow-lg  opacity-0 transform -translate-y-4 transition-all duration-300 invisible group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
-                        <ul class="py-2 text-sm text-white inter-custom">
-                            <li><a [routerLink]="['/user/profile']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Profile</a></li>
-                            <li><a [routerLink]="['/user/orders']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Orders</a></li>
-                            <li><a [routerLink]="['/favorites']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Favorites</a></li>
-                            <li><a [routerLink]="['/user/reviews']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Reviews</a></li>
-                            <li><a [routerLink]="['/user/settings']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Settings</a></li>
-                            <li>
-                                <button (click)="logout()" class="w-full text-left block px-4 py-2 text-red-600 hover:bg-[#3C3C3C]">
-                                    Log out
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+            <!-- Ícono de usuario con menú desplegable -->
+            <div class="relative group ">
+                <span class="mr-2 ">Hola, {{name}}</span>
+                <i class="fa-regular fa-user text-[#2C2C2C] text-2xl cursor-pointer"></i>
+
+                <!-- Menú desplegable con animación desde arriba -->
+                <div
+                    class="absolute right-0 mt-2 w-48 bg-[#2c2c2c] border border-gray-200 shadow-lg  opacity-0 transform -translate-y-4 transition-all duration-300 invisible group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
+                    <ul class="py-2 text-sm text-white inter-custom">
+                        <li><a [routerLink]="['/user/profile']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Profile</a>
+                        </li>
+                        <li><a [routerLink]="['/user/orders']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Orders</a>
+                        </li>
+                        <li><a [routerLink]="['/favorites']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Favorites</a>
+                        </li>
+                        <li><a [routerLink]="['/user/reviews']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Reviews</a>
+                        </li>
+                        <li><a [routerLink]="['/user/settings']" class="block px-4 py-2 hover:bg-[#3C3C3C]">Settings</a>
+                        </li>
+                        <li>
+                            <button (click)="logout()"
+                                class="w-full text-left block px-4 py-2 text-red-600 hover:bg-[#3C3C3C]">
+                                Log out
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-            } 
+            </div>
+            }
         </div>
     </div>
 </header>
@@ -205,6 +230,5 @@
 
 <div [style.width]="width" class="xl:hidden fixed h-[100%] left-0 top-0  bg-[#2C2C2C] shadow-lg 
  transition-all duration-500 ease-in-out z-50">
- @if(showComponent){<app-toggle-menu (closeMenu)="handleCloseMenu()"></app-toggle-menu>}
+    @if(showComponent){<app-toggle-menu (closeMenu)="handleCloseMenu()"></app-toggle-menu>}
 </div>
-
