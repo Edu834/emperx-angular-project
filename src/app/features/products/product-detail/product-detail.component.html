@@ -16,13 +16,12 @@
                         <div class="w-1/5 flex flex-col  bg-gray-200 overflow-y-auto" >
                             
                             @for (foto of getFotosGaleria(); track $index) {
-                                <div >
-                                    <img [src]="foto" alt="Imagen producto" 
-                                    class="cursor-pointer  object-cover  hover:opacity-75" 
-                                    (click)="cambiarImagen(foto)">
+                                <div>
+                                  <img [src]="foto" alt="Imagen producto" 
+                                       class="cursor-pointer object-cover hover:opacity-75" 
+                                       (click)="cambiarImagen(foto)">
                                 </div>
-                                
-                            }
+                              }
                           
                         </div>
 

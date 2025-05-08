@@ -38,7 +38,6 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit(): void {
     // this.cargarFavoritos();
     this.route.paramMap.subscribe((params) => {
-      
       this.name = params.get('name') || '';
       this.obtenerArticulosDelProducto(this.name);
     });
@@ -53,17 +52,17 @@ export class ProductDetailComponent implements OnInit {
 
   getFotosGaleria(): string[] {
     if (!this.product || !this.product.galeria) {
-      return ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];  // Retorna un array con una imagen por defecto
+      return [];
     }
   
-    return [
-      this.product.galeria.fotoFrontal,
-      this.product.galeria.fotoTrasera,
-      this.product.galeria.fotoModeloCerca,
-      this.product.galeria.fotoModeloFrontal,
-      this.product.galeria.fotoModeloTrasera
-    ].filter(foto => !!foto); // Filtra las imágenes no definidas
+    // Recolectar dinámicamente todas las propiedades del objeto galería que sean URLs válidas
+    const fotos = Object.values(this.product.galeria)
+      .filter((foto: any) => typeof foto === 'string' && foto.trim() !== '');
+  
+    // Si no hay ninguna imagen válida, retornar imagen por defecto
+    return fotos.length > 0 ? fotos : ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];
   }
+  
   
 
   // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
@@ -90,10 +89,10 @@ export class ProductDetailComponent implements OnInit {
     this.resumenProductosConArticulos = []; // Limpiar productos previos
   
     data.forEach(e => {
-      this.product = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
+      let productoExistente = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
   
-      if (!this.product) {
-        this.resumenProductosConArticulos.push({
+      if (!productoExistente) {
+        productoExistente = {
           idProducto: e.producto.idProducto,
           subcategoria: e.producto.subcategoria,
           sexo: e.producto.sexo,
@@ -108,18 +107,29 @@ export class ProductDetailComponent implements OnInit {
           articulos: [e.idArticulo],
           galeria: e.producto.galeria,
           marca: e.producto.marca
-        });
+        };
+        this.resumenProductosConArticulos.push(productoExistente);
       } else {
-        this.product.stock += e.stock;
-        if (!this.product.color.includes(e.color)) this.product.color.push(e.color);
-        if (!this.product.size.includes(e.talla)) this.product.size.push(e.talla);
-        if (!this.product.articulos.includes(e.idArticulo)) this.product.articulos.push(e.idArticulo);
-       
+        productoExistente.stock += e.stock;
+        if (!productoExistente.color.includes(e.color)) productoExistente.color.push(e.color);
+        if (!productoExistente.size.includes(e.talla)) productoExistente.size.push(e.talla);
+        if (!productoExistente.articulos.includes(e.idArticulo)) productoExistente.articulos.push(e.idArticulo);
       }
     });
   
+    // Asignar el producto principal al primero de la lista consolidada
+    if (this.resumenProductosConArticulos.length > 0) {
+      this.product = this.resumenProductosConArticulos[0];
+  
+      // Asegurar foto seleccionada
+      if (this.product.galeria && this.product.galeria.fotoFrontal) {
+        this.fotoSeleccionada = this.product.galeria.fotoFrontal;
+      }
+    }
+  
     console.log('Producto final consolidado:', this.resumenProductosConArticulos);
   }
+  
 
   onSelectedColor(color: string): void {
     this.selectedColor = color; // Almacena el color seleccionado
