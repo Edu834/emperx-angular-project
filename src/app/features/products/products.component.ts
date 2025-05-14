@@ -50,6 +50,7 @@ import { ProductsService } from '../../core/service/products/products.service';
 import { ProductsListComponent } from "../../shared/products-list/products-list.component";
 import { FilterPanelComponent } from "../../shared/search/filter-panel/filter-panel.component";
 import { ProductDetailComponent } from "./product-detail/product-detail.component";
+import { Articulo } from '../../Interfaces/interfaces-globales';
 
 @Component({
   selector: 'app-products',
@@ -65,12 +66,18 @@ export class ProductsComponent implements OnInit{
     sizes: []
   };
 
+  articulos: Articulo[] = [];
+
+  onArticulosRecibidos(articulos: Articulo[]) {
+    this.articulos = articulos;
+  }
   onFiltersChanged(queryParams: any) {
     this.selectedFilters = queryParams;
     console.log('Filtros seleccionados:', this.selectedFilters);
   }
   mostrarFiltros: boolean = true; // Estado compartido para filtros
   detallesVisible: boolean = false;
+  
   // Método que recibe el cambio de SearchComponent
   onToggleFiltros(value: boolean) {
     this.mostrarFiltros = value;

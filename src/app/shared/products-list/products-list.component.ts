@@ -1,84 +1,49 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ProductCardComponent } from "../product-card/product-card.component";
-import { Articulo, Categoria, ProductView } from '../../Interfaces/interfaces-globales';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Articulo, ProductView } from '../../Interfaces/interfaces-globales';
+import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../core/service/products/products.service';
+import { FilterService } from '../../core/service/filter/filter.service';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-products-list',
   standalone: true,
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, InfiniteScrollDirective, CommonModule],
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css']
 })
-export class ProductsListComponent {
-  showChild =  false;
-    
-  filtros: any = {};
-
-  @Input() filters: any = {};
-
+export class ProductsListComponent implements OnInit, OnDestroy {
+  showChild = false;
   listaArticulos: Articulo[] = [];
-    categorias: Categoria[]=[];
-    products: ProductView[] = [];
-    gender: string = ''; 
-    mostrarCategoria: boolean = false;
-  
-    constructor(
-      private route: ActivatedRoute, 
-      private service: ProductsService,
-      private router: Router
-    ) {}
-    
-    idSubcategoria: number = 1;
-    sexo: string = "H";
-    nombreCategoria: string = '';
-    nombreSubcategoria: string = '';
-    idCategoria: any = '';
+  listaArticulosOriginal: Articulo[] = [];
+  products: ProductView[] = [];
+  productosPaginados: ProductView[] = [];
+  filtros: any = {};
+  filtrosSubscription!: Subscription;
+  gender: string = ''; 
+  mostrarCategoria: boolean = false;
+  nombreCategoria: string = '';
+  nombreSubcategoria: string = '';
+  sexo: string = "H";
+  idCategoria: any = '';
+  @Output() articulosCargados = new EventEmitter<Articulo[]>();
 
-  // Aquí puedes manejar la lógica para mostrar productos según los filtros
-  ngOnChanges() {
-    console.log('Filtros recibidos:', this.filters);
-    console.log(this.filters.brand);
-    console.log(this.filters.color);
-    console.log(this.filters.price);
-    console.log(this.filters.size);
+  // Paginación
+  pageSize: number = 6;
+  currentPage: number = 1;
+  loading: boolean = false;
+  availableSizes: string[] = [];
   
-    // Aquí puedes actualizar la lista de productos en función de los filtros
-    this.aplicarFiltros();
-  }
-  
-  onFiltrosAplicados(filtros: any) {
-    this.filtros = filtros;
-    this.aplicarFiltros();
-  }
-  
-  aplicarFiltros() {
-    console.log('Filtros aplicados:', this.filtros);
-    
-    // Filtrar la lista de artículos según los filtros aplicados
-    this.listaArticulos = this.listaArticulos.filter(articulo => {
-      let cumpleFiltros = true;
-  
-      if (this.filtros.brand) {
-        cumpleFiltros = cumpleFiltros && articulo.producto.marca === this.filtros.brand;
-      }
-      if (this.filtros.color) {
-        cumpleFiltros = cumpleFiltros && articulo.color === this.filtros.color;
-      }
-      if (this.filtros.price) {
-        cumpleFiltros = cumpleFiltros && articulo.precio <= this.filtros.price;
-      }
-      if (this.filtros.size) {
-        cumpleFiltros = cumpleFiltros && articulo.talla === this.filtros.size;
-      }
-  
-      // Añadir más condiciones de filtrado según sea necesario
-      return cumpleFiltros;
-    });
-    this.cargarCartasProductos();
-  }
 
+
+  constructor(
+    private route: ActivatedRoute,
+    private service: ProductsService,
+    private filterService: FilterService
+  ) {}
 
 
   ngOnInit(): void {
@@ -86,118 +51,152 @@ export class ProductsListComponent {
       this.actualizarSexoYCategoria(params);
       this.obtenerArticulos();
     });
+
+    this.filtrosSubscription = this.filterService.filters$.subscribe(filters => {
+      this.filtros = filters;
+      this.aplicarFiltros(); // Aplicamos los filtros cada vez que cambian
+    });
   }
+
+  ngOnDestroy(): void {
+    this.filtrosSubscription?.unsubscribe();
+  }
+
   actualizarSexoYCategoria(params: any): void {
     this.gender = params.get('gender') || '';
     this.mostrarCategoria = !!params.get('category');
     this.nombreCategoria = params.get('category') || '';
     this.sexo = this.gender === "women" ? "M" : "H";
     this.nombreSubcategoria = params.get('subcategory') || '';
-    console.log('Sexo:', this.sexo);
-    console.log('Categoria:', this.nombreCategoria);
-    console.log('Subcategoria:', this.nombreSubcategoria);
   }
+
   obtenerArticulos(): void {
     this.service.listArticulos().subscribe({
       next: (data: any) => {
-        this.listaArticulos = data;
-        
-        this.cargarDatos(); // Filtrar los productos después de obtener los artículos
+        this.listaArticulosOriginal = data;
+        this.listaArticulos = [...data];
+        this.articulosCargados.emit(this.listaArticulosOriginal); // 👈 aquí
+
+        this.aplicarFiltros(); // Aplicamos los filtros cuando obtenemos los artículos
+        this.filterService.setAvailableSizesFromCategory(this.listaArticulos, this.nombreCategoria, this.nombreSubcategoria);
+
       },
       error: (error) => {
         console.error('Error al cargar los artículos:', error);
       }
     });
   }
-  
-  cargarDatos(): void{
-    if(this.nombreCategoria === '' && this.nombreSubcategoria === ''){
-      this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.sexo == this.sexo);
-      console.log('Articulos por sexo:', this.listaArticulos);
-      this.cargarCartasProductos();
-      console.log('Productos:', this.products);
-    }else if(this.nombreCategoria !== '' && this.nombreSubcategoria === ''){
-      if (this.nombreCategoria === 'accesories') {
-        this.nombreCategoria = 'accessories';
-      }
-      this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase().trim() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
-      console.log('Articulos por categoria:', this.listaArticulos);
-      this.cargarCartasProductos();
-      console.log('Productos:', this.products);
-    }else{
-      if(this.nombreSubcategoria === 'view-all'){
-        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.categoria.nombre.toLocaleLowerCase().trim() == this.nombreCategoria && articulo.producto.sexo == this.sexo);
-      console.log('Articulos por categoria:', this.listaArticulos);
-      this.cargarCartasProductos();
-      console.log('Productos:', this.products);
-      }else{
-        console.log('Subcategoria:', this.listaArticulos[0].producto.subcategoria.nombre);
-        this.listaArticulos = this.listaArticulos.filter((articulo) => articulo.producto.subcategoria.nombre.toLocaleLowerCase().trim() == this.nombreSubcategoria && articulo.producto.sexo == this.sexo);
-        console.log('Articulos por subcategoria:', this.listaArticulos);
-        this.cargarCartasProductos();
-        console.log('Productos:', this.products);
-      }
-    }
+  obtenerTallasDisponibles(articulos: Articulo[]): string[] {
+    const tallas = articulos.map(a => a.talla).filter((value, index, self) => self.indexOf(value) === index);
+    return tallas;
   }
+  // Método para aplicar filtros a los artículos
+  aplicarFiltros(): void {
+    console.log('Aplicando filtros:', this.filtros);
+    let articulosFiltrados = [...this.listaArticulosOriginal];  // Copia de la lista original de artículos
 
-    cargarCartasProductos(): void {
-      this.products = [];
-      let i = 0;
-      this.listaArticulos.forEach(e => {
-        let product = this.products.find(product => product.idProducto === e.producto.idProducto);
-        if (product === undefined) {
-          i++;
-          let tallas: string[] = [e.talla];
-          let colores: string[] = [e.color];
-          let articulos: string[] = [e.idArticulo];
-          this.products.push({
-            idProducto: e.producto.idProducto,
-            subcategoria: e.producto.subcategoria,
-            sexo: e.producto.sexo,
-            name: e.producto.nombre,
-            price: e.precio,
-            imageUrl: 'https://via.placeholder.com/150',
-            stock: 1,
-            estados: e.estados.map((estado: any) => estado.nombre),
-            color: colores,
-            size: tallas,
-            articulos: articulos,
-            galeria: e.producto.galeria
-          });
-        } else {
-          product.stock += 1;
-          if (!product.color.includes(e.color)) {
-            product.color.push(e.color);
-          }
-          if (!product.size.includes(e.talla)) {
-            product.size.push(e.talla);
-          }
-          product.articulos.push(e.idArticulo);
+    // Filtramos los productos de acuerdo a los filtros aplicados
+    if (this.filtros) {
+      articulosFiltrados = articulosFiltrados.filter(articulo => {
+        let cumpleFiltros = true;
+
+        // Filtrar por marcas (múltiples marcas permitidas)
+        if (this.filtros.brand && this.filtros.brand.length > 0) {
+          cumpleFiltros = cumpleFiltros && this.filtros.brand.includes(articulo.producto.marca);
         }
+
+        // Filtrar por color
+        if (this.filtros.color) {
+          cumpleFiltros = cumpleFiltros && articulo.color === this.filtros.color;
+        }
+
+        // Filtrar por rango de precio
+        if (this.filtros.priceRange) {
+          const [minPrice, maxPrice] = (this.filtros.priceRange || '0-999999').split('-').map(Number);
+          cumpleFiltros = cumpleFiltros && articulo.producto.precio >= minPrice && articulo.producto.precio <= maxPrice;
+        }
+
+        // Filtrar por talla (si existen tallas seleccionadas)
+        if (this.filtros.size && this.filtros.size.length > 0) {
+          cumpleFiltros = cumpleFiltros && this.filtros.size.includes(articulo.talla);
+        }
+
+        return cumpleFiltros;
       });
     }
- 
+
+    // Filtros por categoría y subcategoría
+    if (this.nombreSubcategoria && this.nombreSubcategoria !== 'view-all') {
+      articulosFiltrados = articulosFiltrados.filter(a => 
+        a.producto.subcategoria.nombre.toLowerCase().trim() === this.nombreSubcategoria &&
+        a.producto.sexo === this.sexo
+      );
+    } else if (this.nombreCategoria && this.nombreCategoria !== 'view-all') {
+      articulosFiltrados = articulosFiltrados.filter(a => 
+        a.producto.subcategoria.categoria.nombre.toLowerCase().trim() === this.nombreCategoria &&
+        a.producto.sexo === this.sexo
+      );
+    } else {
+      articulosFiltrados = articulosFiltrados.filter(a => a.producto.sexo === this.sexo);
+    }
+
+    // Actualizamos la lista de productos filtrados
+    this.listaArticulos = articulosFiltrados;
+    this.cargarCartasProductos();  // Método para recargar las cartas de productos
+}
+
+
+  cargarCartasProductos(): void {
+    this.products = [];
+
+    this.listaArticulos.forEach(e => {
+      let product = this.products.find(p => p.idProducto === e.producto.idProducto);
+      if (!product) {
+        this.products.push({
+          idProducto: e.producto.idProducto,
+          subcategoria: e.producto.subcategoria,
+          sexo: e.producto.sexo,
+          name: e.producto.nombre,
+          price: e.producto.precio,
+          imageUrl: 'https://via.placeholder.com/150',
+          stock: 1,
+          estados: e.estados.map((estado: any) => estado.nombre),
+          color: [e.color],
+          size: [e.talla],
+          articulos: [e.idArticulo],
+          galeria: e.producto.galeria,
+          marca: e.producto.marca
+        });
+      } else {
+        product.stock += 1;
+        if (!product.color.includes(e.color)) product.color.push(e.color);
+        if (!product.size.includes(e.talla)) product.size.push(e.talla);
+        product.articulos.push(e.idArticulo);
+      }
+    });
+
+    this.currentPage = 1;
+    this.productosPaginados = this.products.slice(0, this.pageSize);
+  }
+
+  onScroll(): void {
+    if (this.loading) return;
   
-  // products: ProductView[] = [
-  //   { id: 1, name: 'Producto 1', price: 100, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 2, name: 'Producto 2', price: 200, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 3, name: 'Producto 3', price: 300, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 4, name: 'Producto 4', price: 400, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 5, name: 'Producto 5', price: 500, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 6, name: 'Producto 6', price: 600, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 7, name: 'Producto 7', price: 700, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 8, name: 'Producto 8', price: 800, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 9, name: 'Producto 9', price: 900, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 10, name: 'Producto 10', price: 1000, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 11, name: 'Producto 11', price: 1100, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 12, name: 'Producto 12', price: 1200, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 13, name: 'Producto 13', price: 1300, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 14, name: 'Producto 14', price: 1400, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 15, name: 'Producto 15', price: 1500, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 16, name: 'Producto 16', price: 1600, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 17, name: 'Producto 17', price: 1700, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 18, name: 'Producto 18', price: 1800, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 19, name: 'Producto 19', price: 1900, imageUrl: 'https://via.placeholder.com/150' },
-  //   { id: 20, name: 'Producto 20', price: 2000, imageUrl: 'https://via.placeholder.com/150' }
-  // ];
+    this.loading = true;
+  
+    setTimeout(() => {
+      const nextPage = this.currentPage + 1;
+      const start = (nextPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+  
+      const siguientes = this.products.slice(start, end);
+      if (siguientes.length > 0) {
+        this.productosPaginados = [...this.productosPaginados, ...siguientes];
+        this.currentPage = nextPage;
+      }
+  
+      this.loading = false;
+    }, 500);
+  }
+  
 }

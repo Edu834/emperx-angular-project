@@ -16,20 +16,19 @@
                         <div class="w-1/5 flex flex-col  bg-gray-200 overflow-y-auto" >
                             
                             @for (foto of getFotosGaleria(); track $index) {
-                                <div >
-                                    <img [src]="foto" alt="Imagen producto" 
-                                    class="cursor-pointer  object-cover  hover:opacity-75" 
-                                    (click)="cambiarImagen(foto)">
+                                <div>
+                                  <img [src]="foto" alt="Imagen producto" 
+                                       class="cursor-pointer object-cover hover:opacity-75" 
+                                       (click)="cambiarImagen(foto)">
                                 </div>
-                                
-                            }
+                              }
                           
                         </div>
 
                         <!-- Imagen principal -->
                         <div class="w-4/5 flex justify-center items-center">
                             <div class=" h-full w-full">
-                                <img  [src]="fotoSeleccionada || product.galeria.fotoFrontal" alt="Imagen principal producto" class="w-full h-full rounded-md object-contain ">
+                                <img  [src]="fotoSeleccionada || product?.galeria?.fotoFrontal" alt="Imagen principal producto" class="w-full h-full rounded-md object-contain ">
                             </div>
                         </div>
                       </div>
@@ -39,8 +38,15 @@
                         <div class="w-full  bg-white text-center shadow-2xl text-[#2c2c2c] p-10 inter-custom">
                                 <h3  class="text-xl cursor-pointer">{{ product.subcategoria.nombre}}</h3>
                                 <h1 class="text-2xl abril-fatface-regular">{{ product.name}}</h1>
-                                <span><i class="fa-regular fa-bookmark text-2xl"></i></span>
-                                <p class="text-[#474747]"> Retail price: <span class="line-through">250€</span></p>
+                                <button 
+                                (click)="toggleFavorito(product)" 
+                                class=" p-2 "
+                                >
+                                <i [ngClass]="esFavorito(product.idProducto) ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'" 
+                                class="text-[#2C2C2C] text-xl">
+                                </i>
+                                </button>
+                                <p class="text-[#474747]"> Retail price: <span class="line-through">{{ product.price}}</span></p>
                             <p class="text-2xl font-semibold mt-2 text-gray-800"><span>Precio final</span> </p>
                             <div class="px-5 ">
                                 <div class="flex flex-wrap justify-center gap-2 w-full">

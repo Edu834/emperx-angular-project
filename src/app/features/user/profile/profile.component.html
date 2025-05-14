@@ -46,7 +46,16 @@
         </div>
         <div class="text-xl flex justify-between">
           <span>Latest favorites</span>
-          <div [routerLink]="['/user/favorites']" class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
+          <div [routerLink]="['/favorites']" class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6 mb-10 cursor-pointer hover:underline">See all</div>
+        </div>
+        <div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20 w-full ">
+            @for (product of favoritos; track $index) {
+            <div class="relative">
+              <app-product-card [product]="product"></app-product-card>
+            </div>
+            }
+          </div>
         </div>
       </div>
       <div class="mt-10">

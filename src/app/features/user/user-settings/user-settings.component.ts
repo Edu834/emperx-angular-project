@@ -15,21 +15,43 @@ import { CommonModule, Location } from '@angular/common';
   styleUrl: './user-settings.component.css'
 })
 export class UserSettingsComponent {
+  isModalOpen = false;
   editError: string = '';
+  passwordForm: FormGroup;
   editForm: FormGroup;
   currentUserData: User | null = null;
+  date: string | undefined;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private location: Location, private userService: UserService) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router, 
+    private location: Location, 
+    private userService: UserService
+  ) {
+    // Formulario de edición de datos del usuario
     this.editForm = this.formBuilder.group({
       idUsuario: ['', Validators.required],
       username: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]], // Contraseña actual (para mantener la lógica del perfil)
       telefono: ['', Validators.required],
       direccion: ['', Validators.required],
       sexo: ['', Validators.required],
+      fechaNacimiento: [''],
+      country: [''],
+      province: [''],
+      city: [''],
+      zipCode: [''],
+    });
+
+    // Formulario exclusivo para el cambio de contraseña
+    this.passwordForm = this.formBuilder.group({
+      currentPassword: ['', [Validators.required]],  // Contraseña actual
+      newPassword: ['', [Validators.required]], // Nueva contraseña
+      confirmNewPassword: ['', [Validators.required]], // Confirmación de la nueva contraseña
     });
   }
 
@@ -47,10 +69,15 @@ export class UserSettingsComponent {
         this.editForm.controls['telefono'].setValue(userData.telefono);
         this.editForm.controls['direccion'].setValue(userData.direccion);
         this.editForm.controls['sexo'].setValue(userData.sexo);
+        this.editForm.controls['country'].setValue(userData.country);
+        this.editForm.controls['province'].setValue(userData.province);
+        this.editForm.controls['city'].setValue(userData.city);
+        this.editForm.controls['zipCode'].setValue(userData.zipCode);
         this.editForm.controls['password'].setValue(userData.password);
-        
+        this.editForm.controls['fechaNacimiento'].setValue(userData.fechaNacimiento);
         console.log(userData.id_usuario);
         console.log(this.currentUserData);
+        this.date = this.getDate(this.currentUserData.fechaAlta);
       }
     });
   }
@@ -59,7 +86,23 @@ export class UserSettingsComponent {
   goBack(): void {
     this.location.back();
   }
-  
+  // Abre el modal
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  // Cierra el modal
+  closeModal() {
+    this.isModalOpen = false;
+  }
+  getDate(fechaAlta: string | Date): string {
+    const date = new Date(fechaAlta);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long' 
+    };
+    return `Member since ${date.toLocaleDateString('en-US', options)}`;
+  }
   onSubmit(): void {
     if (this.editForm.valid) {
       const userData: User = this.editForm.value;
@@ -74,7 +117,7 @@ export class UserSettingsComponent {
             this.authService.setToken(response.token);
   
             console.log("Usuario actualizado correctamente");
-            this.router.navigate(['/perfil']); // Redirigir al perfil
+            this.router.navigate(['/user/profile']); // Redirigir al perfil
           }
         },
         error: (error) => {
@@ -87,4 +130,40 @@ export class UserSettingsComponent {
       this.editError = "Por favor, completa todos los campos correctamente.";
     }
   }
+  onChangePassword(): void {
+    if (this.passwordForm.valid) {
+      const { currentPassword, newPassword, confirmNewPassword } = this.passwordForm.value;
+  
+      // Verificar si la nueva contraseña y la confirmación coinciden
+      if (newPassword !== confirmNewPassword) {
+        this.editError = 'Las contraseñas no coinciden';
+        return;
+      }
+  
+      if (!this.currentUserData) {
+        console.error('No se pudo obtener el ID del usuario');
+        this.editError = 'No se pudo obtener el ID del usuario. Intenta de nuevo.';
+        return;
+      }
+  
+      // Obtener el idUsuario desde el currentUserData
+      const idUsuario = this.currentUserData.id_usuario;
+      console.log(idUsuario);
+      // Llamar al servicio de cambio de contraseña
+      this.userService.changePassword(idUsuario, currentPassword, newPassword).subscribe({
+        next: (response: any) => {
+          console.log("Usuario actualizado correctamente");
+            this.router.navigate(['/user/profile']); // Redirigir al perfil
+        },
+        error: (error) => {
+          console.error('Error al cambiar la contraseña', error);
+          this.editError = 'Error al cambiar la contraseña. Intenta de nuevo.';
+        }
+      });
+    } else {
+      console.error('Formulario inválido');
+      this.editError = 'Por favor, completa todos los campos correctamente.';
+    }
+  }
+  
 }

@@ -1,15 +1,121 @@
-<div class="w-full min-h-screen flex flex-col min-w-[300px]">
-    <div class="w-full h-25 sm:h-31">
-        
-      <app-header ></app-header>
-
-    </div>
-    <app-search class="w-full"></app-search>
-    <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
-      How-works works!
-    </h1>
-  
-   
-    <app-footer></app-footer>
+<!-- how-it-works.component.html -->
+<div class="w-full min-h-screen flex flex-col min-w-[300px] bg-white">
+  <!-- Header y búsqueda se mantienen como componentes separados -->
+  <div class="w-full h-25 sm:h-31">
+    <app-header></app-header>
   </div>
 
+  <app-search class="w-full"></app-search>
+
+  <!-- Título principal con fuente especial -->
+  <h1 class="text-center text-4xl md:text-7xl mt-10 mb-6 text-[#2C2C2C] abril-fatface-regular">HOW WORKS</h1>
+  
+  <!-- Contenedor principal de pasos -->
+  <div class="flex flex-col gap-16 px-6 md:px-20 py-10 text-[#2C2C2C] max-w-7xl mx-auto">
+    
+    <!-- Paso 1 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="relative">
+        <!-- Número de paso -->
+        <div class=" absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold ">1</div>
+        <!-- Imagen -->
+        <div class="rounded-2xl flex-shrink-0 w-full sm:w-64 md:w-80 overflow-hidden  shadow-md transform transition-transform duration-300 ">
+          <img src="/images/wardrobe.jpg" alt="Your Sister's Closet" class="w-full h-64 object-cover" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+        </div>
+      </div>
+      <div class="sm:ml-4">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FLAUNT IT!</h2>
+        <p class="text-lg text-gray-700">Somos ese armario B que siempre quisiste tener. Tu hermana mayor a la que le puedes pedir ropa prestada sin miedo a que te la reclame después.</p>
+      </div>
+    </div>
+
+    <!-- Paso 2 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
+        <p class="text-lg text-gray-700">Bucea entre nuestras exclusivas marcas y encuentra el look que mejor te representa para tu próximo evento.</p>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-5 -right-5 z-20 w-12 h-12 rounded-full  bg-[#BE0000] text-white flex items-center justify-center text-xl font-bold shadow-md">2</div>
+        <div class="flex-shrink-0 rounded-2xl overflow-hidden w-60  transform transition-transform duration-300 ">
+          <img src="/images/calendar.jpg" alt="Reserva tu look" class="w-full h-64 object-cover object-top" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de calendario'"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 3 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="relative">
+        <div class="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold ">3</div>
+        <div class="flex-shrink-0 w-full rounded-2xl overflow-hidden transform transition-transform duration-300 ">
+          <img src="/images/decide.jpg" alt="Decide cuándo y cómo" class="w-full h-100 object-cover" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de decisión'"/>
+        </div>
+      </div>
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#2C2C2C]">DECIDE CUÁNDO Y CÓMO</h2>
+        <p class="text-lg text-gray-700">¿Tienes un evento este finde? Recíbelo el viernes y devuélvelo el lunes. ¿Necesitas más tiempo? ¡Alquílalo por semanas!</p>
+      </div>
+    </div>
+
+    <!-- Paso 4 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4  border-b-2 border-[#D9D9D9]">
+      
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#2C2C2C]">DIRECTO A CASA</h2>
+        <p class="text-lg text-gray-700">Elige la fecha en la que quieres que llegue tu Borow a casa y nosotras nos encargamos del envío. ¡No te preocupes por nada!</p>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold shadow-md">4</div>
+        <div class="flex-shrink-0 w-full sm:w-64 md:w-80 overflow-hidden rounded-lg shadow-md transform transition-transform duration-300 ">
+          <img src="/images/delivery.jpg" alt="Directo a casa" class="w-full h-64 object-cover" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de entrega'"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 5 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4 rounded-xl border-b-2 border-[#D9D9D9]">
+      <div class="relative">
+        <div class="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold shadow-md">5</div>
+        <div class="flex-shrink-0 w-full sm:w-64 md:w-80 overflow-hidden rounded-2xl transform transition-transform duration-300 ">
+          <img src="/images/dress.jpg" alt="Dress & Impress" class="w-full h-100 object-cover object-right-top" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de vestido'"/>
+        </div>
+      </div>
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#2C2C2C]">DRESS & IMPRESS</h2>
+        <p class="text-lg text-gray-700">Es tu hora, ya tienes en tus manos tu Borow. Luce espectacular y disfruta de tu evento con la confianza de llevar un look único.</p>
+      </div>
+    </div>
+
+    <!-- Paso 6 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4 rounded-xl border-b-2 border-[#D9D9D9]">
+      
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#2C2C2C]">TIME'S UP!</h2>
+        <p class="text-lg text-gray-700">Cuando tu periodo de alquiler haya llegado a su fin, prepara tu Borow para la devolución. Te enviaremos una etiqueta para que lo devuelvas sin problemas.</p>
+      </div>
+      <div class="relative">
+        <div class="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold shadow-md">6</div>
+        <div class="flex-shrink-0 w-full sm:w-64 md:w-80 overflow-hidden rounded-2xl shadow-md transform transition-transform duration-300 ">
+          <img src="/images/return.jpg" alt="Time's Up" class="w-full h-64 object-cover" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de devolución'"/>
+        </div>
+      </div>  
+    </div>
+
+    <!-- Paso 7 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="relative">
+        <div class="absolute -top-5 -left-5 w-12 h-12 rounded-full bg-[#BE0000] z-20 text-white flex items-center justify-center text-xl font-bold shadow-md">7</div>
+        <div class="flex-shrink-0 w-full sm:w-64 md:w-100 overflow-hidden rounded-lg  transform transition-transform duration-300 ">
+          <img src="/images/next.jpg" alt="Next Dress" class="w-full h-100 object-cover " onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen siguiente vestido'"/>
+        </div>
+      </div>
+      <div class="sm:ml-4">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#2C2C2C]">NEXT DRESS!</h2>
+        <p class="text-lg text-gray-700">No te preocupes por más, nosotras nos encargamos de la limpieza. Y ya sabes, para tu próximo evento tienes tu armario infinito esperándote.</p>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

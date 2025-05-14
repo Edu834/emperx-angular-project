@@ -1,56 +1,54 @@
-export interface Estado {
-  idEstado: number;
-  nombre: string;
-}
-
-export interface Galeria {
-  idGaleria: number;
-  fotoFrontal: string;
-  fotoTrasera: string;
-  fotoModeloFrontal: string;
-  fotoModeloTrasera: string;
-  fotoModeloCostado: string;
-  fotoModeloCerca: string;
-}
-
-export interface Categoria {
-  idCategoria: number;
-  nombre: string;
-  descripcion: string;
-}
-
-export interface SubCategoria {
-  idSubcategoria: number;
-  nombre: string;
-  descripcion: string;
-  categoria: Categoria;
-}
-
-export interface Producto {
-  idProducto: string;
-  descripcion: string;
-  marca: string;
-  nombre: string;
-  sexo: string;
-  galeria: Galeria;  // Ahora galeria es de tipo Galeria (objeto completo)
-  subcategoria: SubCategoria;
-}
-
-export interface Articulo {
-  idArticulo: string;
-  color: string;
-  descripcion: string;
-  nombre: string;
-  precio: number;
-  stock: number;
-  talla: string;
-  estados: Estado[];
-  producto: Producto;
-}
+export interface Estado{
+    idEstado: number;
+    nombre: string;
+  }
+  export interface Galeria {
+    idGaleria: number;
+    fotoFrontal: string;
+    fotoTrasera: string;
+    fotoModeloFrontal: string;
+    fotoModeloTrasera: string;
+    fotoModeloCostado: string;
+    fotoModeloCerca: string;
+  }
+export  interface Categoria{
+    idCategoria: number;
+    nombre: string;
+    descripcion: string;
+  }
+export interface Subcategoria{
+    idSubcategoria: number;
+    nombre: string;
+    descripcion: string;
+    categoria: Categoria;
+  }
+  
+export interface Producto{
+    idProducto: string;
+    descripcion: string;
+    marca: string;
+    nombre: string;
+    precio: number;
+    sexo: string;
+    galeria: Galeria;
+    subcategoria: Subcategoria;
+  }
+  
+export interface Articulo{
+    idArticulo: string;
+    color: string;
+    descripcion: string;
+    nombre: string;
+    precio: number;
+    stock: number;
+    talla: string;
+    estados: Estado[];
+    producto: Producto;
+  }
 
 export interface ProductView {
   idProducto: string;
-  subcategoria: SubCategoria;
+  subcategoria: Subcategoria;
   sexo: string;
   name: string;            // Nombre del producto
   price: number;           // Precio del producto
@@ -59,38 +57,14 @@ export interface ProductView {
   stock: number;
   estados: string[];
   color: string[];
-  size: string[];          // Talla del producto (opcional)
+  size: string[];  
+  marca:string;        // Talla del producto (opcional)
   articulos: string[];     // Artículos relacionados al producto
   galeria: Galeria;        // Ahora `galeria` es un objeto de tipo `Galeria`
 }
-
-export interface ArticuloEnPedidoDTO{
-  idArticulo: string;
-  idUsuario: string;
-  cantidad: number;
-  diasAlquiler: number | null;
-}
-
-export interface IdArticuloEnPedido{
-  idArticulo: string;
-  idPedido: string;
-}
-
-export interface Pedido {
-  idPedido: string;
-  fechaPedido: string;
-  fechaEntrega: string;
-  fechaDevolucion: string;
-  estado: string;
-  usuario: string;
-  articulosEnPedido: ArticuloEnPedido[];
-}
-
-export interface ArticuloEnPedido {
-  idArticuloEnPedido: IdArticuloEnPedido;
-  cantidad: number;
-  cantidadDevuelta: number;
-  estado: string;
-  diasAlquiler: number | null;
-  fechaDevuelta: string;
+export interface Filtro {
+  marca: string;
+  precio: string;
+  talla: string[];
+  color: string;
 }

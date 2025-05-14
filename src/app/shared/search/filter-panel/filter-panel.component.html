@@ -26,22 +26,32 @@
                                 }
                                 @case ('subcategory') {
                                     <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
-                                        @for (subcategory of subcategories[genderRoute]; track $index) {
-                                            <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="activeSubcategory === subcategory" (click)="onSubcategoryChange(subcategory)"> {{subcategory}}</button>
-                                        }
+                                      @for (subcategory of subcategories; track $index) {
+                                        <button 
+                                          class="text-start text-2xl hover:underline"
+                                          [class.activeSubcategory]="activeSubcategory === subcategory"
+                                          (click)="onSubcategoryChange(subcategory)">
+                                          {{ subcategory }}
+                                        </button>
+                                      }
                                     </div>
-                                }
-                                @case ('size') {
-                                    <div class="flex flex-wrap justify-start gap-2 w-full">
-                                        @for (size of ['XS', 'S', 'M', 'L', 'XL', 'XXL']; track $index) {
-                                            <button 
-                                                (click)="onSizeChange(size)" [class.activeSize]="selectedSizes.includes(size)" class="bg-[#D9D9D9] min-w-[40px] min-h-[40px] text-center text-[#2c2c2c] hover:underline">
-                                                {{size}}
-                                            </button>
-                                        }
-                                        <p>Selected Sizes: {{ getSelectedSizes() }}</p>
-                                    </div>
-                                }
+                                  }
+                            @case('size'){
+                                <div class="flex flex-wrap justify-start gap-2 w-full">
+                                    @for(size of availableSizes; track $index){
+                                        <button 
+                                        (click)="onSizeChange(size)" 
+                                        [class.activeSize]="selectedSizes.includes(size)" 
+                                        class="bg-[#D9D9D9] min-w-[40px] min-h-[40px] text-center text-[#2c2c2c] hover:underline">
+                                        {{ size }}
+                                      </button>
+                                
+                                    <!-- <p>Selected Sizes: {{ getSelectedSizes() }}</p> -->
+                                    }
+                                      
+                                  </div>
+                            }
+                                  
                                 @case ('priceRange') {
                                     <div>
                                         @for (range of priceRanges; track $index) {
@@ -53,13 +63,23 @@
                                         }
                                     </div>
                                 }
-                                @case ('brand') {
+                                @case('brand') {
                                     <div class="bg-[#D9D9D9] flex flex-col text-[#2c2c2c] space-y-1 p-2 overflow-y-auto h-50 subcategoryScroll">
-                                        @for (brand of brands; track $index) {
-                                            <button class="text-start text-2xl hover:underline" [class.activeSubcategory]="selectedBrand === brand" (click)="onBrandChange(brand)"> {{brand}}</button>
+                                      @if (brands.length === 0) {
+                                        <p class="text-gray-500">No hay marcas disponibles para esta categoría.</p>
+                                      } @else {
+                                        @for (marca of brands; track marca) {
+                                          <button 
+                                          class="text-start text-2xl hover:underline"
+                                            [class.activeBrand]="selectedBrands.includes(marca)"
+                                            (click)="onBrandChange(marca)">
+                                            {{ marca }}
+                                          </button>
                                         }
+                                      }
                                     </div>
-                                }
+                                  }
+                                  
                                 @case ('color') {
                                     <div class="flex flex-wrap justify-items-start gap-2 w-full">
                                         @for (color of colors; track $index) {

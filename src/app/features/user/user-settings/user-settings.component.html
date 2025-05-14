@@ -1,54 +1,171 @@
 <div class="w-full min-h-screen flex flex-col">
   <app-header></app-header>
   
-  <h1 class="text-center text-4xl font-bold text-gray-800 flex-grow flex items-center justify-center">
-    User Settings
-  </h1>
+  <div class=" text-[#2C2C2C] py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div class="flex flex-col md:flex-row justify-between  inter-custom ">
+        <div class="pt-40 flex  justify-between w-full">
+          <div class="flex items-start w-full">
+            <div class="rounded-full bg-[#D9D9D9] lg:w-30 lg:h-30 w-20 h-20  flex items-center justify-center text-white text-4xl font-bold inter-custom mr-6">
+              {{currentUserData?.firstname?.charAt(0) || ''}}
+            </div>
+            <div class="w-full">
+              <h1 class="text-3xl md:text-4xl lg:mb-3  lg:text-6xl pt-2 abril-fatface-regular">{{currentUserData?.firstname +' '+ currentUserData?.lastname}}</h1>
+              <div class="flex justify-between w-full">
+                <h3 class="lg:text-2xl">{{date}} </h3>
+                <img (click)="goBack()" src="/flecha.svg" alt="">
+              </div>
+              
+            </div>
+          </div>
+          
+          
+          
+        </div>
+        
+      </div>
+      <div >
+        <div class="border-b-1 text-2xl border-[#D9D9D9] pb-2 mb-2 flex justify-around mt-10">
+          <p class="active">Account details</p>
+          <!-- <p>Payment methods</p>
+          <p>Shipping address</p> -->
+          
+        </div>
+        
+      </div>
+      <div class="w-full flex justify-center mt-10">
+        <div class="w-[700px]">
+            <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+              <div class="p-6 border-b-1 border-[#D9D9D9] grid grid-cols-5 gap-x-12 gap-y-2 text-[#33333] ">
+                <div class="hidden col-2 col-span-3">
+                  <label for="id" class="block text-sm font-medium mb-2">ID:</label>
+                  <input id="id" formControlName="idUsuario" class="w-full p-2 border border-[#D1D1D1]  mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="firstname" class="block text-sm font-medium mb-2 ">First name*</label>
+                    <input id="firstname" formControlName="firstname" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="lastname" class="block text-sm font-medium mb-2">Last name*</label>
+                    <input id="lastname" formControlName="lastname" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                  <label for="username" class="block text-sm font-medium mb-2">Username*</label>
+                  <input id="username" formControlName="username" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="email" class="block text-sm font-medium mb-2">Email*</label>
+                    <input id="email" type="email" formControlName="email" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="telefono" class="block text-sm font-medium mb-2">Phone*</label>
+                    <input id="telefono" formControlName="telefono" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="direccion" class="block text-sm font-medium mb-2">Address*</label>
+                    <input id="direccion" formControlName="direccion" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-3 col-span-5">
+                    <label for="sexo" class="block text-sm font-medium mb-2">Gender</label>
+                    <!-- <input id="sexo" formControlName="sexo" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" /> -->
+                    <select name="sexo"  id="sexo" formControlName="sexo" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3">
+                      <option value="H">Male</option>
+                      <option value="M">Female</option>
+                      <option value="Undefined">Non</option>
 
-  <div class="flex justify-center items-center w-full pt-40">
-    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-      <div class="hidden">
-        <label for="username">id:</label>
-        <input id="id" formControlName="idUsuario" />
-      </div>
-      <div>
-        <label for="username">Username:</label>
-        <input id="username" formControlName="username" />
-      </div>
-      <div>
-        <label for="firstname">First Name:</label>
-        <input id="firstname" formControlName="firstname" />
-      </div>
-      <div>
-        <label for="lastname">Last Name:</label>
-        <input id="lastname" formControlName="lastname" />
-      </div>
-      <div>
-        <label for="email">Email:</label>
-        <input id="email" type="email" formControlName="email" />
-      </div>
-      <div>
-        <label for="telefono">Phone:</label>
-        <input id="telefono" formControlName="telefono" />
-      </div>
-      <div>
-        <label for="direccion">Address:</label>
-        <input id="direccion" formControlName="direccion" />
-      </div>
-      <div>
-        <label for="direccion">Gender:</label>
-        <input id="direccion" formControlName="sexo" />
-      </div>
-      <div class="hidden">
-        <label for="direccion">Password:</label>
-        <input id="direccion" formControlName="password" />
-      </div>
-      
-    
-      <button type="submit" [disabled]="editForm.invalid">Save Changes</button>
-    </form>
-    
+                    </select>
+                </div>
+                <!-- Sección de Password -->
+                <div class="col-start-3 col-span-5 flex justify-between">
+                  <label for="password" class="block text-sm font-medium mb-6">Password*</label>
+                  <a (click)="openModal()" class="underline text-blue-600 cursor-pointer">Edit</a>
+                </div>
+
+                <!-- Modal para cambiar la contraseña -->
+                <div *ngIf="isModalOpen" class="fixed inset-0 z-50 bg-[#ffffff7e] bg-opacity-50 flex items-center justify-center">
+                  <div class="bg-white p-6 rounded-lg w-96">
+                    <h3 class="text-xl font-semibold mb-4">Change Password</h3>
+                    
+                    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+                      <!-- Contraseña actual -->
+                      <div class="mb-4">
+                        <label for="currentPassword" class="block text-sm font-medium mb-2">Current Password</label>
+                        <input id="currentPassword" type="password" formControlName="currentPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Nueva contraseña -->
+                      <div class="mb-4">
+                        <label for="newPassword" class="block text-sm font-medium mb-2">New Password</label>
+                        <input id="newPassword" type="password" formControlName="newPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Confirmación de nueva contraseña -->
+                      <div class="mb-4">
+                        <label for="confirmNewPassword" class="block text-sm font-medium mb-2">Confirm New Password</label>
+                        <input id="confirmNewPassword" type="password" formControlName="confirmNewPassword" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                      </div>
+
+                      <!-- Mensaje de error -->
+                      <div *ngIf="editError" class="text-red-500 text-sm mb-3">{{ editError }}</div>
+
+                      <!-- Botones -->
+                      <div class="flex justify-end">
+                        <button type="button" (click)="closeModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2  mr-2">Cancel</button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 ">Save</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-start-3 col-span-5">
+                  <label for="password" class="block text-sm font-medium mb-2">Birth date</label>
+                  <input formControlName="fechaNacimiento" type="date"  class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-1 col-span-2 row-start-1 row-span-2 flex items-center justify-center">
+                  <div class="rounded-full bg-[#D9D9D9] lg:w-40 lg:h-40 w-20 h-20  flex items-center justify-center text-white text-4xl font-bold inter-custom ">
+                    {{currentUserData?.firstname?.charAt(0) || ''}}
+                  </div>
+                </div>
+                <div class="col-start-1 col-span-2 row-start-3">
+                  <label for="country" class="block text-sm font-medium mb-2">Country</label>
+                  <input id="country"  formControlName="country" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-1 col-span-2 row-start-4">
+                  <label for="province" class="block text-sm font-medium mb-2">Province</label>
+                  <input id="province" formControlName="province"  class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-1 col-span-2 row-start-5">
+                  <label for="password" class="block text-sm font-medium mb-2">City</label>
+                  <input id="password" formControlName="city"  class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+                <div class="col-start-1 col-span-2 row-start-6">
+                  <label for="zipCode" class="block text-sm font-medium mb-2">Zip code</label>
+                  <input id="zipCode" formControlName="zipCode" class="w-full p-2 border border-[#D1D1D1] bg-white mb-3" />
+                </div>
+              </div>
+              <div class="border-b-1 border-[#D9D9D9] flex justify-between items-center h-30 ">
+                <p class="text-2xl">Delete Account</p>
+                <button class="bg-[#d9d9d9] w-50 h-10 text-xl  hover:border  border-[#292929]">Delete</button>
+              </div>
+              <div class=" flex justify-end items-center h-30 ">
+                <!-- <button type="submit" [disabled]="editForm.invalid" class="w-full bg-blue-500 text-white p-2  mt-4">Save Changes</button> -->
+                <button 
+                [disabled]="!editForm.dirty || editForm.invalid"
+                [ngClass]="{'opacity-40': !editForm.dirty || editForm.invalid}"
+                class="bg-[#d9d9d9] w-50 h-10 text-xl hover:border border-[#292929] transition-opacity duration-300"
+              >
+                Save changes
+              </button>
+              </div>
+                <!-- <button type="submit" [disabled]="editForm.invalid" class="w-full bg-blue-500 text-white p-2  mt-4">Save Changes</button> -->
+            </form>
+            
+        </div>
+    </div>
+    </div>
   </div>
+
+
+  
 
   <app-footer></app-footer>
 </div>

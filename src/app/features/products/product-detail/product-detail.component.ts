@@ -6,22 +6,20 @@ import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
 import { FooterComponent } from "../../../shared/footer/footer.component";
 import { FormsModule } from '@angular/forms';
-import { User } from '../../../core/service/user/user'; // Import the User class
-import { UserService } from '../../../core/service/user/user.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { catchError, map, of } from 'rxjs';
-import { OrdersService } from '../../../core/service/orders/orders.service';
+import { FavoritesService } from '../../../core/service/favorites/favorites.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule]
+  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule]
 })
 export class ProductDetailComponent implements OnInit {
   
  
-  
+  mostrarBotonFiltros: boolean = false;
+  mostrarFiltros: boolean = false;
   showChild = false;
   @Input() detallesVisible: boolean | undefined;
   
@@ -38,9 +36,10 @@ export class ProductDetailComponent implements OnInit {
   name: string = '';
   idUsuario: number = 0;
 
-  constructor(private route: ActivatedRoute, private service: ProductsService, private userService: UserService, private ordersService: OrdersService) {}
+  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService) {}
 
   ngOnInit(): void {
+    // this.cargarFavoritos();
     this.route.paramMap.subscribe((params) => {
       this.name = params.get('name') || '';
       this.obtenerArticulosDelProducto(this.name);
@@ -54,16 +53,20 @@ export class ProductDetailComponent implements OnInit {
   fotoSeleccionada: string = '';
 
 
-  // Obtener todas las fotos de la galería
   getFotosGaleria(): string[] {
-    return [
-      this.product?.galeria.fotoFrontal,
-      this.product?.galeria.fotoTrasera,
-      this.product?.galeria.fotoModeloCerca,
-      this.product?.galeria.fotoModeloFrontal,
-      this.product?.galeria.fotoModeloTrasera
-    ].filter(foto => foto !== undefined) as string[];
+    if (!this.product || !this.product.galeria) {
+      return [];
+    }
+  
+    // Recolectar dinámicamente todas las propiedades del objeto galería que sean URLs válidas
+    const fotos = Object.values(this.product.galeria)
+      .filter((foto: any) => typeof foto === 'string' && foto.trim() !== '');
+  
+    // Si no hay ninguna imagen válida, retornar imagen por defecto
+    return fotos.length > 0 ? fotos : ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];
   }
+  
+  
 
   // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
   cambiarImagen(foto: string): void {
@@ -89,35 +92,47 @@ export class ProductDetailComponent implements OnInit {
     this.resumenProductosConArticulos = []; // Limpiar productos previos
   
     data.forEach(e => {
-      this.product = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
+      let productoExistente = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
   
-      if (!this.product) {
-        this.resumenProductosConArticulos.push({
+      if (!productoExistente) {
+        productoExistente = {
           idProducto: e.producto.idProducto,
           subcategoria: e.producto.subcategoria,
           sexo: e.producto.sexo,
           name: e.producto.nombre,
-          price: e.precio,
-          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://via.placeholder.com/150',
+          price: e.producto.precio,
+          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg',
           description: e.producto.descripcion,
           stock: e.stock,
           estados: e.estados.map((estado: any) => estado.nombre),
           color: [e.color],
           size: [e.talla],
           articulos: [e.idArticulo],
-          galeria: e.producto.galeria
-        });
+          galeria: e.producto.galeria,
+          marca: e.producto.marca
+        };
+        this.resumenProductosConArticulos.push(productoExistente);
       } else {
-        this.product.stock += e.stock;
-        if (!this.product.color.includes(e.color)) this.product.color.push(e.color);
-        if (!this.product.size.includes(e.talla)) this.product.size.push(e.talla);
-        if (!this.product.articulos.includes(e.idArticulo)) this.product.articulos.push(e.idArticulo);
-        this.product.price = (this.product.price + e.precio) / 2; // Promediar precio
+        productoExistente.stock += e.stock;
+        if (!productoExistente.color.includes(e.color)) productoExistente.color.push(e.color);
+        if (!productoExistente.size.includes(e.talla)) productoExistente.size.push(e.talla);
+        if (!productoExistente.articulos.includes(e.idArticulo)) productoExistente.articulos.push(e.idArticulo);
       }
     });
   
+    // Asignar el producto principal al primero de la lista consolidada
+    if (this.resumenProductosConArticulos.length > 0) {
+      this.product = this.resumenProductosConArticulos[0];
+  
+      // Asegurar foto seleccionada
+      if (this.product.galeria && this.product.galeria.fotoFrontal) {
+        this.fotoSeleccionada = this.product.galeria.fotoFrontal;
+      }
+    }
+  
     console.log('Producto final consolidado:', this.resumenProductosConArticulos);
   }
+  
 
   onSelectedColor(color: string): void {
     this.selectedColor = color; // Almacena el color seleccionado

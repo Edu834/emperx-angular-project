@@ -8,6 +8,9 @@ import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 })
 export class UserService {
 
+   
+
+
   constructor(private http:HttpClient) { }
 
   getUsers(id:number):Observable<User>{ {
@@ -33,10 +36,22 @@ export class UserService {
       catchError(error => {
         console.error('Error al obtener el usuario autenticado', error);
         return of(null);  
+        
       })
     );
   }
   
+  // getAuthenticatedUserId(): Observable<number | null> {
+  //   return this.getAuthenticatedUser().pipe(
+  //     map(user => user ? user.id_usuario : null),
+  //     catchError(error => {
+  //       console.error('Error al obtener el ID del usuario autenticado', error);
+  //       return of(null);
+  //     })
+  //   );
+  // }
+  
+
   updateUser(userData: any): Observable<any> {
     return this.http.put<any>('http://localhost:8087/auth/edit', userData).pipe(
       catchError(error => {
@@ -49,7 +64,16 @@ export class UserService {
     );
   }
   
+  changePassword(idUsuario: number, passwordActual: string, nuevaPassword: string): Observable<any> {
+    const body = {
+      idUsuario: idUsuario,        // Se agrega el id del usuario
+      passwordActual: passwordActual,
+      nuevaPassword: nuevaPassword
+    };
 
+    // Suponiendo que el backend tenga un endpoint para cambiar la contraseña
+    return this.http.put<any>(`http://localhost:8087/auth/change-password`, body);
+  }
   private handleError(error:HttpErrorResponse){
     if(error.status === 0){
       console.error('An error occurred:', error.error);
