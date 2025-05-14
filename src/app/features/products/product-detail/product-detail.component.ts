@@ -200,52 +200,25 @@ onSelectedState(idArticulo: string): void {
   console.log('Estado seleccionado:', selectedState);
 }
 
-onSelectedDays(event: Event): void {
-  const inputElement = event.target as HTMLInputElement; // Hacemos un casting a HTMLInputElement
-  this.selectedDays = parseInt(inputElement.value, 10); // Convertir a número entero
-  console.log('Días seleccionados:', this.selectedDays);
-}
-
-addToBag(): void {
-  if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
-      alert('Seleccione un color, talla y estado para agregar al carrito');
-      return;
+favoritos: number[] = [];
+  cargarFavoritos() {
+    this.favoritesService.getFavoritos().subscribe(favoritos => {
+      this.favoritos = favoritos.map(p => p.idProducto);
+    });
   }
-
-  // Obtener el artículo seleccionado
-  const selectedArticulo = this.articulos.find(articulo => articulo.idArticulo === this.selectedStateId);
-  if (!selectedArticulo) {
-      alert('No se encontró el artículo seleccionado');
-      return;
+   // Método para añadir o quitar de favoritos
+toggleFavorito(producto: ProductView) {
+  console.log('Producto:', producto);
+  if (this.favoritesService.esFavorito(producto.idProducto)) {
+    this.favoritesService.eliminarFavorito(producto.idProducto);
+  } else {
+    this.favoritesService.agregarFavorito(producto);
   }
-
-  console.log('Artículo seleccionado para agregar al carrito:', selectedArticulo);
-  this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
-    if (userData) {
-      this.idUsuario = userData.id_usuario;
-      console.log('ID de usuario autenticado:', this.idUsuario);
-      this.articuloEnPedidoDTO = {  
-        idArticulo: selectedArticulo.idArticulo,
-        idUsuario: this.idUsuario.toString(),
-        cantidad: 1,
-        diasAlquiler: this.selectedDays
-      };
-      this.crearArticuloEnCarrito(this.articuloEnPedidoDTO);
-    }else{
-      console.error('No se pudo obtener el usuario autenticado');
-    }
-  });
+  this.cargarFavoritos();
 }
 
-crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): void {
-  this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO).subscribe({
-      next: (data: any) => {
-          console.log('Artículo agregado al carrito:', data);
-      },
-      error: (error: any) => {
-          console.error('Error al agregar el artículo al carrito:', error);
-      }
-  });
+// Verificar si un producto está en favoritos
+esFavorito(productoId: string): boolean {
+  return this.favoritesService.esFavorito(productoId);
 }
-
 }
