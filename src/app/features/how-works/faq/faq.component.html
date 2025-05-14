@@ -1,0 +1,39 @@
+<div class="max-w-4xl mx-auto px-4 py-16 bg-white">
+  <h2 class="text-4xl font-bold text-center mb-12 abril-fatface-regular relative">
+    <span class="relative inline-block after:content-[''] after:absolute after:w-24 after:h-1 after:bg-[#BE0000] after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:mt-2 pb-4">
+      Preguntas Frecuentes
+    </span>
+  </h2>
+
+  <div class="space-y-6">
+    <div *ngFor="let faq of faqs; let i = index" class="faq-item">
+      <button
+        (click)="toggle(i)"
+        class="w-full flex justify-between items-center p-6 rounded-lg  bg-[#2C2C2C]  text-white  shadow-sm hover:shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#BE0000]"
+      >
+        <span class="text-lg font-medium ">{{ faq.question }}</span>
+        <svg
+          class="w-6 h-6 text-[#BE0000] transform transition-transform duration-300"
+          [ngClass]="{ 'rotate-45': faq.isOpen }"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m0-6h12M12 12H0" />
+        </svg>
+      </button>
+
+      <div
+        class="faq-answer overflow-hidden transition-all duration-300 ease-in-out"
+        [ngClass]="faq.isOpen ? 'max-h-96' : 'max-h-0'"
+      >
+        <div class="p-6 bg-white border-b border-l border-r border-indigo-100 rounded-b-lg">
+          <p class="text-gray-700 leading-relaxed">
+            {{ faq.answer }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
