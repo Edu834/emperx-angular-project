@@ -1,0 +1,84 @@
+<!-- table-users.component.html -->
+<div class="mb-4 flex justify-between items-center">
+  <input [(ngModel)]="search"
+         (keyup.enter)="searchUsers()"
+         placeholder="Buscar usuario..."
+         class="border px-3 py-1 rounded w-64" />
+
+  <button (click)="searchUsers()" class="bg-blue-500 text-white px-3 py-1 rounded">Buscar</button>
+</div>
+
+<!-- Indicador de carga -->
+<div *ngIf="loading" class="text-center py-4">
+  <p>Cargando usuarios...</p>
+</div>
+
+<!-- Mensaje cuando no hay resultados -->
+<div *ngIf="!loading && displayedUsers.length === 0" class="text-center py-4">
+  <p>No se encontraron usuarios</p>
+</div>
+
+<table *ngIf="!loading && displayedUsers.length > 0" class="w-full table-auto ">
+  <thead class="bg-gray-100">
+    <tr class="border-b border-t">
+      <th class="text-start px-3 py-2">Nombre</th>
+      <th class="text-start px-3 py-2">Email</th>
+      <th class="text-start px-3 py-2">Fecha Alta</th>
+      <th class="text-start px-3 py-2">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of displayedUsers">
+      <ng-container *ngIf="editingUser?.id_usuario !== user.id_usuario; else editRow">
+        <td class=" px-3 py-2">{{ user.username }}</td>
+        <td class=" px-3 py-2">{{ user.email }}</td>
+        <td class=" px-3 py-2">{{ user.fechaAlta }}</td>
+        <td class=" px-3 py-2 space-x-2">
+          <button (click)="startEdit(user)" class="text-blue-600 hover:underline">Editar</button>
+          <button (click)="deleteUser(user)" class="text-red-600 hover:underline">Eliminar</button>
+        </td>
+      </ng-container>
+
+      <ng-template #editRow>
+        <!-- <td class="border px-3 py-2">
+          <input [(ngModel)]="editingUser.username" class="border px-2 py-1 w-full" />
+        </td>
+        <td class="border px-3 py-2">
+          <input [(ngModel)]="editingUser.email" class="border px-2 py-1 w-full" />
+        </td>
+        <td class="border px-3 py-2">
+          <input [(ngModel)]="editingUser.fechaAlta" class="border px-2 py-1 w-full" disabled />
+        </td>
+        <td class="border px-3 py-2 space-x-2">
+          <button (click)="saveEdit()" class="text-green-600 hover:underline">Guardar</button>
+          <button (click)="cancelEdit()" class="text-gray-600 hover:underline">Cancelar</button>
+        </td> -->
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Paginación -->
+<div class="mt-4 flex justify-center space-x-2" *ngIf="totalPages.length > 1">
+  <button 
+    *ngIf="page > 1" 
+    (click)="goToPage(page - 1)" 
+    class="px-3 py-1 rounded border">
+    &laquo;
+  </button>
+  
+  <button *ngFor="let p of totalPages"
+          (click)="goToPage(p)"
+          class="px-3 py-1 rounded border"
+          [class.bg-blue-500]="page === p"
+          [class.text-white]="page === p">
+    {{ p }}
+  </button>
+  
+  <button 
+    *ngIf="page < totalPages.length" 
+    (click)="goToPage(page + 1)" 
+    class="px-3 py-1 rounded border">
+    &raquo;
+  </button>
+</div>

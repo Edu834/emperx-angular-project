@@ -55,8 +55,12 @@ export class HeaderComponent implements OnInit {
 
     // Auth y datos usuario
     if (sessionStorage.getItem('token')) {
-      this.authService.userData.subscribe(userData => console.log(userData));
-    }
+  const token = sessionStorage.getItem('token')!;
+  const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el payload del JWT
+  const role = payload.role; // Extrae el rol
+  console.log('Rol del usuario:', role);
+}
+
 
     this.userService.getAuthenticatedUser().subscribe({
       next: data => {

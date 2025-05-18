@@ -1,0 +1,37 @@
+<div class="mt-20 w-full text-white bg-[#2C2C2C] px-20 py-5 mb-20">
+  <div *ngFor="let item of items; let i = index" class="mb-4 border-b-2 border-dotted border-white pb-2">
+    
+    <!-- Header con toggle -->
+    <div 
+      (click)="toggle(i)"
+      class="flex text-2xl justify-between font-semibold m-6 items-center abril-fatface-regular px-2 cursor-pointer select-none"
+    >
+      {{ item.title }}
+      <svg 
+        [class.rotate-180]="item.open"
+        xmlns="http://www.w3.org/2000/svg"
+        height="40px"
+        viewBox="0 0 24 24"
+        width="40px"
+        fill="#e3e3e3"
+        class="transition-transform duration-200 ease-in-out"
+      >
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
+      </svg>
+    </div>
+
+    <!-- Contenido con animación -->
+    <div 
+      [ngClass]="{
+        'max-h-0 overflow-hidden': !item.open,
+        'max-h-96 overflow-visible': item.open
+      }"
+      class="text-lg text-gray-300 px-8 transition-all duration-100 ease-in-out"
+    >
+      <p class="py-2">
+        {{ item.content }}
+      </p>
+    </div>
+  </div>
+</div>

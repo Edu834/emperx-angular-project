@@ -1,127 +1,130 @@
 <!-- how-it-works.component.html -->
-<div class="w-full min-h-screen flex flex-col min-w-[300px] bg-white">
-  <!-- Header y búsqueda se mantienen como componentes separados -->
+<div class="w-full min-h-screen flex flex-col min-w-[300px]">
+  <!-- Header and search remain as separate components -->
   <div class="w-full h-25 sm:h-31">
     <app-header></app-header>
   </div>
 
   <app-search class="w-full"></app-search>
 
-  <!-- Título principal con fuente especial -->
-  <h1 class="text-center text-4xl md:text-7xl mt-10 mb-6 text-[#2C2C2C] abril-fatface-regular">HOW WORKS</h1>
+  <!-- Main title with special font -->
+  <h1 class="text-center text-4xl md:text-7xl mt-10 mb-6 text-[#2C2C2C] abril-fatface-regular">HOW IT WORKS</h1>
   
-  <!-- Contenedor principal de pasos -->
+  <!-- Main steps container -->
   <div class="flex flex-col gap-16 px-6 md:px-20 py-5 text-[#2C2C2C] max-w-7xl mx-auto">
     
-    <!-- Paso 1 -->
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">1</div>
+    <!-- Step 1 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">1</div>
       <div class="">
         <div class="sm:ml-10 sm:mr-20">
           <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FLAUNT IT!</h2>
-          <p class="text-lg text-gray-700">Somos ese armario B que siempre quisiste tener, aquel que abrirás cuando los “no sé qué ponerme” y “quiero algo especial” salgan a relucir. Descubre un armario creciente cada temporada, en tendencia y en alquiler. Aquí, importa el ser, no el poseer.</p>
+          <p class="text-lg text-gray-700">We’re that dream closet you always wished for — the one you turn to when “I have nothing to wear” or “I want something special” pops into your head. Discover a growing, on-trend wardrobe available every season for rent. Here, it’s all about being, not owning.</p>
         </div>
-        
       </div>
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden  shadow-md transform transition-transform duration-300 ">
-        <img src="/images/wardrobe.jpg" alt="Your Sister's Closet" class="object-cover object-left-bottom" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden shadow-md transform transition-transform duration-300">
+        <img src="/images/wardrobe.jpg" alt="Your Sister's Closet" class="object-cover object-left-bottom" onerror="this.src='/api/placeholder/300/300'; this.alt='Wardrobe image'"/>
       </div>
     </div>
     
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/calendar.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+    <!-- Step 2 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/calendar.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Calendar image'"/>
       </div>
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">2</div>
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">2</div>
       <div class="">
         <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">BOOK IN ADVANCE</h2>
           <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
+            Browse our exclusive brands and find your dream look. If you like to plan ahead, you can reserve your outfit up to 2 months before your event. If your plans change, cancel your Borow up to 15 days before your booking date at no cost.
+          </p>
         </div>
-        
-      </div>
-      
-    </div>
-
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">3</div>
-      <div class="">
-        <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
-          <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
-        </div>
-      </div>
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/decide.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
       </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/delivery.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
-      </div>
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">4</div>
+    <!-- Step 3 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">3</div>
       <div class="">
         <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">MAKE YOUR CHOICE</h2>
           <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
-        </div>
-        
-      </div>
-      
-    </div>
-
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">5</div>
-      <div class="">
-        <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
-          <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
+            Explore our catalog and pick the outfit that speaks to you. Choose by brand, style, or event type — and feel confident knowing each item is carefully curated for you.
+          </p>
         </div>
       </div>
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/dress.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/decide.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Decision image'"/>
       </div>
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/delivery.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+    <!-- Step 4 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/delivery.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Delivery image'"/>
       </div>
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">6</div>
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">4</div>
       <div class="">
         <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">DELIVERY TO YOUR DOOR</h2>
           <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
+            We deliver your chosen outfit straight to your door — clean, steamed, and ready to wear. Just in time for your special day.
+          </p>
         </div>
-        
       </div>
-      
     </div>
 
-    <div class="flex flex-col sm:flex-row gap-8  items-center  transition-all duration-300 p-4 border-b-2 border-[#D9D9D9] ">
-      <div class=" text-[250px] text-[#BE0000] rounded-full abril-fatface-regular  flex items-center justify-center  font-bold ">7</div>
+    <!-- Step 5 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">5</div>
       <div class="">
         <div class="sm:ml-10 sm:mr-20">
-          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">FIND YOU DREAM FIT</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">OWN THE MOMENT</h2>
           <p class="text-lg text-gray-700">
-            Bucea entre nuestras exclusivas marcas y encuentra el look de tus sueños. Si eres previsora, puedes reservar tu look hasta 2 meses antes de tu evento. Si tus planes cambian, cancela tu Borow hasta 15 días antes de tu fecha de reserva sin coste alguno.</p>
+            Wear it like it’s yours. Feel amazing and enjoy the moment — whether it’s a wedding, party, or a special dinner. Confidence looks good on you.
+          </p>
         </div>
       </div>
-      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0   overflow-hidden   transform transition-transform duration-300 ">
-        <img src="/images/dress.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Imagen de armario'"/>
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/dress.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Dress image'"/>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/delivery.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Return delivery image'"/>
+      </div>
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">6</div>
+      <div class="">
+        <div class="sm:ml-10 sm:mr-20">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">RETURN IT EASY</h2>
+          <p class="text-lg text-gray-700">
+            Done with your outfit? Simply pack it back in the prepaid bag and drop it off or schedule a pickup. No need to clean it — we’ll take care of that.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="flex flex-col sm:flex-row gap-8 items-center transition-all duration-300 p-4 border-b-2 border-[#D9D9D9]">
+      <div class="text-[250px] text-[#BE0000] rounded-full abril-fatface-regular flex items-center justify-center font-bold">7</div>
+      <div class="">
+        <div class="sm:ml-10 sm:mr-20">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-3 text-[#2C2C2C]">REPEAT THE MAGIC</h2>
+          <p class="text-lg text-gray-700">
+            Loved it? Great! Come back for more. Our closet evolves every season so you can always find something fresh and exciting for your next big moment.
+          </p>
+        </div>
+      </div>
+      <div class="rounded-2xl h-[300px] w-120 flex-shrink-0 overflow-hidden transform transition-transform duration-300">
+        <img src="/images/dress.jpg" alt="Your Sister's Closet" class="object-cover w-full" onerror="this.src='/api/placeholder/300/300'; this.alt='Repeat image'"/>
       </div>
     </div>
     
   </div>
 
   <app-faq></app-faq>
-
-
   <app-footer></app-footer>
 </div>

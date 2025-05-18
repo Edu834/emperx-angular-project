@@ -15,7 +15,7 @@ import { LoginRequest } from './loginRequest';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
+  
   
   loginError:string="";
   loginForm:any;
@@ -69,5 +69,6 @@ export class LoginComponent {
   goHome(){
     this.router.navigateByUrl('/inicio');
   }
+  
 }
 

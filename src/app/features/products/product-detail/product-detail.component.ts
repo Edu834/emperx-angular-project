@@ -8,12 +8,14 @@ import { FooterComponent } from "../../../shared/footer/footer.component";
 import { FormsModule } from '@angular/forms';
 import { FavoritesService } from '../../../core/service/favorites/favorites.service';
 import { CommonModule } from '@angular/common';
+import { AccordionComponent } from "./product-information/product-information.component";
+import { RandomProductsComponent } from "../../../shared/random-product/random-product.component";
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule]
+  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule, AccordionComponent, RandomProductsComponent]
 })
 export class ProductDetailComponent implements OnInit {
   
@@ -134,7 +136,7 @@ export class ProductDetailComponent implements OnInit {
   onSelectedColor(color: string): void {
     this.selectedColor = color; // Almacena el color seleccionado
     console.log('Color seleccionado:', this.selectedColor);
-
+    this.selectedColor = color;
     // Reinicia la talla seleccionada y las tallas disponibles
     this.selectedSize = null; // Reinicia la talla seleccionada a null
     this.availableSizes = []; // Limpia las tallas disponibles
@@ -218,4 +220,21 @@ toggleFavorito(producto: ProductView) {
 esFavorito(productoId: string): boolean {
   return this.favoritesService.esFavorito(productoId);
 }
+colorMap: { [key: string]: string } = {
+  'Negro': 'black',
+  'Blanco': 'white',
+  'Azul': 'blue',
+  'Rojo': 'red',
+  'Verde': 'green',
+  'Amarillo': 'yellow',
+  'Gris': 'gray',
+  'Beige': '#f5f5dc',
+  'Rosa': 'pink',
+  // Agrega los que necesites
+};
+
+getCssColor(colorName: string): string {
+  return this.colorMap[colorName] || 'transparent'; // fallback por si no existe
+}
+
 }

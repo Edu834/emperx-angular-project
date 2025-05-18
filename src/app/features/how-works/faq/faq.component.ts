@@ -9,38 +9,37 @@ import { Component } from '@angular/core';
 })
 export class FaqComponent {
   faqs = [
-  {
-    question: '¿Qué pasa si la prenda no me queda bien?',
-    answer: 'Sabemos que elegir la talla correcta puede ser complicado. Por eso, ofrecemos cambios de talla gratuitos (sujetos a disponibilidad) si nos avisas dentro de las primeras 24 horas después de recibir la prenda. También puedes solicitar una prenda de respaldo con descuento al hacer tu pedido, por si acaso.',
-    isOpen: false,
-  },
-  {
-    question: '¿Cuánto dura el alquiler?',
-    answer: 'El período estándar de alquiler es de 4 días, contando desde el día de entrega hasta el día de devolución. También ofrecemos extensiones de hasta 8 días por un coste adicional, que puedes seleccionar durante el proceso de reserva.',
-    isOpen: false,
-  },
-  {
-    question: '¿Cómo recibo y devuelvo las prendas?',
-    answer: 'Te enviaremos la prenda directamente a tu dirección preferida en un empaque reutilizable. Dentro encontrarás una etiqueta de envío prepagada para la devolución. Solo necesitas volver a empacar la prenda en la misma caja, pegar la etiqueta y dejarla en la oficina de paquetería más cercana.',
-    isOpen: false,
-  },
-  {
-    question: '¿Tengo que lavar la ropa antes de devolverla?',
-    answer: 'No es necesario. Todas nuestras prendas pasan por un proceso profesional de limpieza y desinfección después de cada uso. Solo te pedimos que no intentes lavarla por tu cuenta para evitar posibles daños.',
-    isOpen: false,
-  },
-  {
-    question: '¿Qué pasa si daño la prenda accidentalmente?',
-    answer: 'Incluimos una cobertura básica de daños menores (como pequeños desgarros, manchas o botones sueltos). Si el daño es significativo o irreparable, podríamos aplicar un cargo adicional dependiendo del valor de la prenda y el tipo de daño.',
-    isOpen: false,
-  },
-  {
-    question: '¿Puedo cancelar una reserva?',
-    answer: 'Sí, puedes cancelar tu reserva sin penalización hasta 15 días antes de la fecha de entrega programada. Si cancelas con menos de 15 días de antelación, se aplicará una tarifa del 50%. Las cancelaciones hechas con menos de 72 horas no son reembolsables.',
-    isOpen: false,
-  },
-];
-
+    {
+      question: 'What if the garment doesn’t fit me?',
+      answer: 'We know picking the right size can be tricky. That’s why we offer free size exchanges (subject to availability) if you notify us within the first 24 hours after receiving the garment. You can also add a discounted backup item to your order, just in case.',
+      isOpen: false,
+    },
+    {
+      question: 'How long is the rental period?',
+      answer: 'The standard rental period is 4 days, starting from the delivery date until the return date. You can also extend your rental up to 8 days for an additional fee, which you can select during checkout.',
+      isOpen: false,
+    },
+    {
+      question: 'How do I receive and return the items?',
+      answer: 'We’ll ship the garment directly to your preferred address in reusable packaging. Inside, you’ll find a prepaid return label. Just repack the item in the same box, attach the label, and drop it off at your nearest shipping location.',
+      isOpen: false,
+    },
+    {
+      question: 'Do I need to wash the clothes before returning them?',
+      answer: 'No need! All garments go through a professional cleaning and sanitizing process after every use. We kindly ask that you don’t attempt to wash them yourself to avoid damage.',
+      isOpen: false,
+    },
+    {
+      question: 'What if I accidentally damage the garment?',
+      answer: 'We include basic coverage for minor damage (like small tears, stains, or loose buttons). If the damage is significant or beyond repair, an additional fee may apply based on the garment’s value and the type of damage.',
+      isOpen: false,
+    },
+    {
+      question: 'Can I cancel a reservation?',
+      answer: 'Yes, you can cancel your reservation free of charge up to 15 days before the scheduled delivery date. If you cancel with fewer than 15 days’ notice, a 50% fee will apply. Cancellations made within 72 hours are non-refundable.',
+      isOpen: false,
+    },
+  ];
 
   toggle(index: number) {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;

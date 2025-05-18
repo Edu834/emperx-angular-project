@@ -1,9 +1,9 @@
-<div class="w-full min-h-screen flex flex-col min-w-[300px]">
+<div class="w-full min-h-screen flex flex-col min-w-[300px] ">
     <div class="w-full h-25 sm:h-31">
         <app-header></app-header>
     </div>
     <app-search [newArrivalsHeader]="showChild" class="w-full"></app-search>
-    <div class="flex w-full h-full">
+    <div class="flex w-full h-full mt-10">
         
         <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -48,18 +48,27 @@
                                 </button>
                                 <p class="text-[#474747]"> Retail price: <span class="line-through">{{ product.price}}</span></p>
                             <p class="text-2xl font-semibold mt-2 text-gray-800"><span>Precio final</span> </p>
-                            <div class="px-5 ">
-                                <div class="flex flex-wrap justify-center gap-2 w-full">
-                                <!-- Opciones de tamaño y color -->
+                        <div class="px-5">
+                            <div class="flex flex-wrap justify-center gap-2 w-full">
                                 @for (color of product.color; track $index) {
-                                    <div (click)="onSelectedColor(color)" class="cursor-pointer p-2 rounded-lg transition duration-200"> 
-                                        <div class="bg-amber-400">
-                                            <span >{{color}}</span>
-                                        </div>
-                                       
-                                    </div>
-                                }
-                            </div>
+                                <div 
+                                    (click)="onSelectedColor(color)" 
+                                    class="cursor-pointer p-1 transition duration-200 border"
+                                    [class.border-black]="selectedColor === color"
+                                    [class.border-2]="selectedColor === color"
+                                    [class.border-0]="selectedColor !== color"
+                                > 
+                                    <div 
+                                    class="w-4 h-4 " 
+                                    [ngStyle]="{ 'background-color': getCssColor(color) }"
+                                    ></div>
+                                </div>
+                            }
+                        </div>
+
+
+
+
                             @if (availableSizes.length > 0) {
                                 <div class="mt-4 text-end">
                                     <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer">Size guide</label>
@@ -112,7 +121,13 @@
                     </div>
                 </div>
             }
+
+            <app-product-information></app-product-information>
+            
+            <h2 class="text-6xl abril-fatface-regular font-bold mb-10 mt-40 text-[#2c2c2c]">You may also like</h2>
+            <app-random-products ></app-random-products>
         </div>
+        
     </div>
   
     <app-footer></app-footer>

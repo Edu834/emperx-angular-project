@@ -16,6 +16,12 @@ import { UserReviewsComponent } from './features/user/user-reviews/user-reviews.
 import { UserSettingsComponent } from './features/user/user-settings/user-settings.component';
 import { ProductDetailComponent } from './features/products/product-detail/product-detail.component';
 import { FavoritesComponent } from './features/favorites/favorites.component';
+import { AdminGuard } from './core/guard/admin.guard';
+import { ManagmentComponent } from './features/admin/managment/managment.component';
+import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
+import { TableProductsComponent } from './features/admin/table-products/table-products.component';
+import { TableOrdersComponent } from './features/admin/table-orders/table-orders.component';
+import { TableUsersComponent } from './features/admin/table-users/table-users.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -31,7 +37,20 @@ export const routes: Routes = [
     {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
     {path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent},
     {path: 'favorites', component: FavoritesComponent },
+     {
+    path: 'admin',
+    component: ManagmentComponent,
+    canActivate: [ AdminGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' } },
+      { path: 'products', component: TableProductsComponent, data: { breadcrumb: 'Products' } },
+      { path: 'orders', component: TableOrdersComponent, data: { breadcrumb: 'Orders' } },
+      { path: 'customers', component: TableUsersComponent, data: { breadcrumb: 'Customers' } }
+    ]
+  },
 
+  
     {path: 'user', 
       canActivate: [authGuard],
       children: [

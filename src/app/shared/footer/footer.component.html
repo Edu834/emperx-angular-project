@@ -9,16 +9,24 @@
   
       <!-- Formulario de suscripción -->
       <div class="flex items-center w-full lg:w-auto">
-        <input 
-          type="email" 
-          placeholder="Email" 
-          class="inter-custom bg-gray-300 text-gray-800 text-sm font-mono px-4 py-2 w-full lg:w-64 outline-none border-none"
-        >
-        <button 
-          class="bg-red-700 text-white text-sm px-4 py-2 ml-2 hover:bg-red-800"
-        >
-          Subscribe
-        </button>
+        <form action="https://formspree.io/f/xvgavelb" method="POST" class="flex items-center w-full lg:w-auto">
+    <!-- Asegúrate de usar un campo "email" en el nombre del input -->
+    <input 
+      type="email" 
+      name="email" 
+      placeholder="Email" 
+      required
+      class="inter-custom bg-gray-300 text-gray-800 text-sm font-mono px-4 py-2 w-full lg:w-64 outline-none border-none"
+    >
+
+    <!-- Botón de envío -->
+    <button 
+      type="submit"
+      class="bg-red-700 text-white text-sm px-4 py-2 ml-2 hover:bg-red-800"
+    >
+      Subscribe
+    </button>
+  </form>
       </div>
     </div>
   </div>
@@ -56,7 +64,7 @@
           <div>
             <h3 class="font-semibold md:mb-14 ">SUPPORT</h3>
             <ul class="md:space-y-7">
-              <li><a href="#" class="hover:underline">FAQ</a></li>
+              <li><a [routerLink]="['/how-works']" class="hover:underline">FAQ</a></li>
               <li><a href="#" class="hover:underline">Terms of use</a></li>
               <li><a href="#" class="hover:underline">Privacy Policy</a></li>
             </ul>
@@ -66,7 +74,7 @@
           <div>
             <h3 class="font-semibold md:mb-14">COMPANY</h3>
             <ul class="md:space-y-7">
-              <li><a href="#" class="hover:underline">About us</a></li>
+              <li><a [routerLink]="['/about-us']" class="hover:underline">About us</a></li>
               <li><a href="#" class="hover:underline">Contact</a></li>
               <li><a href="#" class="hover:underline">Careers</a></li>
             </ul>
@@ -76,9 +84,9 @@
           <div>
             <h3 class="font-semibold md:mb-14">SHOP</h3>
             <ul class="md:space-y-7">
-              <li><a href="#" class="hover:underline">My Account</a></li>
+              <li><a [routerLink]="['/user/profile']" class="hover:underline">My Account</a></li>
               <li><a href="#" class="hover:underline">Checkout</a></li>
-              <li><a href="#" class="hover:underline">Management</a></li>
+              <li><a [routerLink]="['/admin']" class="hover:underline">Management</a></li>
             </ul>
           </div>
   

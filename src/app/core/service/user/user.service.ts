@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from './user';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
@@ -8,7 +8,38 @@ import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 })
 export class UserService {
 
-   
+   private apiUrl = 'http://localhost:8087/api/usuarios'; // Ajusta a tu backend
+
+  
+
+getAllUsers(): Observable<User[]> {
+    return this.http.get<any>(this.apiUrl).pipe(
+      map(response => {
+        // Maneja diferentes formatos de respuesta
+        if (Array.isArray(response)) {
+          return response;
+        } else if (response && Array.isArray(response.usuarios)) {
+          return response.usuarios;
+        } else if (response && Array.isArray(response.users)) {
+          return response.users;
+        } else {
+          console.warn('Formato de respuesta inesperado en getAllUsers:', response);
+          return [];
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+
+
+  updateUserByid(id: string, data: Partial<User>) {
+    return this.http.put(`${this.apiUrl}/${id}`, data);
+  }
+
+  deleteUser(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 
 
   constructor(private http:HttpClient) { }

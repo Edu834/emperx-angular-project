@@ -1,0 +1,34 @@
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white">
+    <div class="p-6 text-2xl text-center font-bold">Admin</div>
+    <nav class="p-4 space-y-2">
+      <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-200"
+         class="flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100"
+         [routerLinkActiveOptions]="{ exact: true }">
+        <span class="mr-2">📊</span> Dashboard
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="bg-gray-200"
+         class="flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100">
+        <span class="mr-2">📦</span> Products
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="bg-gray-200"
+         class="flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100">
+        <span class="mr-2">🛒</span> Orders
+      </a>
+      <a routerLink="/admin/customers" routerLinkActive="bg-gray-200"
+         class="flex items-center px-3 py-2 text-sm font-medium rounded-lg hover:bg-gray-100">
+        <span class="mr-2">👥</span> Customers
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+  <div class="text-sm text-gray-500 mb-4">
+    Admin &gt; <span class="font-medium text-black">{{ breadcrumb }}</span>
+  </div>
+
+  <router-outlet></router-outlet>
+</main>
+</div>

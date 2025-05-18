@@ -41,6 +41,7 @@ export class AuthService {
         this.setToken(userData.token); // Guardar token con expiración tomada del propio token
         this.currentUserLoginOn.next(true);
         this.currentUserData.next(userData.token);
+        
       }),
       map((userData) => userData.token),
       catchError(error => {
@@ -140,4 +141,15 @@ getToken(): string | null {
       return null;
     }
   }
+  getUserRole(): string | null {
+  const token = sessionStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role; // Ej: "ROLE_ADMIN"
+  } catch (e) {
+    return null;
+  }
+}
 }
