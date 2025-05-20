@@ -25,10 +25,17 @@
 
   <!-- Main content -->
   <main class="flex-1 p-8 overflow-y-auto">
-  <div class="text-sm text-gray-500 mb-4">
-    Admin &gt; <span class="font-medium text-black">{{ breadcrumb }}</span>
-  </div>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-gray-500 mb-4">
+      Admin &gt; <span class="font-medium text-black">{{ breadcrumb }}</span>
+    </div>
 
-  <router-outlet></router-outlet>
-</main>
+    <!-- Botón de volver -->
+    <button (click)="goBack()"
+            class="mb-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded-lg">
+      ← Volver
+    </button>
+
+    <router-outlet></router-outlet>
+  </main>
 </div>

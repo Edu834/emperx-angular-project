@@ -35,49 +35,51 @@ export class AuthService {
     );
   }
 
-  login(credentials: LoginRequest): Observable<any> {
-    return this.http.post<any>('http://localhost:8087/auth/login', credentials).pipe(
-      tap((userData) => {
-        this.setToken(userData.token); // Guardar token con expiración tomada del propio token
-        this.currentUserLoginOn.next(true);
-        this.currentUserData.next(userData.token);
-        
-      }),
-      map((userData) => userData.token),
-      catchError(error => {
-        console.error('Error en la autenticación:', error);
-        return throwError(() => new Error(error.error?.message || 'Error desconocido en el login'));
-      })
-    );
-  }
+  login(credentials: LoginRequest, rememberMe: boolean): Observable<any> {
+  return this.http.post<any>('http://localhost:8087/auth/login', credentials).pipe(
+    tap((userData) => {
+      console.log('Login request:', credentials);
+      this.setToken(userData.token, rememberMe); // 👈 Usamos el flag aquí
+      this.currentUserLoginOn.next(true);
+      this.currentUserData.next(userData.token);
+    }),
+    map((userData) => userData.token),
+    catchError(error => {
+      console.error('Error en la autenticación:', error);
+      return throwError(() => new Error(error.error?.message || 'Error desconocido en el login'));
+    })
+  );
+}
 
   get userData(): Observable<any> {
     return this.currentUserData.asObservable();
   }
 
-  // 🔹 Guardar token y establecer expiración a partir del campo `exp` en el token
-  public setToken(token: string): void {
-    const expirationTime = this.getExpirationTimeFromToken(token);
-    if (expirationTime) {
-      sessionStorage.setItem(this.tokenKey, token);
-      sessionStorage.setItem(this.expirationKey, expirationTime.toString());
+  public setToken(token: string, rememberMe: boolean = false): void {
+  const expirationTime = this.getExpirationTimeFromToken(token);
+  if (expirationTime) {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem(this.tokenKey, token);
+    storage.setItem(this.expirationKey, expirationTime.toString());
 
-      this.scheduleTokenRemoval(expirationTime - Date.now()); // Establecemos el tiempo de expiración exacto
-    }
+    this.scheduleTokenRemoval(expirationTime - Date.now());
   }
+}
  
   
 
   
-  // 🔹 Obtener token si no ha expirado
 getToken(): string | null {
-    const expiration = sessionStorage.getItem(this.expirationKey);
-    if (expiration && Date.now() > +expiration) {
-      this.removeToken();
-      return null;
-    }
-    return sessionStorage.getItem(this.tokenKey);
+  const expiration = localStorage.getItem(this.expirationKey) || sessionStorage.getItem(this.expirationKey);
+  const token = localStorage.getItem(this.tokenKey) || sessionStorage.getItem(this.tokenKey);
+
+  if (expiration && Date.now() > +expiration) {
+    this.removeToken(); // limpia ambos
+    return null;
   }
+
+  return token;
+}
 
   // 🔹 Programar la eliminación del token después del tiempo de expiración
   private scheduleTokenRemoval(delay: number): void {
@@ -94,28 +96,30 @@ getToken(): string | null {
 
   // 🔹 Verificar expiración al iniciar la app
   private checkTokenExpiration(): void {
-    const expiration = sessionStorage.getItem(this.expirationKey);
-    if (expiration) {
-      const expirationTime = +expiration;
-      const timeRemaining = expirationTime - Date.now();
+  const expiration = localStorage.getItem(this.expirationKey) || sessionStorage.getItem(this.expirationKey);
+  if (expiration) {
+    const expirationTime = +expiration;
+    const timeRemaining = expirationTime - Date.now();
 
-      if (timeRemaining <= 0) {
-        this.removeToken(); // Eliminar el token si ha expirado
-      } else {
-        this.scheduleTokenRemoval(timeRemaining); // Si aún no ha expirado, programar eliminación
-      }
+    if (timeRemaining <= 0) {
+      this.removeToken();
     } else {
-      this.removeToken(); // Si no existe un token, eliminar todo
+      this.scheduleTokenRemoval(timeRemaining);
     }
+  } else {
+    this.removeToken();
   }
+}
 
-  // 🔹 Eliminar token
   private removeToken(): void {
-    sessionStorage.removeItem(this.tokenKey);
-    sessionStorage.removeItem(this.expirationKey);
-    this.currentUserLoginOn.next(false);
-    this.currentUserData.next(null);
-  }
+  localStorage.removeItem(this.tokenKey);
+  localStorage.removeItem(this.expirationKey);
+  sessionStorage.removeItem(this.tokenKey);
+  sessionStorage.removeItem(this.expirationKey);
+
+  this.currentUserLoginOn.next(false);
+  this.currentUserData.next(null);
+}
 
   // 🔹 Cerrar sesión manualmente
   logout(): void {
@@ -142,7 +146,7 @@ getToken(): string | null {
     }
   }
   getUserRole(): string | null {
-  const token = sessionStorage.getItem('token');
+  const token = sessionStorage.getItem('token') !|| localStorage.getItem('token') !;
   if (!token) return null;
 
   try {

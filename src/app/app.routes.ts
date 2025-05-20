@@ -22,6 +22,7 @@ import { DashboardComponent } from './features/admin/dashboard/dashboard.compone
 import { TableProductsComponent } from './features/admin/table-products/table-products.component';
 import { TableOrdersComponent } from './features/admin/table-orders/table-orders.component';
 import { TableUsersComponent } from './features/admin/table-users/table-users.component';
+import { UserDetailsComponent } from './features/admin/table-users/user-details/user-details.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -37,18 +38,24 @@ export const routes: Routes = [
     {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
     {path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent},
     {path: 'favorites', component: FavoritesComponent },
-     {
-    path: 'admin',
-    component: ManagmentComponent,
-    canActivate: [ AdminGuard],
-    children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' } },
-      { path: 'products', component: TableProductsComponent, data: { breadcrumb: 'Products' } },
-      { path: 'orders', component: TableOrdersComponent, data: { breadcrumb: 'Orders' } },
-      { path: 'customers', component: TableUsersComponent, data: { breadcrumb: 'Customers' } }
-    ]
-  },
+    {
+  path: 'admin',
+  component: ManagmentComponent,
+  canActivate: [AdminGuard],
+  children: [
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' } },
+    { path: 'products', component: TableProductsComponent, data: { breadcrumb: 'Products' } },
+    { path: 'orders', component: TableOrdersComponent, data: { breadcrumb: 'Orders' } },
+    { path: 'customers', component: TableUsersComponent, data: { breadcrumb: 'Customers' } },
+    {
+      path: 'customers/:id',
+      component: UserDetailsComponent,
+      data: { breadcrumb: 'Customers Details' } 
+    }
+  ]
+}
+,
 
   
     {path: 'user', 

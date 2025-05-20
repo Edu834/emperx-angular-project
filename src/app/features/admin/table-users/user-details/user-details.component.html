@@ -1,0 +1,114 @@
+<div class="bg-white rounded-2xl shadow-md">
+  <!-- Header -->
+  <div class="mb-4 flex justify-between items-center px-5 pt-5">
+    <h2 class="text-3xl font-semibold">
+      {{ user?.firstname }} {{ user?.lastname }}
+    </h2>
+    <div class="space-x-2">
+      <button *ngIf="!editing" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="startEdit()">
+        Edit
+      </button>
+      <button *ngIf="editing" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="saveUser()">
+        Save
+      </button>
+      <button *ngIf="editing" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600" (click)="cancelEdit()">
+        Cancel
+      </button>
+      <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" (click)="deleteUser()">
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- User Details or Edit Form -->
+  <div class="px-5 pb-5 space-y-2 text-gray-700 text-sm" *ngIf="!editing">
+    <p><strong>Username:</strong> {{ user?.username }}</p>
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+    <p><strong>Phone:</strong> {{ user?.telefono }}</p>
+    <p><strong>Address:</strong> {{ user?.direccion }}</p>
+    <p><strong>Entry Date:</strong> {{ user?.fechaAlta | date }}</p>
+    <p><strong>Role:</strong> {{ user?.role }}</p>
+    <p><strong>Born date:</strong> {{ user?.fechaNacimiento | date }}</p>
+    <p><strong>Country:</strong> {{ user?.country }}</p>
+    <p><strong>Province:</strong> {{ user?.province }}</p>
+    <p><strong>City:</strong> {{ user?.city }}</p>
+    <p><strong>Zip-code:</strong> {{ user?.zipCode }}</p>
+  </div>
+
+  <form *ngIf="editing" (ngSubmit)="saveUser()" class="px-5 pb-5 space-y-4 text-gray-700 text-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <label class="block">
+        Username:
+        <input [(ngModel)]="editedUser.username" name="username" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Email:
+        <input [(ngModel)]="editedUser.email" name="email" type="email" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        First Name:
+        <input [(ngModel)]="editedUser.firstname" name="firstname" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Last Name:
+        <input [(ngModel)]="editedUser.lastname" name="lastname" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Phone:
+        <input [(ngModel)]="editedUser.telefono" name="telefono" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Address:
+        <input [(ngModel)]="editedUser.direccion" name="direccion" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Password (leave blank to keep current):
+        <input [(ngModel)]="editedUser.password" name="password" type="password" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Role:
+        <select [(ngModel)]="editedUser.role" name="role" class="border p-1 rounded w-full">
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </label>
+      
+      <label class="block">
+        Born date:
+        <input [(ngModel)]="editedUser.fechaNacimiento" name="fechaNacimiento" type="date" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Country:
+        <input [(ngModel)]="editedUser.country" name="country" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Province:
+        <input [(ngModel)]="editedUser.province" name="province" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        City:
+        <input [(ngModel)]="editedUser.city" name="city" class="border p-1 rounded w-full" />
+      </label>
+      
+      <label class="block">
+        Zip-code:
+        <input [(ngModel)]="editedUser.zipCode" name="zipCode" type="number" class="border p-1 rounded w-full" />
+      </label>
+    </div>
+    
+    <div class="flex justify-end mt-4">
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2">Save</button>
+      <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </form>
+</div>

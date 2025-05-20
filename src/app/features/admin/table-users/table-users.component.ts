@@ -4,6 +4,7 @@ import { UserService } from '../../../core/service/user/user.service';
 import { User } from '../../../core/service/user/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true, // Añadido porque estás usando imports directamente en el componente
@@ -12,20 +13,47 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './table-users.component.html',
 })
 export class TableUsersComponent implements OnInit {
+
+
   users: User[] = [];
   displayedUsers: User[] = [];
   page: number = 1;
-  limit: number = 5;      // Cambiado a 10 usuarios por página (era 1)
+  limit: number = 10;      // Cambiado a 10 usuarios por página (era 1)
   total: number = 0;
   loading = false;
   editingUser: User | null = null;
   search: string = '';     // Tipado correctamente
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUsers();      // Es mejor llamar a loadUsers() que tiene manejo de errores
   }
+  initialsSortAsc: boolean = true;
+
+
+toggleInitialsSort() {
+  this.initialsSortAsc = !this.initialsSortAsc;
+  this.displayedUsers.sort((a, b) => {
+    const initialsA = this.getInitials(a);
+    const initialsB = this.getInitials(b);
+    return this.initialsSortAsc
+      ? initialsA.localeCompare(initialsB)
+      : initialsB.localeCompare(initialsA);
+  });
+}
+verDetalle(user: any) {
+  this.router.navigate(['/admin/customers', user.idUsuario]);
+}
+
+getInitials(user: any): string {
+  const nombre = user.nombre?.trim();
+  const apellido = user.apellido?.trim();
+  if (nombre && apellido) {
+    return `${nombre.charAt(0)}${apellido.charAt(0)}`.toUpperCase();
+  }
+  return user.username?.substring(0, 2).toUpperCase() || '';
+}
 
   goToPage(p: number) {
     this.page = p;
@@ -82,19 +110,19 @@ export class TableUsersComponent implements OnInit {
     this.updateDisplayedUsers(); // Solo necesitamos actualizar la vista, no recargar
   }
 
-  deleteUser(user: User) {
-    if (confirm(`¿Eliminar a ${user.username}?`)) {
-      this.userService.deleteUser(user.id_usuario).subscribe({
-        next: () => {
-          this.loadUsers();
-        },
-        error: (err) => {
-          console.error('Error al eliminar usuario:', err);
-          alert('Error al eliminar usuario');
-        }
-      });
-    }
+  deleteUser(user: any): void {
+  console.log(user.idUsuario);  // Aquí está el id correcto
+  if (confirm(`¿Seguro que quieres eliminar a ${user.firstname} ${user.lastname}?`)) {
+    this.userService.deleteUser(user.idUsuario).subscribe({
+      next: () => {
+        this.users = this.users.filter(u => u.idUsuario !== user.idUsuario);
+        this.displayedUsers = [...this.users];
+        alert('Usuario eliminado');
+      },
+      error: () => alert('Error al eliminar usuario')
+    });
   }
+}
 
   startEdit(user: User) {
     this.editingUser = { ...user };

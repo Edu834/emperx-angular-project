@@ -54,23 +54,23 @@ getAllUsers(): Observable<User[]> {
   
 }
 
-  getAuthenticatedUser(): Observable<User | null> {
-    const token = sessionStorage.getItem('token'); 
-    if (!token) {
-      return of(null); 
-    }
+getAuthenticatedUser(): Observable<User | null> {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token'); // ✅ Buscar en ambos
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Configurar el encabezado
-
-
-    return this.http.get<User>(`http://localhost:8087/api/usuarios/me`, {headers}).pipe(
-      catchError(error => {
-        console.error('Error al obtener el usuario autenticado', error);
-        return of(null);  
-        
-      })
-    );
+  if (!token) {
+    return of(null);
   }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.get<User>(`http://localhost:8087/api/usuarios/me`, { headers }).pipe(
+    catchError(error => {
+      console.error('Error al obtener el usuario autenticado', error);
+      return of(null);
+    })
+  );
+}
+
   
   // getAuthenticatedUserId(): Observable<number | null> {
   //   return this.getAuthenticatedUser().pipe(
@@ -94,6 +94,12 @@ getAllUsers(): Observable<User[]> {
       })
     );
   }
+
+    updateUser2(id: number, user: any): Observable<any> {
+      console.log(user);
+      console.log(id);
+    return this.http.put<any>(`http://localhost:8087/api/usuarios/${id}`, user);
+  }
   
   changePassword(idUsuario: number, passwordActual: string, nuevaPassword: string): Observable<any> {
     const body = {
@@ -115,4 +121,13 @@ getAllUsers(): Observable<User[]> {
     }
     return throwError(()=> new Error('Algo falló. Por favor, inténtelo de nuevo más tarde.'));
   }
+
+  getUsuarioById(id: number) {
+  return this.http.get(`http://localhost:8087/api/usuarios/${id}`);
+  }
+
+  eliminarUsuario(id: string) {
+    return this.http.delete(`http://localhost:8087/api/usuarios/${id}`);
+  }
+  
 }

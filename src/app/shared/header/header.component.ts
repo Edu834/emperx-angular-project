@@ -184,7 +184,7 @@ export class HeaderComponent implements OnInit {
       const categoriaUrl = this.normalizeForUrl(categoria);
       const subcategoriaUrl = this.normalizeForUrl(subcategoria);
       
-      console.log(`Artículo procesado: sexo=${sexo}, categoria=${categoriaDisplay} (${categoriaUrl}), subcategoria=${subcategoriaDisplay} (${subcategoriaUrl})`);
+      // console.log(`Artículo procesado: sexo=${sexo}, categoria=${categoriaDisplay} (${categoriaUrl}), subcategoria=${subcategoriaDisplay} (${subcategoriaUrl})`);
       
       // Validamos que tenemos categoría y subcategoría
       if (categoria && subcategoria) {

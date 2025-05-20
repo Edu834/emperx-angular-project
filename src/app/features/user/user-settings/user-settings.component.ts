@@ -61,7 +61,7 @@ export class UserSettingsComponent {
       
       if (userData) {
         this.currentUserData = userData;
-        this.editForm.controls['idUsuario'].setValue(userData.id_usuario);
+        this.editForm.controls['idUsuario'].setValue(userData.idUsuario);
         this.editForm.controls['username'].setValue(userData.username);
         this.editForm.controls['firstname'].setValue(userData.firstname);
         this.editForm.controls['lastname'].setValue(userData.lastname);
@@ -75,7 +75,7 @@ export class UserSettingsComponent {
         this.editForm.controls['zipCode'].setValue(userData.zipCode);
         this.editForm.controls['password'].setValue(userData.password);
         this.editForm.controls['fechaNacimiento'].setValue(userData.fechaNacimiento);
-        console.log(userData.id_usuario);
+        console.log(userData.idUsuario);
         console.log(this.currentUserData);
         this.date = this.getDate(this.currentUserData.fechaAlta);
       }
@@ -147,7 +147,7 @@ export class UserSettingsComponent {
       }
   
       // Obtener el idUsuario desde el currentUserData
-      const idUsuario = this.currentUserData.id_usuario;
+      const idUsuario = this.currentUserData.idUsuario;
       console.log(idUsuario);
       // Llamar al servicio de cambio de contraseña
       this.userService.changePassword(idUsuario, currentPassword, newPassword).subscribe({

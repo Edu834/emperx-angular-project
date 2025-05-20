@@ -1,11 +1,17 @@
+<div class="bg-white rounded-2xl shadow-md">
+
 <!-- table-users.component.html -->
-<div class="mb-4 flex justify-between items-center">
-  <input [(ngModel)]="search"
+<div class="mb-4 flex justify-between items-center px-5 pt-5">
+  <h2 class="text-3xl font-semibold">Customers</h2>
+  <div class="space-x-2">
+    <input [(ngModel)]="search"
          (keyup.enter)="searchUsers()"
          placeholder="Buscar usuario..."
          class="border px-3 py-1 rounded w-64" />
 
-  <button (click)="searchUsers()" class="bg-blue-500 text-white px-3 py-1 rounded">Buscar</button>
+    <button (click)="searchUsers()" class="bg-blue-500 text-white px-3 py-1 rounded">Buscar</button>
+  </div>
+  
 </div>
 
 <!-- Indicador de carga -->
@@ -18,48 +24,68 @@
   <p>No se encontraron usuarios</p>
 </div>
 
-<table *ngIf="!loading && displayedUsers.length > 0" class="w-full table-auto ">
-  <thead class="bg-gray-100">
-    <tr class="border-b border-t">
-      <th class="text-start px-3 py-2">Nombre</th>
+<table *ngIf="!loading && displayedUsers.length > 0" class="w-full table-auto  border-spacing-y-2">
+  <thead class="bg-gray-100 shadow-sm">
+    <tr class="border-b border-t border-gray-300">
+      <!-- Initials column with sort button -->
+      <th class="text-center w-20 px-3 py-2">
+        <button (click)="toggleInitialsSort()" class="flex flex-col items-center justify-center w-full text-sm font-medium text-gray-700 hover:text-blue-600">
+          Init
+          <span *ngIf="initialsSortAsc">&#9650;</span> <!-- ▲ -->
+          <span *ngIf="!initialsSortAsc">&#9660;</span> <!-- ▼ -->
+        </button>
+      </th>
+      <th class="text-start px-3 py-2">Username</th>
+      <th class="text-start px-3 py-2">Firstname</th>
+      <th class="text-start px-3 py-2">Lastname</th>
       <th class="text-start px-3 py-2">Email</th>
-      <th class="text-start px-3 py-2">Fecha Alta</th>
-      <th class="text-start px-3 py-2">Acciones</th>
+      <th class="text-start px-3 py-2">Address</th>
+      <th class="text-start px-3 py-2">Phone</th>
+      <th class="text-start px-3 py-2">Entry date</th>
+      <th class="text-start px-3 py-2">Action</th>
+
+
     </tr>
   </thead>
+
   <tbody>
-    <tr *ngFor="let user of displayedUsers">
-      <ng-container *ngIf="editingUser?.id_usuario !== user.id_usuario; else editRow">
-        <td class=" px-3 py-2">{{ user.username }}</td>
-        <td class=" px-3 py-2">{{ user.email }}</td>
-        <td class=" px-3 py-2">{{ user.fechaAlta }}</td>
-        <td class=" px-3 py-2 space-x-2">
-          <button (click)="startEdit(user)" class="text-blue-600 hover:underline">Editar</button>
-          <button (click)="deleteUser(user)" class="text-red-600 hover:underline">Eliminar</button>
+    <tr *ngFor="let user of displayedUsers" class="bg-white  border-b border-gray-300 my-5">
+      <ng-container *ngIf="editingUser?.idUsuario !== user.idUsuario; else editRow">
+        <td class="flex justify-center items-center my-2">
+          <div class="flex justify-center items-center bg-gray-200 w-10 h-10 text-blue-500 text-center rounded m-1">
+            {{ getInitials(user) }}
+          </div>
+        </td>
+        <td class="px-3 py-2">{{ user.username }}</td>
+        <td class="px-3 py-2">{{ user.firstname }}</td>
+        <td class="px-3 py-2">{{ user.lastname }}</td>
+        <td class="px-3 py-2">{{ user.email }}</td>
+        <td class="px-3 py-2">{{ user.direccion }}</td>
+        <td class="px-3 py-2">{{ user.telefono }}</td>
+        <td class="px-3 py-2">{{ user.fechaAlta }}</td>
+        <td class="px-3 py-2 space-x-2">
+          <button class="cursor-pointer" (click)="verDetalle(user)">
+            ...
+          </button>
+          <button (click)="startEdit(user)" class="cursor-pointer text-blue-600 hover:underline">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button (click)="deleteUser(user)" class="cursor-pointer text-red-600 hover:underline">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </td>
       </ng-container>
 
       <ng-template #editRow>
-        <!-- <td class="border px-3 py-2">
-          <input [(ngModel)]="editingUser.username" class="border px-2 py-1 w-full" />
-        </td>
-        <td class="border px-3 py-2">
-          <input [(ngModel)]="editingUser.email" class="border px-2 py-1 w-full" />
-        </td>
-        <td class="border px-3 py-2">
-          <input [(ngModel)]="editingUser.fechaAlta" class="border px-2 py-1 w-full" disabled />
-        </td>
-        <td class="border px-3 py-2 space-x-2">
-          <button (click)="saveEdit()" class="text-green-600 hover:underline">Guardar</button>
-          <button (click)="cancelEdit()" class="text-gray-600 hover:underline">Cancelar</button>
-        </td> -->
+        <!-- Edición aquí si lo necesitas -->
       </ng-template>
     </tr>
   </tbody>
 </table>
 
+
 <!-- Paginación -->
-<div class="mt-4 flex justify-center space-x-2" *ngIf="totalPages.length > 1">
+<div class="mt-4 flex justify-center space-x-2 pb-5" *ngIf="totalPages.length > 1">
   <button 
     *ngIf="page > 1" 
     (click)="goToPage(page - 1)" 
@@ -69,16 +95,18 @@
   
   <button *ngFor="let p of totalPages"
           (click)="goToPage(p)"
-          class="px-3 py-1 rounded border"
-          [class.bg-blue-500]="page === p"
-          [class.text-white]="page === p">
+          class="px-3 py-1 rounded"
+          [class.bg-gray-200]="page === p"
+          [class.text-black]="page === p">
     {{ p }}
   </button>
   
   <button 
     *ngIf="page < totalPages.length" 
     (click)="goToPage(page + 1)" 
-    class="px-3 py-1 rounded border">
+    class="px-3 py-1 ">
     &raquo;
   </button>
+</div>
+
 </div>
