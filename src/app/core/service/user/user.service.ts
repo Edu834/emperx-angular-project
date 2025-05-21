@@ -130,4 +130,7 @@ getAuthenticatedUser(): Observable<User | null> {
     return this.http.delete(`http://localhost:8087/api/usuarios/${id}`);
   }
   
+  obtenerUsuariosPorDia() {
+    return this.http.get<any[]>('http://localhost:8087/api/usuarios/nuevos-por-dia');
+  }
 }
