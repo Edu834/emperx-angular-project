@@ -23,6 +23,7 @@ import { TableProductsComponent } from './features/admin/table-products/table-pr
 import { TableOrdersComponent } from './features/admin/table-orders/table-orders.component';
 import { TableUsersComponent } from './features/admin/table-users/table-users.component';
 import { UserDetailsComponent } from './features/admin/table-users/user-details/user-details.component';
+import { BagComponent } from './features/user/bag/bag.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -63,6 +64,7 @@ export const routes: Routes = [
       children: [
         { path: 'profile', component: ProfileComponent},
         { path: 'orders', component: OrdersComponent },
+        { path: 'bag', component: BagComponent },
         { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
         { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente
         { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Articulo, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { Articulo, ArticuloEnPedidoDTO, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
@@ -10,6 +10,11 @@ import { FavoritesService } from '../../../core/service/favorites/favorites.serv
 import { CommonModule } from '@angular/common';
 import { AccordionComponent } from "./product-information/product-information.component";
 import { RandomProductsComponent } from "../../../shared/random-product/random-product.component";
+import { User } from '../../../core/service/user/user'; // Import the User class
+import { UserService } from '../../../core/service/user/user.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { catchError, map, of } from 'rxjs';
+import { OrdersService } from '../../../core/service/orders/orders.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -28,14 +33,17 @@ export class ProductDetailComponent implements OnInit {
   selectedColor: string | null = null;
   availableSizes: string[] = [];
   selectedSize: string | null = null;
+  selectedDays: number = 0;
   listaArticulos: any;
   availableStates: { idArticulo: string; estados: string; deshabilitado: boolean; }[] = [];
   
   resumenProductosConArticulos: ProductView[] = [];
   articulos: Articulo[] = [];
+  articuloEnPedidoDTO: ArticuloEnPedidoDTO | undefined;
   name: string = '';
+  idUsuario: number = 0;
 
-  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService) {}
+  constructor(private route: ActivatedRoute, private service: ProductsService, private userService: UserService, private ordersService: OrdersService, private favoritesService : FavoritesService) {}
 
   ngOnInit(): void {
     // this.cargarFavoritos();
@@ -235,6 +243,53 @@ colorMap: { [key: string]: string } = {
 
 getCssColor(colorName: string): string {
   return this.colorMap[colorName] || 'transparent'; // fallback por si no existe
+}
+onSelectedDays(event: Event): void {
+  const inputElement = event.target as HTMLInputElement; // Hacemos un casting a HTMLInputElement
+  this.selectedDays = parseInt(inputElement.value, 10); // Convertir a número entero
+  console.log('Días seleccionados:', this.selectedDays);
+}
+
+addToBag(): void {
+  if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
+      alert('Seleccione un color, talla y estado para agregar al carrito');
+      return;
+  }
+
+  // Obtener el artículo seleccionado
+  const selectedArticulo = this.articulos.find(articulo => articulo.idArticulo === this.selectedStateId);
+  if (!selectedArticulo) {
+      alert('No se encontró el artículo seleccionado');
+      return;
+  }
+
+  console.log('Artículo seleccionado para agregar al carrito:', selectedArticulo);
+  this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
+    if (userData) {
+      this.idUsuario = userData.id_usuario;
+      console.log('ID de usuario autenticado:', this.idUsuario);
+      this.articuloEnPedidoDTO = {  
+        idArticulo: selectedArticulo.idArticulo,
+        idUsuario: this.idUsuario.toString(),
+        cantidad: 1,
+        diasAlquiler: this.selectedDays
+      };
+      this.crearArticuloEnCarrito(this.articuloEnPedidoDTO);
+    }else{
+      console.error('No se pudo obtener el usuario autenticado');
+    }
+  });
+}
+
+crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): void {
+  this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO).subscribe({
+      next: (data: any) => {
+          console.log('Artículo agregado al carrito:', data);
+      },
+      error: (error: any) => {
+          console.error('Error al agregar el artículo al carrito:', error);
+      }
+  });
 }
 
 }

@@ -68,3 +68,33 @@ export interface Filtro {
   talla: string[];
   color: string;
 }
+export interface ArticuloEnPedidoDTO{
+  idArticulo: string;
+  idUsuario: string;
+  cantidad: number;
+  diasAlquiler: number | null;
+}
+
+export interface IdArticuloEnPedido{
+  idArticulo: string;
+  idPedido: string;
+}
+
+export interface Pedido {
+  idPedido: string;
+  fechaPedido: string;
+  fechaEntrega: string;
+  fechaDevolucion: string;
+  estado: string;
+  usuario: string;
+  articulosEnPedido: ArticuloEnPedido[];
+}
+
+export interface ArticuloEnPedido {
+  idArticuloEnPedido: IdArticuloEnPedido;
+  cantidad: number;
+  cantidadDevuelta: number;
+  estado: string;
+  diasAlquiler: number | null;
+  fechaDevuelta: string;
+}
