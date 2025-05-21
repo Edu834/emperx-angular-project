@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Articulo, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
@@ -15,7 +16,7 @@ import { RandomProductsComponent } from "../../../shared/random-product/random-p
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule, AccordionComponent, RandomProductsComponent]
+  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule, AccordionComponent, RandomProductsComponent, RouterModule]
 })
 export class ProductDetailComponent implements OnInit {
   
@@ -235,6 +236,12 @@ colorMap: { [key: string]: string } = {
 
 getCssColor(colorName: string): string {
   return this.colorMap[colorName] || 'transparent'; // fallback por si no existe
+}
+
+addToBag(){
+  console.log("Added ");
+  
+  
 }
 
 }

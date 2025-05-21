@@ -23,6 +23,7 @@ import { TableProductsComponent } from './features/admin/table-products/table-pr
 import { TableOrdersComponent } from './features/admin/table-orders/table-orders.component';
 import { TableUsersComponent } from './features/admin/table-users/table-users.component';
 import { UserDetailsComponent } from './features/admin/table-users/user-details/user-details.component';
+import { BagComponent } from './features/bag/bag.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -38,6 +39,7 @@ export const routes: Routes = [
     {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
     {path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent},
     {path: 'favorites', component: FavoritesComponent },
+    {path: 'bag', component: BagComponent},
     {
   path: 'admin',
   component: ManagmentComponent,
@@ -57,7 +59,6 @@ export const routes: Routes = [
 }
 ,
 
-  
     {path: 'user', 
       canActivate: [authGuard],
       children: [
