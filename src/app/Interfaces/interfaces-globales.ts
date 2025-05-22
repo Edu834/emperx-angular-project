@@ -73,12 +73,10 @@ export interface ArticuloEnPedidoDTO{
   idUsuario: string;
   cantidad: number;
   diasAlquiler: number | null;
+  precioFinal: number;
 }
 
-export interface IdArticuloEnPedido{
-  idArticulo: string;
-  idPedido: string;
-}
+
 
 export interface Pedido {
   idPedido: string;
@@ -90,11 +88,17 @@ export interface Pedido {
   articulosEnPedido: ArticuloEnPedido[];
 }
 
+export interface IdArticuloEnPedido {
+  idArticulo: string;
+  idPedido: string;
+}
+
 export interface ArticuloEnPedido {
-  idArticuloEnPedido: IdArticuloEnPedido;
+  id: IdArticuloEnPedido;
   cantidad: number;
   cantidadDevuelta: number;
   estado: string;
   diasAlquiler: number | null;
   fechaDevuelta: string;
+  precioFinal: number;
 }

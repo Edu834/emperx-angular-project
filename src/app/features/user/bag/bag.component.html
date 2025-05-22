@@ -4,27 +4,169 @@
     
     <div class=" text-[#2C2C2C] py-8">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-40">
-        
-        <div class="">
-          <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2 flex justify-between">
-            <h2 class="text-4xl font-bold">Orders</h2>
+        <div class="mb-6">
             <img (click)="goBack()" src="/flecha.svg" alt="">
-          </div>
-          
         </div>
         
-        
-    
+        <div class="flex gap-10">
+          <div class="w-[70%]">
+            <div class="flex-col border-b-1 border-gray-300 pb-2 mb-2 flex justify-between">
+              <h2 class="text-4xl font-bold">Bag</h2>
+            </div>
+            
+            <div>
+              <div *ngFor="let articuloEnPedido of carrito?.articulosEnPedido" class="mb-6 p-4 border-b">
+                <div class="flex gap-4">
+                  <!-- Foto del producto -->
+                  <div class="flex-shrink-0">
+                    <img 
+                      [src]="fotosMap[articuloEnPedido.id.idArticulo]" 
+                      alt="Foto del artículo" 
+                      class="w-32 h-32 object-cover rounded-lg"
+                      *ngIf="fotosMap[articuloEnPedido.id.idArticulo]" />
+                    <div 
+                      *ngIf="!fotosMap[articuloEnPedido.id.idArticulo]" 
+                      class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span class="text-gray-500">Cargando...</span>
+                    </div>
+                  </div>
+                 
+                  <!-- Información del artículo -->
+                  <div class="flex-1">
+                    <!-- Información del producto al que pertenece el artículo -->
+                    <div *ngIf="productosMap[articuloEnPedido.id.idArticulo]">
+                      <h3 class="text-3xl abril-fatface-regular font-semibold mb-2">
+                        {{ productosMap[articuloEnPedido.id.idArticulo].nombre }}
+                      </h3>
+                      <p class="text-md mb-2">
+                         {{ productosMap[articuloEnPedido.id.idArticulo].subcategoria.nombre }}
+                      </p>
+                      <p class="text-gray-600 mb-2" *ngIf="productosMap[articuloEnPedido.id.idArticulo]">
+                        {{ productosMap[articuloEnPedido.id.idArticulo].descripcion }}
+                      </p>
+                      <p class="text-lg font-bold text-green-600 mb-2">
+                        ${{ productosMap[articuloEnPedido.id.idArticulo].precio }}
+                      </p>
+                      <div class="flex gap-4 mb-2">
+                        <span class="text-sm bg-gray-100 px-2 py-1 rounded">
+                          <strong>Marca:</strong> {{ productosMap[articuloEnPedido.id.idArticulo].marca }}
+                        </span>
+                        <span class="text-sm bg-gray-100 px-2 py-1 rounded">
+                          <strong>Sexo:</strong> {{ productosMap[articuloEnPedido.id.idArticulo].sexo }}
+                        </span>
+                      </div>
+                      
+                    </div>
+                     <div *ngIf="articulosMap[articuloEnPedido.id.idArticulo]" class="border-t pt-2 mt-2">
+                    <p class="text-sm text-gray-600">
+                      <strong>Color:</strong> {{ articulosMap[articuloEnPedido.id.idArticulo].color }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      <strong>Talla:</strong> {{ articulosMap[articuloEnPedido.id.idArticulo].talla }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      <strong>Stock disponible:</strong> {{ articulosMap[articuloEnPedido.id.idArticulo].stock }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      <strong>Descripción artículo:</strong> {{ articulosMap[articuloEnPedido.id.idArticulo].descripcion }}
+                    </p>
+                   <p class="text-sm text-gray-600">
+  <strong>Estados:</strong>
+   <p class="text-sm text-gray-600" *ngIf="articulosMap[articuloEnPedido.id.idArticulo]">
+  <strong>Estados:</strong> {{ getEstadosFiltrados(articulosMap[articuloEnPedido.id.idArticulo].estados) }}
+
+</p>
+                  </div>
+                    <!-- Información específica del artículo en el pedido -->
+                    <div class="border-t pt-2 mt-2">
+                      <p class="text-sm text-gray-600">
+                        <strong>Estado en pedido:</strong> {{ articuloEnPedido.estado }}
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        <strong>Cantidad:</strong> {{ articuloEnPedido.cantidad }}
+                      </p>
+                      <p class="text-sm text-gray-600">
+                        <strong>Precio final:</strong> ${{ articuloEnPedido.precioFinal }}
+                      </p>
+                      <p class="text-sm text-gray-600" *ngIf="articuloEnPedido.diasAlquiler">
+                        <strong>Días de alquiler:</strong> {{ articuloEnPedido.diasAlquiler }}
+                      </p>
+                      <p class="text-sm text-gray-600" *ngIf="articuloEnPedido.cantidadDevuelta > 0">
+                        <strong>Cantidad devuelta:</strong> {{ articuloEnPedido.cantidadDevuelta }}
+                      </p>
+                      <p class="text-sm text-gray-600" *ngIf="articuloEnPedido.fechaDevuelta">
+                        <strong>Fecha devuelta:</strong> {{ articuloEnPedido.fechaDevuelta | date:'short' }}
+                      </p>
+                      <p class="text-sm text-blue-600">
+                        <strong>ID Artículo:</strong> {{ articuloEnPedido.id?.idArticulo }}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <!-- Acciones -->
+                  <div class="flex-shrink-0 flex flex-col gap-2">
+                    <!-- <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                      Eliminar
+                    </button>
+                    <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+                      Editar cantidad
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="w-[30%]">
+            <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2 flex justify-between">
+              <h2 class="text-4xl font-bold">Summary</h2>
+            </div>
+            
+            <!-- Resumen del pedido -->
+            <div *ngIf="carrito" class="space-y-4">
+              <div class="flex justify-between">
+                <span>Total de artículos:</span>
+                <span>{{ carrito.articulosEnPedido?.length || 0 }}</span>
+              </div>
+              
+              <div class="flex justify-between">
+                <span>Estado del pedido:</span>
+                <span class="font-semibold">{{ carrito.estado }}</span>
+              </div>
+              
+              <div class="flex justify-between" *ngIf="carrito.fechaPedido">
+                <span>Fecha pedido:</span>
+                <span>{{ carrito.fechaPedido | date:'short' }}</span>
+              </div>
+              
+              <div class="flex justify-between" *ngIf="carrito.fechaEntrega">
+                <span>Fecha entrega:</span>
+                <span>{{ carrito.fechaEntrega | date:'short' }}</span>
+              </div>
+              
+              <div class="flex justify-between" *ngIf="carrito.fechaDevolucion">
+                <span>Fecha devolución:</span>
+                <span>{{ carrito.fechaDevolucion | date:'short' }}</span>
+              </div>
+              
+              <hr class="my-4">
+              
+              <!-- Calcular total dinámicamente -->
+              <div class="flex justify-between text-lg font-bold">
+                <span>Total:</span>
+                <span>${{ calcularTotal() }}</span>
+              </div>
+              
+              <div class="pt-4">
+                <button class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                  Proceder al pago
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div>
-      @for (articulo of carrito?.articulosEnPedido; track $index) {
-        <div class="">
-            <p> {{articulo.estado}}</p>
-        </div>
-    }
-    </div>
-   
     <app-footer></app-footer>
-  </div>
+</div>

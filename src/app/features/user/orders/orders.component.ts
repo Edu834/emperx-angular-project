@@ -26,7 +26,7 @@ export class OrdersComponent {
     this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
       if (userData) {
         this.currentUserData = userData;
-        this.listarPedidos(userData.id_usuario);
+        this.listarPedidos(userData.idUsuario);
       }
     }
   );

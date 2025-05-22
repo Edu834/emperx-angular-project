@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
-import { ArticuloEnPedidoDTO, IdArticuloEnPedido, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { ArticuloEnPedidoDTO, IdArticuloEnPedido, Pedido, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,20 @@ export class OrdersService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): Observable<any> {
-    return this.http.post<any>('http://localhost:8087/api/pedidos/addArticuloPedido', articuloEnPedidoDTO).pipe(
-      catchError(error => {
-        console.error('There was an error!', error);
-        return throwError(() => new Error(error.message || 'Error en al añadir al carrito'));
-      })
-    );
+  crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): Observable<Pedido> {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<Pedido>(`http://localhost:8087/api/pedidos/addArticuloPedido`, articuloEnPedidoDTO, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Error al añadir artículo al carrito:', error);
+          return throwError(() => new Error(error.message || 'Error al añadir al carrito'));
+        })
+      );
   }
 
   eliminarArticuloEnCarrito(idArticuloEnPedido: IdArticuloEnPedido): Observable<any> {

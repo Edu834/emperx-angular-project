@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Articulo, ArticuloEnPedidoDTO, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { Articulo, ArticuloEnPedidoDTO, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
@@ -10,97 +10,123 @@ import { FavoritesService } from '../../../core/service/favorites/favorites.serv
 import { CommonModule } from '@angular/common';
 import { AccordionComponent } from "./product-information/product-information.component";
 import { RandomProductsComponent } from "../../../shared/random-product/random-product.component";
-import { User } from '../../../core/service/user/user'; // Import the User class
+import { User } from '../../../core/service/user/user';
 import { UserService } from '../../../core/service/user/user.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { catchError, map, of } from 'rxjs';
 import { OrdersService } from '../../../core/service/orders/orders.service';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
-  imports: [SearchComponent, HeaderComponent, FooterComponent, FormsModule, CommonModule, AccordionComponent, RandomProductsComponent]
+  imports: [
+    SearchComponent, HeaderComponent, FooterComponent, FormsModule,
+    CommonModule, AccordionComponent, RandomProductsComponent
+  ],
+  standalone: true
 })
 export class ProductDetailComponent implements OnInit {
-  
- 
-  mostrarBotonFiltros: boolean = false;
-  mostrarFiltros: boolean = false;
+
+  mostrarBotonFiltros = false;
+  mostrarFiltros = false;
   showChild = false;
-  @Input() detallesVisible: boolean | undefined;
-  
+  @Input() detallesVisible?: boolean;
+
   selectedColor: string | null = null;
   availableSizes: string[] = [];
   selectedSize: string | null = null;
-  selectedDays: number = 0;
+  selectedDays = 1; // Mínimo 1 día para alquiler
   listaArticulos: any;
   availableStates: { idArticulo: string; estados: string; deshabilitado: boolean; }[] = [];
   
+  // Variables para cálculo de precio
+  precioBase: number = 0;
+  precioFinal: number = 0;
+  
+  // Mapeo estado → descuento (0 a 1)
+  estadoDescuentos: { [estadoNombre: string]: number } = {
+    'Nuevo': 0,
+    'Mal estado': 0.5,
+    'Reparado': 0.2,
+    'Usado': 0.3,
+    'Excelente': 0.1,
+    'Bueno': 0.15,
+    'Regular': 0.4,
+    // Añade más estados según tu necesidad
+  };
+
   resumenProductosConArticulos: ProductView[] = [];
   articulos: Articulo[] = [];
-  articuloEnPedidoDTO: ArticuloEnPedidoDTO | undefined;
-  name: string = '';
-  idUsuario: number = 0;
+  articuloEnPedidoDTO?: ArticuloEnPedidoDTO;
+  name = '';
+  idUsuario = 0;
 
-  constructor(private route: ActivatedRoute, private service: ProductsService, private userService: UserService, private ordersService: OrdersService, private favoritesService : FavoritesService) {}
+  fotoSeleccionada = '';
+
+  product?: ProductView;
+
+  favoritos: number[] = [];
+
+  selectedStateId: string | null = null;
+
+  colorMap: { [key: string]: string } = {
+    'Negro': 'black',
+    'Blanco': 'white',
+    'Azul': 'blue',
+    'Rojo': 'red',
+    'Verde': 'green',
+    'Amarillo': 'yellow',
+    'Gris': 'gray',
+    'Beige': '#f5f5dc',
+    'Rosa': 'pink',
+    // Añade más si necesitas
+  };
+
+  constructor(
+    private route: ActivatedRoute,
+    private service: ProductsService,
+    private userService: UserService,
+    private ordersService: OrdersService,
+    private favoritesService: FavoritesService
+  ) {}
 
   ngOnInit(): void {
-    // this.cargarFavoritos();
-    this.route.paramMap.subscribe((params) => {
-      this.name = params.get('name') || '';
+    this.route.paramMap.subscribe(params => {
+      this.name = params.get('name') ?? '';
       this.obtenerArticulosDelProducto(this.name);
     });
-    console.log(this.product?.galeria.fotoFrontal)
-    if (this.product && this.product.galeria) {
-      this.fotoSeleccionada = this.product.galeria.fotoFrontal
-    }
   }
-
-  fotoSeleccionada: string = '';
-
 
   getFotosGaleria(): string[] {
-    if (!this.product || !this.product.galeria) {
-      return [];
-    }
-  
-    // Recolectar dinámicamente todas las propiedades del objeto galería que sean URLs válidas
-    const fotos = Object.values(this.product.galeria)
-      .filter((foto: any) => typeof foto === 'string' && foto.trim() !== '');
-  
-    // Si no hay ninguna imagen válida, retornar imagen por defecto
+    if (!this.product || !this.product.galeria) return [];
+    const fotos = Object.values(this.product.galeria).filter(foto => typeof foto === 'string' && foto.trim() !== '');
     return fotos.length > 0 ? fotos : ['https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg'];
   }
-  
-  
 
-  // Cambiar la imagen seleccionada cuando se hace clic en una miniatura
   cambiarImagen(foto: string): void {
     this.fotoSeleccionada = foto;
   }
 
   obtenerArticulosDelProducto(name: string): void {
-    this.service.getArticulosByNameProduct(name).subscribe({
-      next: (data: any) => {
-        this.articulos = data;
-        console.log('Artículos del producto:', this.articulos);
-        this.cargarDatos(data); 
+    this.service.getArticulosByNameProduct(name).subscribe(
+      (data: any) => {
+        if (Array.isArray(data)) {
+          this.articulos = data;
+          this.cargarDatos(data);
+        } else {
+          this.articulos = [];
+          this.cargarDatos([]);
+        }
       },
-      error: (error) => {
-        console.error('Error al cargar los artículos:', error);
-      }
-    });
+      error => console.error('Error al cargar los artículos:', error)
+    );
   }
 
-  product: ProductView | undefined;
+  cargarDatos(data: Articulo[]): void {
+    this.resumenProductosConArticulos = [];
 
-  cargarDatos(data: any[]): void {
-    this.resumenProductosConArticulos = []; // Limpiar productos previos
-  
     data.forEach(e => {
       let productoExistente = this.resumenProductosConArticulos.find(p => p.idProducto === e.producto.idProducto);
-  
+
       if (!productoExistente) {
         productoExistente = {
           idProducto: e.producto.idProducto,
@@ -108,10 +134,10 @@ export class ProductDetailComponent implements OnInit {
           sexo: e.producto.sexo,
           name: e.producto.nombre,
           price: e.producto.precio,
-          imageUrl: e.producto.galeria ? e.producto.galeria[0] : 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg',
+          imageUrl: e.producto.galeria ? Object.values(e.producto.galeria).find(foto => typeof foto === 'string' && foto.trim() !== '') || 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg' : 'https://assets-global.website-files.com/6256995755a7ea0a3d8fbd11/645924d369c84c1e3dbda2ad_Frame%201.jpg',
           description: e.producto.descripcion,
           stock: e.stock,
-          estados: e.estados.map((estado: any) => estado.nombre),
+          estados: e.estados.map(estado => estado.nombre),
           color: [e.color],
           size: [e.talla],
           articulos: [e.idArticulo],
@@ -126,170 +152,232 @@ export class ProductDetailComponent implements OnInit {
         if (!productoExistente.articulos.includes(e.idArticulo)) productoExistente.articulos.push(e.idArticulo);
       }
     });
-  
-    // Asignar el producto principal al primero de la lista consolidada
+
     if (this.resumenProductosConArticulos.length > 0) {
       this.product = this.resumenProductosConArticulos[0];
-  
-      // Asegurar foto seleccionada
-      if (this.product.galeria && this.product.galeria.fotoFrontal) {
-        this.fotoSeleccionada = this.product.galeria.fotoFrontal;
+      
+      // Inicializar precios
+      this.precioBase = this.product.price;
+      this.selectedDays = 1; // Mínimo un día para alquiler
+      this.precioFinal = this.precioBase * this.selectedDays; // Precio inicial sin descuento
+      
+      if (this.product.galeria && (this.product.galeria as any).fotoFrontal) {
+        this.fotoSeleccionada = (this.product.galeria as any).fotoFrontal;
+      } else {
+        this.fotoSeleccionada = this.product.imageUrl;
       }
     }
-  
-    console.log('Producto final consolidado:', this.resumenProductosConArticulos);
   }
-  
 
   onSelectedColor(color: string): void {
-    this.selectedColor = color; // Almacena el color seleccionado
-    console.log('Color seleccionado:', this.selectedColor);
     this.selectedColor = color;
-    // Reinicia la talla seleccionada y las tallas disponibles
-    this.selectedSize = null; // Reinicia la talla seleccionada a null
-    this.availableSizes = []; // Limpia las tallas disponibles
-    this.availableStates = []; // Limpia los estados disponibles
-
-    this.updateAvailableSizes(); // Actualiza las tallas disponibles al seleccionar un color
-}
-
-updateAvailableSizes(): void {
-    if (this.selectedColor) {
-        // Filtra las tallas según el color seleccionado
-        const sizes = this.articulos
-            .filter(articulo => articulo.color === this.selectedColor) // Filtra por color
-            .map(articulo => articulo.talla); // Mapea solo las tallas
-        
-        this.availableSizes = Array.from(new Set(sizes)); // Elimina duplicados
-        console.log('Tallas disponibles para el color seleccionado:', this.availableSizes);
-    } else {
-        this.availableSizes = []; // Limpia las tallas si no hay color seleccionado
-    }
-}
-
-
-onSelectSize(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement; // Hacemos un casting a HTMLSelectElement
-    this.selectedSize = selectElement.value; // Ahora podemos acceder a 'value' sin errores
-    console.log('Talla seleccionada:', this.selectedSize);
-    this.updateAvailableStates(); // Actualiza los estados disponibles al seleccionar una talla
-}
-
-updateAvailableStates(): void {
-  if (this.selectedColor && this.selectedSize) {
-      const filteredArticulos = this.articulos.filter(
-          articulo => articulo.color === this.selectedColor && articulo.talla === this.selectedSize
-      );
-
-      // Agrupar estados por artículo y verificar si tiene "Alquilado" o "Retirado"
-      this.availableStates = filteredArticulos.map(articulo => {
-          const estadoNombres = articulo.estados.map(estado => estado.nombre);
-          const tieneEstadoRestringido = estadoNombres.some(estado => estado.includes("Alquilado") || estado.includes("Retirado"));
-
-          return {
-              idArticulo: articulo.idArticulo,
-              estados: estadoNombres.join(' - '), // Unir estados con separador
-              deshabilitado: tieneEstadoRestringido // Marcar si el artículo debe deshabilitarse
-          };
-      });
-
-      console.log('Estados agrupados con restricción:', this.availableStates);
-  } else {
-      this.availableStates = []; // Vaciar si no hay selección válida
+    this.selectedSize = null;
+    this.selectedStateId = null; // Resetear estado seleccionado
+    this.availableSizes = [];
+    this.availableStates = [];
+    this.updateAvailableSizes();
+    this.actualizarPrecioFinal(); // Recalcular precio
   }
-}
 
-selectedStateId: string | null = null; // Variable para almacenar el estado seleccionado
+  updateAvailableSizes(): void {
+    if (!this.selectedColor) {
+      this.availableSizes = [];
+      return;
+    }
+    const sizes = this.articulos
+      .filter(a => a.color === this.selectedColor)
+      .map(a => a.talla);
 
-onSelectedState(idArticulo: string): void {
-  this.selectedStateId = idArticulo; // Almacena el idArticulo seleccionado
-  const selectedState = this.availableStates.find(articulo => articulo.idArticulo === idArticulo);
-  console.log('Estado seleccionado:', selectedState);
-}
+    this.availableSizes = Array.from(new Set(sizes));
+  }
 
-favoritos: number[] = [];
-  cargarFavoritos() {
-    this.favoritesService.getFavoritos().subscribe(favoritos => {
-      this.favoritos = favoritos.map(p => p.idProducto);
+  onSelectSize(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectedSize = select.value;
+    this.selectedStateId = null; // Resetear estado seleccionado
+    this.updateAvailableStates();
+    this.actualizarPrecioFinal(); // Recalcular precio
+  }
+
+  updateAvailableStates(): void {
+    if (!this.selectedColor || !this.selectedSize) {
+      this.availableStates = [];
+      return;
+    }
+    const filtered = this.articulos.filter(a => a.color === this.selectedColor && a.talla === this.selectedSize);
+    this.availableStates = filtered.map(a => {
+      const nombresEstados = a.estados.map(e => e.nombre);
+      const deshabilitado = nombresEstados.some(n => n.includes("Alquilado") || n.includes("Retirado"));
+      return {
+        idArticulo: a.idArticulo,
+        estados: nombresEstados.join(' - '),
+        deshabilitado
+      };
     });
   }
-   // Método para añadir o quitar de favoritos
-toggleFavorito(producto: ProductView) {
-  console.log('Producto:', producto);
-  if (this.favoritesService.esFavorito(producto.idProducto)) {
-    this.favoritesService.eliminarFavorito(producto.idProducto);
-  } else {
-    this.favoritesService.agregarFavorito(producto);
+
+  onSelectedState(idArticulo: string): void {
+    this.selectedStateId = idArticulo;
+    const estado = this.availableStates.find(a => a.idArticulo === idArticulo);
+    if (estado) {
+      this.aplicarDescuentoPorEstado(estado.estados);
+    }
+    console.log('Estado seleccionado:', estado);
   }
-  this.cargarFavoritos();
-}
 
-// Verificar si un producto está en favoritos
-esFavorito(productoId: string): boolean {
-  return this.favoritesService.esFavorito(productoId);
-}
-colorMap: { [key: string]: string } = {
-  'Negro': 'black',
-  'Blanco': 'white',
-  'Azul': 'blue',
-  'Rojo': 'red',
-  'Verde': 'green',
-  'Amarillo': 'yellow',
-  'Gris': 'gray',
-  'Beige': '#f5f5dc',
-  'Rosa': 'pink',
-  // Agrega los que necesites
-};
+  cargarFavoritos(): void {
+    this.favoritesService.getFavoritos().subscribe(favs => {
+      this.favoritos = favs.map(p => p.idProducto);
+    });
+  }
 
-getCssColor(colorName: string): string {
-  return this.colorMap[colorName] || 'transparent'; // fallback por si no existe
-}
-onSelectedDays(event: Event): void {
-  const inputElement = event.target as HTMLInputElement; // Hacemos un casting a HTMLInputElement
-  this.selectedDays = parseInt(inputElement.value, 10); // Convertir a número entero
-  console.log('Días seleccionados:', this.selectedDays);
-}
+  toggleFavorito(producto: ProductView): void {
+    if (this.favoritesService.esFavorito(producto.idProducto)) {
+      this.favoritesService.eliminarFavorito(producto.idProducto);
+    } else {
+      this.favoritesService.agregarFavorito(producto);
+    }
+    this.cargarFavoritos();
+  }
 
-addToBag(): void {
-  if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
+  esFavorito(productoId: string): boolean {
+    return this.favoritesService.esFavorito(productoId);
+  }
+
+  getCssColor(colorName: string): string {
+    return this.colorMap[colorName] ?? 'transparent';
+  }
+
+  onSelectedDays(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedDays = Math.max(1, parseInt(input.value, 10) || 1); // Mínimo 1 día
+    this.actualizarPrecioFinal();
+  }
+
+  addToBag(): void {
+    if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
       alert('Seleccione un color, talla y estado para agregar al carrito');
       return;
-  }
+    }
 
-  // Obtener el artículo seleccionado
-  const selectedArticulo = this.articulos.find(articulo => articulo.idArticulo === this.selectedStateId);
-  if (!selectedArticulo) {
+    const selectedArticulo = this.articulos.find(a => a.idArticulo === this.selectedStateId);
+    if (!selectedArticulo) {
       alert('No se encontró el artículo seleccionado');
       return;
+    }
+
+    // Asegurar que el precio final esté actualizado antes de agregar al carrito
+    this.actualizarPrecioFinal();
+
+    this.userService.getAuthenticatedUser().subscribe(user => {
+      if (user) {
+        this.idUsuario = user.idUsuario;
+        this.articuloEnPedidoDTO = {
+          idArticulo: selectedArticulo.idArticulo,
+          idUsuario: this.idUsuario.toString(),
+          cantidad: 1,
+          diasAlquiler: this.selectedDays,
+          precioFinal: this.precioFinal
+        };
+        if (this.articuloEnPedidoDTO) {
+          this.crearArticuloEnCarrito(this.articuloEnPedidoDTO);
+        }
+      } else {
+        console.error('No se pudo obtener el usuario autenticado');
+      }
+    });
   }
 
-  console.log('Artículo seleccionado para agregar al carrito:', selectedArticulo);
-  this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
-    if (userData) {
-      this.idUsuario = userData.id_usuario;
-      console.log('ID de usuario autenticado:', this.idUsuario);
-      this.articuloEnPedidoDTO = {  
-        idArticulo: selectedArticulo.idArticulo,
-        idUsuario: this.idUsuario.toString(),
-        cantidad: 1,
-        diasAlquiler: this.selectedDays
-      };
-      this.crearArticuloEnCarrito(this.articuloEnPedidoDTO);
-    }else{
-      console.error('No se pudo obtener el usuario autenticado');
-    }
-  });
-}
+  crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): void {
+    this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO).subscribe({
+      next: data => console.log('Artículo agregado al carrito:', data),
+      error: error => console.error('Error al agregar el artículo al carrito:', error)
+    });
+  }
 
-crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): void {
-  this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO).subscribe({
-      next: (data: any) => {
-          console.log('Artículo agregado al carrito:', data);
-      },
-      error: (error: any) => {
-          console.error('Error al agregar el artículo al carrito:', error);
+  // Función para aplicar descuento basado en el estado del artículo
+  aplicarDescuentoPorEstado(estadosString: string): void {
+    const estados = estadosString.split(' - ');
+    let descuentoAplicado = 0;
+    let estadoEncontrado = '';
+    
+    // Buscar en todos los estados si contienen alguna palabra clave
+    for (const estado of estados) {
+      const estadoLowerCase = estado.toLowerCase();
+      
+      // Buscar cada palabra clave en el estado
+      for (const [palabraClave, descuento] of Object.entries(this.estadoDescuentos)) {
+        if (estadoLowerCase.includes(palabraClave.toLowerCase())) {
+          // Si encontramos una coincidencia, usar el mayor descuento
+          if (descuento > descuentoAplicado) {
+            descuentoAplicado = descuento;
+            estadoEncontrado = palabraClave;
+          }
+        }
       }
-  });
-}
+    }
+    
+    this.precioFinal = this.precioBase * (1 - descuentoAplicado) * this.selectedDays;
+    
+    console.log(`Estado encontrado: ${estadoEncontrado}, Descuento: ${descuentoAplicado * 100}%, Precio final: ${this.precioFinal}`);
+  }
 
+  // Función para actualizar el precio final
+  actualizarPrecioFinal(): void {
+    if (!this.selectedStateId) {
+      // Si no hay estado seleccionado, precio base * días sin descuento
+      this.precioFinal = this.precioBase * this.selectedDays;
+      return;
+    }
+    
+    // Buscar el estado para recalcular con descuento
+    const estado = this.availableStates.find(a => a.idArticulo === this.selectedStateId);
+    if (estado) {
+      this.aplicarDescuentoPorEstado(estado.estados);
+    } else {
+      this.precioFinal = this.precioBase * this.selectedDays;
+    }
+  }
+
+  // Función auxiliar para obtener el descuento aplicado (para mostrar en template)
+  getDescuentoAplicado(): number {
+    if (!this.selectedStateId) return 0;
+    
+    const estado = this.availableStates.find(a => a.idArticulo === this.selectedStateId);
+    if (estado) {
+      const estados = estado.estados.split(' - ');
+      let descuentoMaximo = 0;
+      
+      // Buscar en todos los estados si contienen alguna palabra clave
+      for (const estadoTexto of estados) {
+        const estadoLowerCase = estadoTexto.toLowerCase();
+        
+        // Buscar cada palabra clave en el estado
+        for (const [palabraClave, descuento] of Object.entries(this.estadoDescuentos)) {
+          if (estadoLowerCase.includes(palabraClave.toLowerCase())) {
+            if (descuento > descuentoMaximo) {
+              descuentoMaximo = descuento;
+            }
+          }
+        }
+      }
+      
+      return descuentoMaximo;
+    }
+    return 0;
+  }
+
+  // Función auxiliar para obtener el ahorro en moneda
+  getAhorroEnMoneda(): number {
+    const descuento = this.getDescuentoAplicado();
+    return (this.precioBase * descuento * this.selectedDays);
+  }
+
+  // Función auxiliar para formatear precio
+  formatearPrecio(precio: number): string {
+    return precio.toLocaleString('es-ES', {
+      style: 'currency',
+      currency: 'EUR' // Cambia según tu moneda
+    });
+  }
 }

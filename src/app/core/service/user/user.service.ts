@@ -55,7 +55,7 @@ getAllUsers(): Observable<User[]> {
 }
 
 getAuthenticatedUser(): Observable<User | null> {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token'); // ✅ Buscar en ambos
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
   if (!token) {
     return of(null);
@@ -63,13 +63,38 @@ getAuthenticatedUser(): Observable<User | null> {
 
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-  return this.http.get<User>(`http://localhost:8087/api/usuarios/me`, { headers }).pipe(
+  return this.http.get<any>(`http://localhost:8087/api/usuarios/me`, { headers }).pipe(
+    map(apiUser => {
+      if (!apiUser) return null;
+
+      const adaptedUser: User = {
+        idUsuario: apiUser.id_usuario,
+        username: apiUser.username,
+        firstname: apiUser.firstname,
+        lastname: apiUser.lastname,
+        password: apiUser.password,
+        email: apiUser.email,
+        direccion: apiUser.direccion,
+        sexo: apiUser.sexo,
+        telefono: apiUser.telefono,
+        fechaAlta: new Date(apiUser.fecha_alta),
+        fechaNacimiento: new Date(apiUser.fecha_nacimiento),
+        country: apiUser.country,
+        province: apiUser.province,
+        city: apiUser.city,
+        zipCode: apiUser.zip_code,
+        role: apiUser.role
+      };
+
+      return adaptedUser;
+    }),
     catchError(error => {
       console.error('Error al obtener el usuario autenticado', error);
       return of(null);
     })
   );
 }
+
 
   
   // getAuthenticatedUserId(): Observable<number | null> {

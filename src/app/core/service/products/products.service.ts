@@ -23,6 +23,9 @@ export class ProductsService {
       })
     );
   }
+  obtenerArticuloPorId(idArticulo: string): Observable<Articulo> {
+  return this.http.get<Articulo>(`http://localhost:8087/api/articulos/${idArticulo}`);
+}
   listArticulos(): Observable<Articulo[]> {
     return this.http.get<Articulo[]>('http://localhost:8087/api/articulos').pipe(
       catchError(error => {
@@ -97,4 +100,9 @@ export class ProductsService {
   obtenerProductos(): Observable<any> {
     return this.http.get<any>('http://localhost:8087/api/productos/');
   }
+
+ productoByIdArticulo(idArticulo: string): Observable<Producto> {
+    return this.http.get<Producto>(`http://localhost:8087/api/articulos/productoDesdeArticulo/${idArticulo}`);
+  }
+  
 }
