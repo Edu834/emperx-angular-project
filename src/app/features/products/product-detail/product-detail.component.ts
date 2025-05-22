@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { Articulo, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
+import { Articulo, ArticuloEnPedidoDTO, Producto, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
 import { HeaderComponent } from "../../../shared/header/header.component";
@@ -11,6 +11,9 @@ import { FavoritesService } from '../../../core/service/favorites/favorites.serv
 import { CommonModule } from '@angular/common';
 import { AccordionComponent } from "./product-information/product-information.component";
 import { RandomProductsComponent } from "../../../shared/random-product/random-product.component";
+import { BagService } from '../../../core/service/bag/bag.service';
+import { User } from '../../../core/service/user/user';
+import { UserService } from '../../../core/service/user/user.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -35,8 +38,9 @@ export class ProductDetailComponent implements OnInit {
   resumenProductosConArticulos: ProductView[] = [];
   articulos: Articulo[] = [];
   name: string = '';
+  diasAlquiler: number = 0;
 
-  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService) {}
+  constructor(private route: ActivatedRoute, private service: ProductsService, private favoritesService : FavoritesService, private bagService: BagService, private userService: UserService,) {}
 
   ngOnInit(): void {
     // this.cargarFavoritos();
@@ -48,6 +52,14 @@ export class ProductDetailComponent implements OnInit {
     if (this.product && this.product.galeria) {
       this.fotoSeleccionada = this.product.galeria.fotoFrontal
     }
+    this.userService.getAuthenticatedUser().subscribe({
+      next: data => {
+        if (data) this.usuario = data;
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
   }
 
   fotoSeleccionada: string = '';
@@ -238,10 +250,28 @@ getCssColor(colorName: string): string {
   return this.colorMap[colorName] || 'transparent'; // fallback por si no existe
 }
 
-addToBag(){
-  console.log("Added ");
-  
-  
+articuloEnPedidoDto: ArticuloEnPedidoDTO | undefined;
+usuario: User | undefined;
+addToBag(diasAlquiler: number){
+    this.articuloEnPedidoDto = {
+      idArticulo: this.selectedStateId || '', 
+      idUsuario: this.usuario?.idUsuario || 1, 
+      cantidad: 1, // Asigna la cantidad deseada
+      diasAlquiler: diasAlquiler // Asigna los días de alquiler deseados
+    }
+    // Solo llamar si articuloEnPedidoDto está definido
+    if (this.articuloEnPedidoDto) {
+      this.bagService.addArticuloCarrito(this.articuloEnPedidoDto).subscribe({
+        next: (response) => {
+          console.log("Added", response);
+        },
+        error: (error) => {
+          console.error("Error adding to bag", error);
+        }
+      });
+    } else {
+      console.error("No se puede agregar al carrito: articuloEnPedidoDto es undefined");
+    }
 }
 
 }

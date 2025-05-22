@@ -68,3 +68,9 @@ export interface Filtro {
   talla: string[];
   color: string;
 }
+export interface ArticuloEnPedidoDTO{
+  idArticulo: string;
+	idUsuario: number;
+	cantidad: number;
+  diasAlquiler: number;
+  }

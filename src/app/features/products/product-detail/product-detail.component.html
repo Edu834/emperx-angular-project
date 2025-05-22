@@ -102,14 +102,14 @@
 
                             <div class="mt-4 text-end">
                                 <label class="block text-[#474747] text-sm mb-2 underline cursor-pointer" >Reserve</label>
-                                <input class="w-full p-2 border-1 text-center" type="text" placeholder="Days" >
+                                <input class="w-full p-2 border-1 text-center" type="text" placeholder="Days" [(ngModel)]="diasAlquiler">
                             </div>
 
                             </div>
                                     
-                            <button [routerLink]="['/bag/']" 
+                            <button [routerLink]="['/bag']" 
                             class="mt-6 bg-[#2c2c2c] text-white text-2xl py-3 w-full font-semibold hover:bg-[#2c2c2cad] transition inter-custom"
-                            (click)="addToBag()">
+                            (click)="addToBag(diasAlquiler)">
                                 ADD TO THE BAG
                             </button>
                             <div class="inter-custom m-4">

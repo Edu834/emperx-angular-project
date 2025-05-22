@@ -9,6 +9,14 @@
                     <h2 class="text-4xl font-bold">Bag</h2>
                     <img (click)="goBack()" src="/flecha.svg" alt="">
                 </div>
+                @for (articuloCarrito of articulosCarrito; track $index) {
+                <div class="relative">
+                    <!-- <app-product-card [product]="product"></app-product-card> -->
+                     <div>
+                        {{ articuloCarrito.descripcion }}
+                     </div>
+                </div>
+                }
             </div>
         </div>
     </div>
