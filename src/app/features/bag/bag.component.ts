@@ -42,7 +42,7 @@ export class BagComponent {
       console.error('Usuario no definido');
       return;
     }
-    this.orderService.buscarPedidoPorUsuarioyEstado(this.usuario.id_usuario, "CARRITO").subscribe({
+    this.bagService.buscarPedidoPorUsuarioyEstado(this.usuario.id_usuario, "CARRITO").subscribe({
       next: data => {
         if (data) this.idPedido = data[0].idPedido;
         console.log(this.idPedido);
