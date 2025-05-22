@@ -6,7 +6,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   buscarPedidosPorUsuario(idUsuario: number): Observable<any> {
     return this.http.get<any>('http://localhost:8087/api/pedidos/buscarPor/' + idUsuario).pipe(
@@ -16,6 +16,6 @@ export class OrderService {
       })
     );
   }
-
+  
 
 }
