@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  standalone: true,
   imports: [RouterLink, RouterLinkActive, ToggleMenuComponent, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

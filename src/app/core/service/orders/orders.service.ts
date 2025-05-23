@@ -66,5 +66,11 @@ export class OrdersService {
       })
     );
   }
+    listarPedidosTodo(){
+    return this.http.get<any[]>('http://localhost:8087/api/pedidos/');
+  }
+  pedidosByFecha(){
+    return this.http.get<any[]>('http://localhost:8087/api/pedidos/byFecha');
+  }
 
 }

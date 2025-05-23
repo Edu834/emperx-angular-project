@@ -23,7 +23,7 @@ export class OrdersComponent {
   }
 
   ngOnInit(): void {  
-    this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
+    this.userService.getAuthenticatedUser().subscribe((userData: any | null) => {
       if (userData) {
         this.currentUserData = userData;
         this.listarPedidos(userData.id_usuario);

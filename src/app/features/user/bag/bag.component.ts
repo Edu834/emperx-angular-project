@@ -24,7 +24,7 @@ export class BagComponent {
 
   constructor(private location: Location, private pedidoService: OrdersService, private userService: UserService){}
   ngOnInit() {  
-    this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
+    this.userService.getAuthenticatedUser().subscribe((userData: any | null) => {
       if (userData) {
         this.currentUserData = userData;
         this.listarPedidos(userData.id_usuario, 'Carrito');

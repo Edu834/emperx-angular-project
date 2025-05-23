@@ -264,7 +264,7 @@ addToBag(): void {
   }
 
   console.log('Artículo seleccionado para agregar al carrito:', selectedArticulo);
-  this.userService.getAuthenticatedUser().subscribe((userData: User | null) => {
+  this.userService.getAuthenticatedUser().subscribe((userData: any | null) => {
     if (userData) {
       this.idUsuario = userData.id_usuario;
       console.log('ID de usuario autenticado:', this.idUsuario);
