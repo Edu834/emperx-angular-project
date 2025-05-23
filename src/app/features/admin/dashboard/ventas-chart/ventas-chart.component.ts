@@ -27,7 +27,7 @@ export class VentasChartComponent {
     yAxis: {
       min: 0,
       title: {
-        text: 'Number of Sales'
+        text: 'Incomes (€)',
       }
     },
     series: [{
@@ -40,19 +40,21 @@ export class VentasChartComponent {
     constructor(private ordersService: OrdersService) {}
   
     totalPedidosMes: number = 0;
+    totalIncome: number = 0;
 
     ngOnInit() {
   this.ordersService.pedidosByFecha().subscribe(data => {
-    // Filtramos los pedidos para el mes actual
+
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript son 0-indexed
+    const currentMonth = currentDate.getMonth() + 1; 
     const currentYear = currentDate.getFullYear();
-    console.log(data);
     data = data.filter(d => {
       const fecha = new Date(d.fecha);
       return fecha.getMonth() + 1 === currentMonth && fecha.getFullYear() === currentYear;
     });
-    console.log(data);
+
+    data.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+
     // Actualizamos la gráfica
     this.chartOptions = {
       ...this.chartOptions,
@@ -62,13 +64,16 @@ export class VentasChartComponent {
       },
       series: [{
         type: 'line',
-        name: 'Usuarios nuevos',
-        data: data.map(d => d.cantidad)
+        name: 'Ingresos',
+        data: data.map(d => d.precioTotal !== null && d.precioTotal !== undefined ? d.precioTotal : 0)
       }]
     };
 
     // Sumamos el total de usuarios para este mes
     this.totalPedidosMes = data.reduce((acc) => acc + 1, 0);
+    this.totalIncome = data.reduce((acc, d) => acc + d.precioTotal, 0);
+    console.log(this.totalIncome);
   });
+
 }
 }
