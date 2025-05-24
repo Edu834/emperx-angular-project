@@ -97,4 +97,23 @@ export class ProductsService {
   obtenerProductos(): Observable<any> {
     return this.http.get<any>('http://localhost:8087/api/productos/');
   }
+
+  // Método para borrar un producto
+  deleteProduct(id: string): Observable<any> {
+    return this.http.delete<any>(`http://localhost:8087/api/productos/${id}`).pipe(
+      catchError(error => {
+        console.error('Error deleting product:', error);
+        return of(null);  
+      })
+    );
+  }
+  // Método para actualizar un producto
+  updateProduct(id: string, product: Producto): Observable<any> { 
+    return this.http.put<any>(`http://localhost:8087/api/productos/${id}`, product).pipe(
+      catchError(error => {
+        console.error('Error updating product:', error);
+        return of(null);  
+      })
+    );
+  }
 }
