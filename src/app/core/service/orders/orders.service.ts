@@ -36,7 +36,10 @@ export class OrdersService {
       })
     );
   }
-
+  actualizarEstado(idPedido: string, nuevoEstado: string): Observable<any> {
+    const url = `http://localhost:8087/api/pedidos/${idPedido}/estado`;
+    return this.http.put(url, { estado: nuevoEstado });
+  }
   cambiarCantidadArticuloEnCarrito(idArticuloEnPedido: IdArticuloEnPedido, accion: string): Observable<any> {
     return this.http.put<any>('http://localhost:8087/api/pedidos/cambiarCantidadArticuloPedido/'+ accion, idArticuloEnPedido).pipe(
       catchError(error => {

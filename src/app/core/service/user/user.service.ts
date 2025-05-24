@@ -82,7 +82,7 @@ getAuthenticatedUser(): Observable<User | null> {
         country: apiUser.country,
         province: apiUser.province,
         city: apiUser.city,
-        zipCode: apiUser.zip_code,
+        zipCode: apiUser.zipCode,
         role: apiUser.role
       };
 

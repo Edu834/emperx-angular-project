@@ -1,6 +1,4 @@
-
-import { Component   
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { OrdersService } from '../../../core/service/orders/orders.service';
 import { UserService } from '../../../core/service/user/user.service';
 import { User } from '../../../core/service/user/user';
@@ -9,6 +7,7 @@ import { HeaderComponent } from '../../../shared/header/header.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
 import { ProductsService } from '../../../core/service/products/products.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bag',
@@ -21,18 +20,20 @@ export class BagComponent {
   currentUserData: User | undefined;
   carrito: Pedido | undefined;
 
-  // Mapa para guardar fotos, clave: idArticulo, valor: rutaFoto
+  // Mapas para fotos, productos y artículos
   fotosMap: { [idArticulo: string]: string } = {};
-  
-  // Mapa para guardar información completa del producto de cada artículo
   productosMap: { [idArticulo: string]: Producto } = {};
   articulosMap: { [idArticulo: string]: Articulo } = {};
+
+  estadosPermitidos = ['Nuevo', 'Algo Usado', 'Usado', 'Mal Estado'];
 
   constructor(
     private location: Location,
     private pedidoService: OrdersService,
     private userService: UserService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private ordersService: OrdersService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -47,66 +48,95 @@ export class BagComponent {
   goBack(): void {
     this.location.back();
   }
+
   calcularTotal(): number {
     if (!this.carrito?.articulosEnPedido) return 0;
-    
-    return this.carrito.articulosEnPedido.reduce((total, articuloEnPedido) => {
-      return total + articuloEnPedido.precioFinal;
-    }, 0);
+    return this.carrito.articulosEnPedido.reduce((total, articulo) => total + articulo.precioFinal, 0);
   }
+
   listarPedidos(idUsuario: number, estado: string): void {
     this.pedidoService.listarPedidosPorEstado(idUsuario, estado).subscribe(pedidos => {
       this.carrito = pedidos[0];
       if (this.carrito?.articulosEnPedido && Array.isArray(this.carrito.articulosEnPedido)) {
         this.carrito.articulosEnPedido.forEach(articuloEnPedido => {
           const idArticulo = articuloEnPedido?.id?.idArticulo;
-          
           if (idArticulo) {
             // Obtener información del producto
             this.productService.productoByIdArticulo(idArticulo).subscribe((producto: Producto) => {
-              // Guardar la foto del producto en el mapa
-              this.fotosMap[idArticulo] = producto.galeria.fotoFrontal;
-              
-              // Guardar toda la información del producto
+              // Guardar foto y producto en mapas
+              this.fotosMap[idArticulo] = producto.galeria?.fotoFrontal || '';
               this.productosMap[idArticulo] = producto;
-              
-              console.log('Producto del artículo:', producto);
-              console.log('Foto del producto:', producto.galeria.fotoFrontal);
 
-              // Obtener información completa del artículo
-            this.productService.obtenerArticuloPorId(idArticulo).subscribe((articulo: Articulo) => {
-              // Guardar toda la información del artículo
-              this.articulosMap[idArticulo] = articulo;
-              
-              console.log('Datos completos del artículo:', articulo);
-              console.log('Nombre del artículo:', articulo.nombre);
-              console.log('Talla:', articulo.talla);
-              console.log('Color:', articulo.color);
-                            console.log('Color:', articulo.estados);
-
-              console.log('Stock disponible:', articulo.stock);
-              // console.log('Código de color:', articulo.codigo_color);
-              console.log('Descripción:', articulo.descripcion);
+              // Obtener info completa del artículo
+              this.productService.obtenerArticuloPorId(idArticulo).subscribe((articulo: Articulo) => {
+                this.articulosMap[idArticulo] = articulo;
+              });
             });
-            });
-
-            
           } else {
-            console.warn('Articulo sin idArticulo:', articuloEnPedido);
+            console.warn('Artículo sin idArticulo:', articuloEnPedido);
           }
         });
       }
     });
-    
-}
-estadosPermitidos = ['Nuevo', 'Algo Usado', 'Usado', 'Mal Estado'];
+  }
 
-// Método para obtener los nombres de estados filtrados
-getEstadosFiltrados(estados: Estado[]): string {
-  if (!estados) return '';
-  return estados
-    .filter(estado => this.estadosPermitidos.includes(estado.nombre))
-    .map(estado => estado.nombre)
-    .join(', ');
-}
+  eliminarArticulo(articuloEnPedido: any): void {
+    const id = articuloEnPedido.id;
+    if (!id || !id.idArticulo || !id.idPedido) return;
+
+    this.ordersService.eliminarArticuloEnCarrito(id).subscribe({
+      next: (pedidoActualizado) => {
+        this.carrito = pedidoActualizado;
+        // Eliminar entradas del artículo eliminado en los mapas
+        delete this.fotosMap[id.idArticulo];
+        delete this.productosMap[id.idArticulo];
+        delete this.articulosMap[id.idArticulo];
+
+        // Actualizar lista de artículos en carrito
+        if (this.carrito && pedidoActualizado.articulosEnPedido && Array.isArray(pedidoActualizado.articulosEnPedido)) {
+          this.carrito.articulosEnPedido = pedidoActualizado.articulosEnPedido;
+        }
+      },
+      error: (err) => {
+        console.error('Error al eliminar el artículo del pedido:', err);
+      }
+    });
+  }
+
+  // Filtrar y mostrar estados permitidos
+  getEstadosFiltrados(estados: Estado[]): string {
+    if (!estados) return '';
+    return estados
+      .filter(estado => this.estadosPermitidos.includes(estado.nombre))
+      .map(estado => estado.nombre)
+      .join(', ');
+  }
+
+  // Mapear sexo a gender para la ruta
+  mapSexoToGender(sexo: string): string {
+    if (!sexo) return 'unisex';
+    sexo = sexo.toLowerCase();
+    if (sexo === 'm') return 'women';
+    if (sexo === 'h') return 'men';
+    return 'unisex';
+  }
+
+  // Navegar a la página del producto con ruta correcta y codificada
+  goToProduct(product: Producto): void {
+    if (!product) return;
+
+    const gender = this.mapSexoToGender(product.sexo);
+    const category = product.subcategoria?.categoria?.nombre || 'categoria';
+    const subcategory = product.subcategoria?.nombre || 'subcategoria';
+    const name = product.nombre || 'producto';
+
+    // Codificar cada segmento para evitar problemas con espacios y caracteres especiales
+    this.router.navigate([
+      '/product',
+      encodeURIComponent(gender),
+      encodeURIComponent(category.toLowerCase()),
+      encodeURIComponent(subcategory.toLowerCase()),
+      encodeURIComponent(name.toLowerCase())
+    ]);
+  }
 }

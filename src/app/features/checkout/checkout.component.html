@@ -1,20 +1,48 @@
 <div class="w-full min-h-screen flex flex-col ">
   <app-header></app-header>
-
-  <div class=" text-[#2C2C2C] py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-40">
-      <div class="mb-6">
-        <img (click)="goBack()" src="/flecha.svg" alt="">
-      </div>
+        
+    <div class=" text-[#2C2C2C] py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-40">
+            <div class="mb-6">
+                <img (click)="goBack()" src="/flecha.svg" alt="">
+            </div>
 
       <div class="flex gap-10">
-        <div class="w-[70%]">
-          <div class="flex-col border-b-1 border-gray-300 pb-2 mb-2 flex justify-between">
-            <h2 class="text-4xl font-bold">Bag</h2>
-          </div>
+         <div class="w-[50%] ">
+            <div class="flex-col  pb-2 mb-2 flex justify-between">
+                <h2 class="text-4xl font-bold abril-fatface-regular">CHECKOUT</h2>
+            </div>
+            <div class="mt-5 ">
+              <div class="text-2xl font-semibold">
+                <h3>INFORMATION</h3>
+              </div>
+              <div class="mt-12">
+                
+                <div class="text-xl">Shipping information</div>
+                <form (ngSubmit)="onSubmit()"  [formGroup]="checkoutForm"  class="grid grid-cols-2 grid-rows-4 gap-4 mt-4">
+                  <input formControlName="firstname" placeholder="First Name" class="px-6 py-4 border border-[#d9d9d9]" />
+                  <input formControlName="lastname" placeholder="Last Name" class="px-6 py-4 border border-[#d9d9d9]" />
+                  <input formControlName="country" placeholder="Country" class="px-6 py-4 col-span-2 border border-[#d9d9d9]" />
+                  <input formControlName="province" placeholder="Province" class="px-6 py-4 col-span-2 border border-[#d9d9d9]" />
+                  <input formControlName="city" placeholder="City" class="px-6 py-4 border border-[#d9d9d9]" />
+                  <input formControlName="zipCode" placeholder="Zip Code" class="px-6 py-4 border border-[#d9d9d9]" />
+                  <button [disabled]="!carrito || !checkoutForm.valid" type="submit" class="col-start-2 px-6 py-4 bg-[#d9d9d9]  font-semibold">COMPLETED</button>
+                </form>
+              </div>
+            </div>
+        </div> 
+        <div class="w-[40%] ">
+          
+            <div class="border border-[#D9D9D9] p-3 ">
+              <div  class="flex justify-end items-center mb-4">
+                <a [routerLink]="['/user/bag']" class="text-end underline cursor-pointer text-blue-600">Edit</a>
+                
+              </div>
+              <div>
 
-          <div>
-            <div *ngFor="let articuloEnPedido of carrito?.articulosEnPedido" class="mb-6 p-4 border-b-1 border-gray-300">
+            </div>
+            <div class="max-h-[500px] overflow-y-auto">
+              <div *ngFor="let articuloEnPedido of carrito?.articulosEnPedido" class="mb-6 p-4 border-b-1 border-gray-300 ">
               <div class="flex gap-4">
                 <!-- Foto del producto -->
                 <div class="flex-shrink-0">
@@ -22,10 +50,10 @@
                     *ngIf="fotosMap[articuloEnPedido.id.idArticulo]; else fotoFallback"
                     [src]="fotosMap[articuloEnPedido.id.idArticulo]" 
                     alt="Foto del artículo" 
-                    class="w-42 h-42 object-cover rounded-lg"
+                    class="w-32 h-32 object-cover rounded-lg"
                   />
                   <ng-template #fotoFallback>
-                    <div class="w-42 h-42 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <div class="w-32 h-32 bg-gray-200 rounded-lg flex items-center justify-center">
                       <span class="text-gray-500">Sin imagen</span>
                     </div>
                   </ng-template>
@@ -37,14 +65,12 @@
                   <div *ngIf="productosMap[articuloEnPedido.id.idArticulo]">
                     <div class="flex justify-between"> 
                       <h3 
-                        class="text-3xl abril-fatface-regular font-semibold mb-1 hover:underline cursor-pointer"
+                        class="text-xl abril-fatface-regular font-semibold mb-1 hover:underline cursor-pointer"
                         (click)="goToProduct(productosMap[articuloEnPedido.id.idArticulo])"
                       >
                         {{ productosMap[articuloEnPedido.id.idArticulo].nombre }} 
                       </h3>
-                      <span class="text-xl">
-                        ${{ articuloEnPedido.precioFinal }}
-                      </span>
+                      
                     </div>
 
                     <p class="text-md ">
@@ -68,12 +94,12 @@
 
                   <!-- Información específica del artículo en el pedido -->
                   <div class="flex justify-between pt-2 mt-2">
-                    <p class="text-sm text-gray-600">
-                      <strong>Amount:</strong> {{ articuloEnPedido.cantidad }}
+                    <p class="text-sm text-blue-600">
+                      ({{ articuloEnPedido.cantidad }})
                     </p>
-                    <button class="text-[#BE0000] rounded cursor-pointer" (click)="eliminarArticulo(articuloEnPedido)">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
+                    <span >
+                        ${{ articuloEnPedido.precioFinal }}
+                      </span>
                   </div>
                 </div>
 
@@ -83,21 +109,10 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="w-[30%] ">
-          <div class=" pb-2 mb-2 flex justify-between">
-            <h2 class="text-4xl font-bold">Summary</h2>
-          </div>
-          <div class="border border-[#D9D9D9] p-5">
-            
+            </div>
+              
             <!-- Resumen del pedido -->
-            <div *ngIf="carrito" class="space-y-4">
-              <div class="flex justify-between">
-                <span>Total amount:</span>
-                <span>{{ carrito.articulosEnPedido?.length || 0 }}</span>
-              </div>
+            <div *ngIf="carrito" class="space-y-4 pt-4 ">
               <div class="flex justify-between">
                 <span>Subtotal:</span>
                 <span> ${{ calcularTotal() }}</span>
@@ -107,7 +122,7 @@
                 <span *ngIf="carrito?.articulosEnPedido?.length ">$10</span>
               </div>
 
-              <hr class="my-4">
+              <hr class="my-4 text-[#d9d9d9]">
 
               <!-- Calcular total dinámicamente -->
           <div class="flex justify-between text-lg font-bold">
@@ -118,17 +133,18 @@
           </div>
 
               <div class="pt-4">
-                <button class="w-full bg-[#D9d9d9]  py-3  hover:bg-[#BE0000] hover:text-white transition-all duration-300">
-                  Checkout
-                </button>
+                
               </div>
             </div>
 
           </div>
+
         </div>
       </div>
     </div>
   </div>
+
+      
 
   <app-footer></app-footer>
 </div>

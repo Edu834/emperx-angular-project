@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Articulo, ArticuloEnPedidoDTO, ProductView } from '../../../Interfaces/interfaces-globales';
 import { ProductsService } from '../../../core/service/products/products.service';
 import { SearchComponent } from "../../../shared/search/search.component";
@@ -20,7 +20,7 @@ import { OrdersService } from '../../../core/service/orders/orders.service';
   styleUrls: ['./product-detail.component.css'],
   imports: [
     SearchComponent, HeaderComponent, FooterComponent, FormsModule,
-    CommonModule, AccordionComponent, RandomProductsComponent
+    CommonModule, AccordionComponent, RandomProductsComponent, RouterLink
   ],
   standalone: true
 })
@@ -86,7 +86,8 @@ export class ProductDetailComponent implements OnInit {
     private service: ProductsService,
     private userService: UserService,
     private ordersService: OrdersService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -254,45 +255,51 @@ export class ProductDetailComponent implements OnInit {
     this.actualizarPrecioFinal();
   }
 
-  addToBag(): void {
-    if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
-      alert('Seleccione un color, talla y estado para agregar al carrito');
-      return;
-    }
-
-    const selectedArticulo = this.articulos.find(a => a.idArticulo === this.selectedStateId);
-    if (!selectedArticulo) {
-      alert('No se encontró el artículo seleccionado');
-      return;
-    }
-
-    // Asegurar que el precio final esté actualizado antes de agregar al carrito
-    this.actualizarPrecioFinal();
-
-    this.userService.getAuthenticatedUser().subscribe(user => {
-      if (user) {
-        this.idUsuario = user.idUsuario;
-        this.articuloEnPedidoDTO = {
-          idArticulo: selectedArticulo.idArticulo,
-          idUsuario: this.idUsuario.toString(),
-          cantidad: 1,
-          diasAlquiler: this.selectedDays,
-          precioFinal: this.precioFinal
-        };
-        if (this.articuloEnPedidoDTO) {
-          this.crearArticuloEnCarrito(this.articuloEnPedidoDTO);
-        }
-      } else {
-        console.error('No se pudo obtener el usuario autenticado');
-      }
-    });
+addToBag(): void {
+  if (!this.selectedColor || !this.selectedSize || !this.selectedStateId) {
+    alert('Seleccione un color, talla y estado para agregar al carrito');
+    return;
   }
 
-  crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO): void {
-    this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO).subscribe({
-      next: data => console.log('Artículo agregado al carrito:', data),
-      error: error => console.error('Error al agregar el artículo al carrito:', error)
-    });
+  const selectedArticulo = this.articulos.find(a => a.idArticulo === this.selectedStateId);
+  if (!selectedArticulo) {
+    alert('No se encontró el artículo seleccionado');
+    return;
+  }
+
+  // Actualiza el precio final antes de agregar al carrito
+  this.actualizarPrecioFinal();
+
+  this.userService.getAuthenticatedUser().subscribe(user => {
+    if (user) {
+      this.idUsuario = user.idUsuario;
+      this.articuloEnPedidoDTO = {
+        idArticulo: selectedArticulo.idArticulo,
+        idUsuario: this.idUsuario.toString(),
+        cantidad: 1,
+        diasAlquiler: this.selectedDays,
+        precioFinal: this.precioFinal
+      };
+
+      if (this.articuloEnPedidoDTO) {
+        this.crearArticuloEnCarrito(this.articuloEnPedidoDTO).subscribe({
+          next: (res) => {
+            // Navega al carrito tras añadir con éxito
+            this.router.navigate(['/user/bag']);
+          },
+          error: (err) => {
+            console.error('Error al agregar al carrito:', err);
+          }
+        });
+      }
+    } else {
+      console.error('No se pudo obtener el usuario autenticado');
+    }
+  });
+}
+
+  crearArticuloEnCarrito(articuloEnPedidoDTO: ArticuloEnPedidoDTO) {
+    return this.ordersService.crearArticuloEnCarrito(articuloEnPedidoDTO);
   }
 
   // Función para aplicar descuento basado en el estado del artículo
