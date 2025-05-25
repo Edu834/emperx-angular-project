@@ -1,0 +1,40 @@
+.image-grid {
+  display: grid;
+  gap: 4px;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* 1 imagen - ocupa todo */
+.image-grid.one {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* 2 imágenes - 2 columnas x 1 fila */
+.image-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+/* 3 imágenes - 2 columnas x 2 filas, 3 imágenes */
+.image-grid.three {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+/* 4 imágenes - 2x2 */
+.image-grid.four {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.image-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}

@@ -39,6 +39,53 @@
           <span>Latest orders</span>
           <div [routerLink]="['/user/orders']" routerLinkActive="router-link-active"  class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
         </div>
+        <div>
+          <div *ngIf="pedidos.length > 0; else sinPedidos">
+        <div *ngFor="let order of pedidos" class="mb-6 p-4 bg-white shadow mt-4 flex gap-4">
+          
+          <!-- Miniaturas (hasta 4) -->
+          <div
+            class="image-grid"
+            [ngClass]="{
+              'one': order.articulosEnPedido.length === 1,
+              'two': order.articulosEnPedido.length === 2,
+              'three': order.articulosEnPedido.length === 3,
+              'four': order.articulosEnPedido.length >= 4
+            }"
+          >
+            <img
+              *ngFor="let articulo of order.articulosEnPedido | slice:0:4"
+              [src]="fotosMap[articulo.id.idArticulo]"
+              alt="Imagen producto"
+              class="image-item "
+            />
+          </div>
+
+
+
+
+          <!-- Info del pedido -->
+          <div class="flex-1">
+            <p><strong>ID order:</strong> {{ order.idPedido }}</p>
+            <p><strong>Status:</strong> {{ order.estado }}</p>
+              <p><strong>Date:</strong> {{ order.fecha | date:'shortDate' }}</p>
+              <p><strong>Address:</strong> {{ order.usuario.direccion }}</p>
+
+            <p><strong>Quantity:</strong> {{ order.articulosEnPedido?.length }}</p>
+          </div>
+          <a
+            class="underline cursor-pointer text-blue-600 hover:text-blue-800"
+            [routerLink]="['/user/orders', order.idPedido]"
+          >
+            Details
+          </a>
+        </div>
+      </div>
+      <ng-template #sinPedidos>
+        <div class="text-gray-500 py-8">No orders found.</div>
+      </ng-template>
+
+        </div>
       </div>
       <div class="mt-10">
         <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2">
@@ -58,7 +105,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-10">
+      <!-- <div class="mt-10">
         <div class="border-b-1 border-[#D9D9D9] pb-2 mb-2">
           <h2 class="text-4xl font-bold">Reviews</h2>
         </div>
@@ -66,7 +113,7 @@
           <span>Latest reviews</span>
           <div [routerLink]="['/user/reviews']" class="border-1 border-[#9b9b9b] text-[#9b9b9b] px-6  cursor-pointer">See all</div>
         </div>
-      </div>
+      </div> -->
       
   
     </div>

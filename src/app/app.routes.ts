@@ -25,6 +25,7 @@ import { TableUsersComponent } from './features/admin/table-users/table-users.co
 import { UserDetailsComponent } from './features/admin/table-users/user-details/user-details.component';
 import { BagComponent } from './features/user/bag/bag.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
+import { OrdersDetailsComponent } from './features/user/orders/orders-details/orders-details.component';
 
 export const routes: Routes = [
     {path: 'home', component: HomepageComponent},
@@ -66,6 +67,7 @@ export const routes: Routes = [
       children: [
         { path: 'profile', component: ProfileComponent},
         { path: 'orders', component: OrdersComponent },
+        { path: 'orders/:id', component: OrdersDetailsComponent},
         { path: 'bag', component: BagComponent },
         { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
         { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente

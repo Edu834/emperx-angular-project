@@ -1,3 +1,5 @@
+import { User } from "../core/service/user/user";
+
 export interface Estado{
     idEstado: number;
     nombre: string;
@@ -83,8 +85,9 @@ export interface Pedido {
   fechaPedido: string;
   fechaEntrega: string;
   fechaDevolucion: string;
+  fecha: string;
   estado: string;
-  usuario: string;
+  usuario: User;
   articulosEnPedido: ArticuloEnPedido[];
 }
 

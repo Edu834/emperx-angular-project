@@ -20,7 +20,7 @@ import { OrdersService } from '../../../core/service/orders/orders.service';
   styleUrls: ['./product-detail.component.css'],
   imports: [
     SearchComponent, HeaderComponent, FooterComponent, FormsModule,
-    CommonModule, AccordionComponent, RandomProductsComponent, RouterLink
+    CommonModule, AccordionComponent, RandomProductsComponent 
   ],
   standalone: true
 })
@@ -87,7 +87,8 @@ export class ProductDetailComponent implements OnInit {
     private userService: UserService,
     private ordersService: OrdersService,
     private favoritesService: FavoritesService,
-    private router : Router
+  
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -294,6 +295,7 @@ addToBag(): void {
       }
     } else {
       console.error('No se pudo obtener el usuario autenticado');
+      this.router.navigate(['/login']);
     }
   });
 }
