@@ -1,1 +1,95 @@
-<p>table-orders works!</p>
+<div class="bg-white rounded-2xl shadow-md">
+
+<!-- table-users.component.html -->
+<div class="mb-4 flex justify-between items-center px-5 pt-5">
+  <h2 class="text-3xl font-semibold">Pedidos</h2>
+  <div class="space-x-2">
+    <input [(ngModel)]="search"
+         (keyup.enter)="searchOrders()"
+         placeholder="Buscar pedido..."
+         class="border px-3 py-1 rounded w-64" />
+
+    <button (click)="searchOrders()" class="bg-blue-500 text-white px-3 py-1 rounded">Buscar</button>
+  </div>
+  
+</div>
+
+<!-- Indicador de carga -->
+<div *ngIf="loading" class="text-center py-4">
+  <p>Cargando pedidos...</p>
+</div>
+
+<!-- Mensaje cuando no hay resultados -->
+<div *ngIf="!loading && displayedOrders.length === 0" class="text-center py-4">
+  <p>No se encontraron pedidos</p>
+</div>
+
+<table *ngIf="!loading && displayedOrders.length > 0" class="w-full table-auto  border-spacing-y-2">
+  <thead class="bg-gray-100 shadow-sm">
+    <tr class="border-b border-t border-gray-300">
+      <th class="text-start px-3 py-2">Username</th>
+      <th class="text-start px-3 py-2">Descripción</th>
+      <th class="text-start px-3 py-2">Fecha</th>
+      <th class="text-start px-3 py-2">Estado</th>
+      <th class="text-start px-3 py-2">Fecha de entrega</th>
+      <th class="text-start px-3 py-2">Action</th>
+
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let order of displayedOrders" class="bg-white  border-b border-gray-300 my-5">
+      <ng-container *ngIf="editingOrder?.idPedido!== order.idPedido; else editRow">
+        <td class="px-3 py-2">{{ order.usuario.username }}</td>
+        <td class="px-3 py-2">{{ order.descripcion }}</td>
+        <td class="px-3 py-2">{{ order.fecha }}</td>
+        <td class="px-3 py-2">{{ order.estado }}</td>
+        <td class="px-3 py-2">{{ order.fechaEntrega }}</td>
+        <td class="px-3 py-2 space-x-2">
+          <button class="cursor-pointer" (click)="verDetalle(order)">
+            ...
+          </button>
+          <button (click)="startEdit(order)" class="cursor-pointer text-blue-600 hover:underline">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button (click)="deleteOrder(order)" class="cursor-pointer text-red-600 hover:underline">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-template #editRow>
+        <!-- Edición aquí si lo necesitas -->
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+
+<!-- Paginación -->
+<div class="mt-4 flex justify-center space-x-2 pb-5" *ngIf="totalPages.length > 1">
+  <button 
+    *ngIf="page > 1" 
+    (click)="goToPage(page - 1)" 
+    class="px-3 py-1 rounded border">
+    &laquo;
+  </button>
+  
+  <button *ngFor="let p of totalPages"
+          (click)="goToPage(p)"
+          class="px-3 py-1 rounded"
+          [class.bg-gray-200]="page === p"
+          [class.text-black]="page === p">
+    {{ p }}
+  </button>
+  
+  <button 
+    *ngIf="page < totalPages.length" 
+    (click)="goToPage(page + 1)" 
+    class="px-3 py-1 ">
+    &raquo;
+  </button>
+</div>
+
+</div>
