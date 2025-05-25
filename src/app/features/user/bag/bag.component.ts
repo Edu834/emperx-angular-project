@@ -7,12 +7,12 @@ import { HeaderComponent } from '../../../shared/header/header.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { CommonModule, Location } from '@angular/common';
 import { ProductsService } from '../../../core/service/products/products.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-bag',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterLink],
   templateUrl: './bag.component.html',
   styleUrls: ['./bag.component.css']
 })
