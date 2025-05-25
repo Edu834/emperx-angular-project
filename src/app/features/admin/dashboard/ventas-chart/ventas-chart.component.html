@@ -1,0 +1,17 @@
+<div class="bg-white w-full h-full flex items-center flex-col shadow-md rounded-md p-3">
+    <div class="flex justify-between w-full px-2 mb-4">
+        <div>
+            <p class="text-3xl"><strong>Incomes</strong> </p>
+            <div>
+                <p>THIS MONTH</p>
+            </div>
+        </div>
+        <p class="text-2xl">
+            <span class="text-4xl font-bold text-green-500">
+                + {{ totalIncome | currency: 'EUR'}}
+            </span>
+        </p>
+    </div>
+    <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" class="w-full"
+        style="  display: block;"></highcharts-chart>
+</div>

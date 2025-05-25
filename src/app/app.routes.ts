@@ -26,59 +26,58 @@ import { UserDetailsComponent } from './features/admin/table-users/user-details/
 import { BagComponent } from './features/user/bag/bag.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
 import { OrdersDetailsComponent } from './features/user/orders/orders-details/orders-details.component';
+import { ProductDetailsComponent } from './features/admin/table-products/product-details/product-details.component';
 
 export const routes: Routes = [
-    {path: 'home', component: HomepageComponent},
-    {path: 'about-us', component: AboutUsComponent},
-    {path: 'how-works', component: HowWorksComponent},
-    {path: 'login', component: LoginComponent, canActivate: [noAuthGuard]},
-    {path: 'register', component: RegisterComponent, },
-    {path: 'forgot-password', component: ForgotPasswordComponent},
-    {path: '', redirectTo: '/home', pathMatch: 'full' },
-    {path: 'products', component: ProductsComponent}, 
-    {path: 'products/:gender', component: ProductsComponent},
-    {path: 'products/:gender/:category', component: ProductsComponent},
-    {path: 'products/:gender/:category/:subcategory', component: ProductsComponent},
-    {path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent},
-    {path: 'favorites', component: FavoritesComponent },
+  { path: 'home', component: HomepageComponent },
+  { path: 'about-us', component: AboutUsComponent },
+  { path: 'how-works', component: HowWorksComponent },
+  { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
+  { path: 'register', component: RegisterComponent, },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'products', component: ProductsComponent },
+  { path: 'products/:gender', component: ProductsComponent },
+  { path: 'products/:gender/:category', component: ProductsComponent },
+  { path: 'products/:gender/:category/:subcategory', component: ProductsComponent },
+  { path: 'product/:gender/:category/:subcategory/:name', component: ProductDetailComponent },
+  { path: 'favorites', component: FavoritesComponent },
     {path: 'checkout', component: CheckoutComponent},
-    {
-  path: 'admin',
-  component: ManagmentComponent,
-  canActivate: [AdminGuard],
-  children: [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    { path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' } },
-    { path: 'products', component: TableProductsComponent, data: { breadcrumb: 'Products' } },
-    { path: 'orders', component: TableOrdersComponent, data: { breadcrumb: 'Orders' } },
-    { path: 'customers', component: TableUsersComponent, data: { breadcrumb: 'Customers' } },
-    {
-      path: 'customers/:id',
-      component: UserDetailsComponent,
-      data: { breadcrumb: 'Customers Details' } 
-    }
-  ]
-}
-,
+  {
+    path: 'admin',
+    component: ManagmentComponent,
+    canActivate: [AdminGuard],
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' } },
+      { path: 'products', component: TableProductsComponent, data: { breadcrumb: 'Products' } },
+      { path: 'orders', component: TableOrdersComponent, data: { breadcrumb: 'Orders' } },
+      { path: 'customers', component: TableUsersComponent, data: { breadcrumb: 'Customers' } },
+      { path: 'customers/:id', component: UserDetailsComponent, data: { breadcrumb: 'Customers Details' } },
+      { path: 'products/:id', component: ProductDetailsComponent, data: { breadcrumb: 'Products Details' }}
+    ]
+  }
+  ,
 
-  
-    {path: 'user', 
-      canActivate: [authGuard],
-      children: [
-        { path: 'profile', component: ProfileComponent},
-        { path: 'orders', component: OrdersComponent },
+
+  {
+    path: 'user',
+    canActivate: [authGuard],
+    children: [
+      { path: 'profile', component: ProfileComponent },
+      { path: 'orders', component: OrdersComponent },
         { path: 'orders/:id', component: OrdersDetailsComponent},
-        { path: 'bag', component: BagComponent },
-        { path: 'reviews', component: UserReviewsComponent}, // Cambiado el nombre del componente
-        { path: 'settings', component: UserSettingsComponent}, // Cambiado el nombre del componente
-        { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }
-      ] 
-    },
-    { path: '**', redirectTo: '/home', pathMatch: 'full' }
-    
+      { path: 'bag', component: BagComponent },
+      { path: 'reviews', component: UserReviewsComponent }, // Cambiado el nombre del componente
+      { path: 'settings', component: UserSettingsComponent }, // Cambiado el nombre del componente
+      { path: '**', redirectTo: '/user/profile', pathMatch: 'full' }
+    ]
+  },
+  { path: '**', redirectTo: '/home', pathMatch: 'full' }
+
 ];
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
-  })
-  export class AppRoutingModule { }
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

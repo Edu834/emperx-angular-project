@@ -75,6 +75,7 @@ export class UsuariosChartComponent implements OnInit {
 
 ngOnInit() {
   this.userService.obtenerUsuariosPorDia().subscribe(data => {
+    console.log(data);
     // Actualizamos la gráfica
     this.chartOptions = {
       ...this.chartOptions,

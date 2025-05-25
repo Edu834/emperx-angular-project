@@ -1,0 +1,64 @@
+<div class="bg-white rounded-2xl shadow-md">
+  <!-- Header -->
+  <div class="mb-4 flex justify-between items-center px-5 pt-5">
+    <h2 class="text-3xl font-semibold">
+      {{ product.nombre }}
+    </h2>
+    <div class="space-x-2">
+      <button *ngIf="!editing" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="startEdit()">
+        Edit
+      </button>
+      <!-- <button *ngIf="editing" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="saveUser()">
+        Save
+      </button>
+      <button *ngIf="editing" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600" (click)="cancelEdit()">
+        Cancel
+      </button> -->
+      <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" (click)="deleteProduct()">
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- User Details or Edit Form -->
+  <div class="px-5 pb-5 space-y-2 text-gray-700 text-sm" *ngIf="!editing">
+    <p><strong>Username:</strong> {{ product.nombre }}</p>
+    <p><strong>Email:</strong> {{ product.descripcion }}</p>
+    <p><strong>Phone:</strong> {{ product.marca }}</p>
+    <p><strong>Address:</strong> {{ product.sexo }}</p>
+    <p><strong>Entry Date:</strong> {{ product.precio}}</p>
+  </div>
+
+  <form *ngIf="editing" (ngSubmit)="saveUser()" class="px-5 pb-5 space-y-4 text-gray-700 text-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <label class="block">
+        Nombre:
+        <input [(ngModel)]="editedProduct.nombre" name="nombre" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Descripcion:
+        <input [(ngModel)]="editedProduct.descripcion" name="descripcion" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Marca:
+        <input [(ngModel)]="editedProduct.marca" name="marca" class="border p-1 rounded w-full" required />
+      </label>
+      
+      <label class="block">
+        Sexo:
+        <input [(ngModel)]="editedProduct.sexo" name="sexo" class="border p-1 rounded w-full" required />
+      </label>
+      <label class="block">
+        Precio:
+        <input [(ngModel)]="editedProduct.precio" name="precio" class="border p-1 rounded w-full" required/>
+      </label>
+    </div>
+    
+    <div class="flex justify-end mt-4">
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2">Save</button>
+      <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </form>
+</div>
